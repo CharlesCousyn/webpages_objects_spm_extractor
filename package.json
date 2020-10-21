@@ -1,0 +1,20 @@
+{
+  "name": "webpages_poset_extractor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node -r esm main.js",
+    "test": "node -r esm ./tests/testPOSET.js"
+  },
+  "keywords": [],
+  "author": "Charles Cousyn",
+  "license": "MIT",
+  "dependencies": {
+    "csv-parse": "^4.12.0",
+    "esm": "^3.2.25",
+    "html-to-text": "^5.1.1",
+    "rxjs": "^6.6.3",
+    "wordpos": "^2.0.0"
+  }
+}
