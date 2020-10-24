@@ -1,5 +1,6 @@
 {
   "allowedLexNames": ["noun.artifact",  "noun.object", "noun.substance", "noun.plant", "noun.animal", "noun.food"],
   "pathToWebPagesFolder": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/",
-  "pathToGenreDataset": "C:/Users/Charles/WebstormProjects/webpages_labeling/datasetGenreClass.csv"
+  "pathToGenreDataset": "C:/Users/Charles/WebstormProjects/webpages_labeling/datasetGenreClass.csv",
+  "useOfPredeterminedObjects": false
 }

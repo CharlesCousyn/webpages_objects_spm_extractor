@@ -1,13 +1,15 @@
+//Libs
 import Wordpos from "wordpos";
 import htmlToText  from "html-to-text";
 import csvParse from "csv-parse/lib/sync"
-import fileSystem from "fs";
 import {JSDOM} from "jsdom";
 import { from, of, ReplaySubject, partition} from 'rxjs';
 import { filter, map, concatMap, tap, groupBy, reduce, mergeMap, mergeAll, toArray, takeLast, bufferCount, count, distinct} from 'rxjs/operators';
-
-import GENERAL_CONFIG from "./configFiles/generalConfig.json";
 import filesSystem from "fs";
+
+//Personal imports
+import predeterminedObjects from "./configFiles/predeterminedObjects.json";
+import GENERAL_CONFIG from "./configFiles/generalConfig.json";
 import NumPOSET from "./entities/NumPOSET";
 
 //Keep JSDOM errors
@@ -26,7 +28,7 @@ function writeJSONFile(data, path)
     filesSystem.writeFileSync(path, JSON.stringify(data, null, 4), "utf8");
 }
 
-async function getOrderedObjectsFromHTML(pathWebPage)
+async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
 {
     //Extract text from HTML
     //let htmlText = fileSystem.readFileSync(pathWebPage, 'utf8');
@@ -40,23 +42,56 @@ async function getOrderedObjectsFromHTML(pathWebPage)
         //Extract objects from text
         let nouns = await wordpos.getNouns(text);
 
-        let objects = await from(nouns)
-            //Get definitions keeping + the original noun
-            .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
-            //Keep only definition where the lexName is allowed
-            .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
-            //Keep only nouns where there's at least one definition
-            .pipe(filter(definitionsOneNoun => Array.isArray(definitionsOneNoun) && definitionsOneNoun.length))
-            //Keep only the noun
-            .pipe(map(noun => noun[0].noun))
-            //Keep no duplicates when in lower case
-            .pipe(distinct(noun => noun.toLowerCase()))
-            .pipe(toArray())
-            .toPromise();
 
+        let detectedObjects = [];
+        if(useOfPredeterminedObjects)
+        {
+            //Use our the predeterminedObjects
+            let definitionsPresentNouns = await from(nouns)
+                //Get definitions keeping + the original noun
+                .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
+                //Keep only definition where the lexName is allowed
+                .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
+                //Keep only nouns where there's at least one definition
+                .pipe(filter(definitionsOneNoun => Array.isArray(definitionsOneNoun) && definitionsOneNoun.length))
+                .pipe(toArray())
+                .toPromise();
+
+            let predeterminedObjectsLemma = await from(predeterminedObjectsOneActivty)
+                //Get definitions keeping + the original noun
+                .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
+                //Keep only definition where the lexName is allowed
+                .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
+                .map(obj => obj.lemma)
+                .pipe(toArray())
+                .toPromise();
+
+            //Get the intersection between the 2 arrays
+            let intersec = definitionsPresentNouns.filter(presentNoun => predeterminedObjectsLemma.includes(presentNoun.lemma));
+
+            //Get only the original forms of noun/objects
+            detectedObjects = intersec.map(el => el.noun);
+        }
+        else
+        {
+            //Find our own set of objects
+            detectedObjects = await from(nouns)
+                //Get definitions keeping + the original noun
+                .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
+                //Keep only definition where the lexName is allowed
+                .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
+                //Keep only nouns where there's at least one definition
+                .pipe(filter(definitionsOneNoun => Array.isArray(definitionsOneNoun) && definitionsOneNoun.length))
+                //Keep only the noun
+                .pipe(map(noun => noun[0].noun))
+                //Keep no duplicates when in lower case
+                .pipe(distinct(noun => noun.toLowerCase()))
+                .pipe(toArray())
+                .toPromise();
+        }
 
         //Get indexes for each object in text
-        let objIndex = objects.map(object =>
+        let objIndex = detectedObjects.map(object =>
         {
             const reg = new RegExp(`(${object})`);
             return [object, text.match(reg).index];
@@ -76,11 +111,11 @@ async function getOrderedObjectsFromHTML(pathWebPage)
 
 }
 
-async function addOrderedObjectsToObj(obj)
+async function addOrderedObjectsToObj(obj, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
 {
     return {
         ...obj,
-        orderedObjects: await getOrderedObjectsFromHTML(obj.path)
+        orderedObjects: await getOrderedObjectsFromHTML(obj.path, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
     };
 }
 
@@ -111,6 +146,9 @@ function updatePOSETActivityResult(resOneWebPage, activityResult)
 
 function processOneActivity(activityResult, dataset)
 {
+    //Get the array of corresponding predeterminedObjects
+    let predeterminedObjectsOneActivty = predeterminedObjects.find(el => el.activityName === activityResult.activityName);
+
     return from(filesSystem.readdirSync(activityResult.pathToWebPages, { encoding: 'utf8', withFileTypes: true }))
         //Stream of files and dir names in one activity folder
         .pipe(filter(dirent => !dirent.isDirectory()))
@@ -119,7 +157,7 @@ function processOneActivity(activityResult, dataset)
         //Stream of {fileName, path} in one activity folder (Get the path for each webpage)
         .pipe(filter(resOneWebPage => dataset.find(data => data.fileName === resOneWebPage.fileName).class === "descriptive"))
         //Stream of {fileName, path} in one activity folder (Filter the web pages which are not "descriptive" using dataset)
-        .pipe(concatMap(resOneWebPage => from(addOrderedObjectsToObj(resOneWebPage))))
+        .pipe(concatMap(resOneWebPage => from(addOrderedObjectsToObj(resOneWebPage, GENERAL_CONFIG.useOfPredeterminedObjects, predeterminedObjectsOneActivty))))
         //Stream of {fileName, path, orderedObjects} in one activity folder (Extract ordered objects from html files)
         .pipe(map(resOneWebPage => initiatePOSETActivityResult(resOneWebPage, activityResult)))
         //Stream of {fileName, path, orderedObjects} in one activity folder (Creating the matrix in NumPOSET)
