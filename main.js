@@ -31,11 +31,10 @@ function writeJSONFile(data, path)
 async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
 {
     //Extract text from HTML
-    //let htmlText = fileSystem.readFileSync(pathWebPage, 'utf8');
     try
     {
-        let dom = await JSDOM.fromFile(pathWebPage);
-        let text = htmlToText.fromString(dom.window.document.body.outerHTML);
+        let htmlText = fileSystem.readFileSync(pathWebPage, 'utf8');
+        let text = htmlToText.fromString(htmlText, GENERAL_CONFIG.configHTML2Text);
 
         //console.log(await wordpos.parse(text));
 
