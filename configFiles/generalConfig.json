@@ -1,12 +1,13 @@
 {
-  "allowedLexNames": ["noun.artifact",  "noun.object", "noun.substance", "noun.plant", "noun.animal", "noun.food"],
+  "allowedLexNames": ["noun.artifact",  "noun.object", "noun.substance", "noun.plant", "noun.animal", "noun.food", "noun.body"],
   "pathToWebPagesFolder": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/",
   "pathToGenreDataset": "C:/Users/Charles/WebstormProjects/webpages_labeling/datasetGenreClass.csv",
   "useOfPredeterminedObjects": false,
   "configHTML2Text":
   {
     "baseElement": "body",
-    "ignoreHref": false,
-    "ignoreImage": false
-  }
+    "ignoreHref": true,
+    "ignoreImage": true
+  },
+  "limitNumberActivityForDebug": 1000000
 }

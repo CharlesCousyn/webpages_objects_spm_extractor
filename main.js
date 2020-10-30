@@ -4,7 +4,7 @@ import htmlToText  from "html-to-text";
 import csvParse from "csv-parse/lib/sync"
 import {JSDOM} from "jsdom";
 import { from, of, ReplaySubject, partition} from 'rxjs';
-import { filter, map, concatMap, tap, groupBy, reduce, mergeMap, mergeAll, toArray, takeLast, bufferCount, count, distinct} from 'rxjs/operators';
+import { filter, map, concatMap, tap, groupBy, reduce, mergeMap, mergeAll, toArray, takeLast, bufferCount, count, distinct, take} from 'rxjs/operators';
 import filesSystem from "fs";
 
 //Personal imports
@@ -16,6 +16,7 @@ import NumPOSET from "./entities/NumPOSET";
 const originalConsoleError = console.error;
 console.error = function(msg)
 {
+    console.log(msg);
     if(msg.startsWith('Error: Could not parse CSS stylesheet')) return;
     originalConsoleError(msg);
 }
@@ -28,13 +29,24 @@ function writeJSONFile(data, path)
     filesSystem.writeFileSync(path, JSON.stringify(data, null, 4), "utf8");
 }
 
+function writeTextFile(data, path)
+{
+    filesSystem.writeFileSync(path, data, {encoding:"utf8"});
+}
+
 async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
 {
     //Extract text from HTML
     try
     {
-        let htmlText = fileSystem.readFileSync(pathWebPage, 'utf8');
+        let htmlText = filesSystem.readFileSync(pathWebPage, 'utf8');
         let text = htmlToText.fromString(htmlText, GENERAL_CONFIG.configHTML2Text);
+
+        //Delete all non pure text things...
+        text = text.replace(new RegExp("({\".*})", "gs"), "");//JSON strings
+        text = text.replace(new RegExp("(https?:\\/\\/)?([\\w\\-])+\\.{1}([a-zA-Z]{2,63})([\\/\\w-]*)*\\/?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)", "g"), "");//Urls
+
+        //writeTextFile(text, `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`);
 
         //console.log(await wordpos.parse(text));
 
@@ -143,6 +155,12 @@ function updatePOSETActivityResult(resOneWebPage, activityResult)
     return activityResult;
 }
 
+function normalizeAndReturn(activityRes)
+{
+    activityRes.numPOSET.normalize(0, 1);
+    return activityRes;
+}
+
 function processOneActivity(activityResult, dataset)
 {
     //Get the array of corresponding predeterminedObjects
@@ -164,6 +182,8 @@ function processOneActivity(activityResult, dataset)
         //Stream of activityResult (for each webpage)
         .pipe(takeLast(1))
         //Stream of activityResult (for each webpage) (keeping only the last updated)
+        .pipe(map(activityResult => normalizeAndReturn(activityResult)))
+        //Stream of activityResult (for each webpage) (normalized Matrix produced)
         .pipe(tap(console.log))
 }
 
@@ -182,6 +202,8 @@ function processOneActivity(activityResult, dataset)
     let res = await from(folderNames)
         //Stream of folders names
         .pipe(map(activity => ({activityName:activity, pathToWebPages: `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, numPOSET: new NumPOSET([])})))
+        //Stream of folders names
+        .pipe(take(GENERAL_CONFIG.limitNumberActivityForDebug))
         //Stream of activity result
         .pipe(concatMap(activityObj => processOneActivity(activityObj, dataset)))
         //Stream of activity result

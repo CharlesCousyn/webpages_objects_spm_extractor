@@ -2,7 +2,7 @@ export default class NumPOSET
 {
     //elementsIds --- array of ids ["cup", "mug", ...]
     //matrix -- squared array of array of numbers [[1, 0, 4], [1, 0, 5],[5, 0, 4]]
-    constructor(elementsIds, matrix)
+    constructor(elementsIds, matrix, matrixNorm)
     {
         //Check duplicates
         if(new Set(elementsIds).size !== elementsIds.length )
@@ -26,6 +26,16 @@ export default class NumPOSET
         else
         {
             this._matrix = matrix;
+        }
+
+        //Check if matrixNorm is defined in constructor
+        if(matrixNorm === undefined)
+        {
+            this._matrixNorm = this.getInitMatFromElements();
+        }
+        else
+        {
+            this._matrixNorm = matrix;
         }
     }
 
@@ -133,7 +143,7 @@ export default class NumPOSET
             .reduce((acc, curr) => acc + curr, 0)
     }
 
-    print()
+    printMatrix()
     {
         let tableToPrint = [];
         //Adding column names
@@ -143,6 +153,40 @@ export default class NumPOSET
         tableToPrint = [...tableToPrint, ...(this._matrix.map((el, index) => [this._elementsIds[index], ...el]))];
 
         console.table(tableToPrint);
+    }
+    printMatrixNorm()
+    {
+        let tableToPrint = [];
+        //Adding column names
+        tableToPrint.push([null, ...this._elementsIds]);
+
+        tableToPrint = [...tableToPrint, ...(this._matrixNorm.map((el, index) => [this._elementsIds[index], ...el]))];
+
+        console.table(tableToPrint);
+    }
+
+
+    normalize(newMin, newMax)
+    {
+        let flatMat = this._matrix.flat();
+        let min = Math.min(...flatMat);
+        let max = Math.max(...flatMat);
+        if(min === max)
+        {
+            this._matrixNorm = this._matrix.map(line => [...line]);//Deep copy of the matrix
+        }
+        else
+        {
+            this._matrixNorm = this._matrix.map(line =>
+                line.map(val =>
+                {
+                    if(val === null)
+                    {
+                        return null;
+                    }
+                    return newMin + (val - min) * (newMax - newMin) / (max - min);
+                }));
+        }
     }
 
     //Getters and setters

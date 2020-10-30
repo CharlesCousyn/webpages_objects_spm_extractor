@@ -10,7 +10,7 @@ import NumPOSET from "../entities/NumPOSET";
     pos1.setMatValue("pan", "cup", true);
     pos1.setMatValue("pan", "mug", true);
 
-    pos1.print();
+    pos1.printMatrix();
 
     let pos2 = new NumPOSET(["water", "pan", "spoon", "cup", "mug"]);
 
@@ -19,11 +19,11 @@ import NumPOSET from "../entities/NumPOSET";
     pos2.setMatValue("pan", "cup", 7);
     pos2.setMatValue("pan", "mug", 10);
 
-    pos2.print();
+    pos2.printMatrix();
 
     pos2.deleteId("water");
-    pos2.print();
+    pos2.printMatrix();
 
     pos2.addId("water");
-    pos2.print();
+    pos2.printMatrix();
 })()
