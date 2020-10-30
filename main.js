@@ -157,7 +157,8 @@ function updatePOSETActivityResult(resOneWebPage, activityResult)
 
 function normalizeAndReturn(activityRes)
 {
-    activityRes.numPOSET.normalize(0, 1);
+    activityRes.numPOSET.normalize(0, 1, GENERAL_CONFIG.normalizationOrStandardization);
+    activityRes.numPOSET.flat = activityRes.numPOSET.matrix.flat();
     return activityRes;
 }
 

@@ -9,5 +9,6 @@
     "ignoreHref": true,
     "ignoreImage": true
   },
-  "limitNumberActivityForDebug": 1000000
+  "limitNumberActivityForDebug": 1000000,
+  "normalizationOrStandardization": "normalization"
 }

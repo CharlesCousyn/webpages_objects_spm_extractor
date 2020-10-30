@@ -166,27 +166,53 @@ export default class NumPOSET
     }
 
 
-    normalize(newMin, newMax)
+    normalize(newMin, newMax, normalizationOrStandardization)
     {
         let flatMat = this._matrix.flat();
-        let min = Math.min(...flatMat);
-        let max = Math.max(...flatMat);
-        if(min === max)
+
+        if(normalizationOrStandardization === "normalization")
         {
-            this._matrixNorm = this._matrix.map(line => [...line]);//Deep copy of the matrix
-        }
-        else
-        {
-            this._matrixNorm = this._matrix.map(line =>
-                line.map(val =>
-                {
-                    if(val === null)
+            let min = Math.min(...flatMat);
+            let max = Math.max(...flatMat);
+            if(min === max)
+            {
+                this._matrixNorm = this._matrix.map(line => [...line]);//Deep copy of the matrix
+            }
+            else
+            {
+                this._matrixNorm = this._matrix.map(line =>
+                    line.map(val =>
                     {
-                        return null;
-                    }
-                    return newMin + (val - min) * (newMax - newMin) / (max - min);
-                }));
+                        if(val === null)
+                        {
+                            return null;
+                        }
+                        return newMin + (val - min) * (newMax - newMin) / (max - min);
+                    }));
+            }
         }
+        else if(normalizationOrStandardization === "standardization")
+        {
+            let avg = flatMat.reduce((sum, curr) => sum + curr, 0) / flatMat.length;
+            let sd = Math.sqrt(flatMat.map(x => Math.pow(x - avg, 2)).reduce((a, b) => a + b) / flatMat.length);
+            if(avg === sd)
+            {
+                this._matrixNorm = this._matrix.map(line => [...line]);//Deep copy of the matrix
+            }
+            else
+            {
+                this._matrixNorm = this._matrix.map(line =>
+                    line.map(val =>
+                    {
+                        if(val === null)
+                        {
+                            return null;
+                        }
+                        return (val - avg)/sd;
+                    }));
+            }
+        }
+
     }
 
     //Getters and setters
