@@ -10,5 +10,5 @@
     "ignoreImage": true
   },
   "limitNumberActivityForDebug": 1000000,
-  "normalizationOrStandardization": "normalization"
+  "normOrStandOrByPage": "byPage"
 }

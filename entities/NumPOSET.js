@@ -166,11 +166,29 @@ export default class NumPOSET
     }
 
 
-    normalize(newMin, newMax, normalizationOrStandardization)
+    normalize(newMin, newMax, normOrStandOrByPage, numberOfWebPages)
     {
         let flatMat = this._matrix.flat();
 
-        if(normalizationOrStandardization === "normalization")
+        if(normOrStandOrByPage === "byPage")
+        {
+            if(numberOfWebPages === 0)
+            {
+                this._matrixNorm = this._matrix.map(line => [...line]);//Deep copy of the matrix
+            }
+            else
+            {
+                this._matrixNorm = this._matrix.map(line => line.map(val =>
+                {
+                    if(val === null)
+                    {
+                        return null;
+                    }
+                    return val / numberOfWebPages;
+                }));
+            }
+        }
+        else if(normOrStandOrByPage === "norm")
         {
             let min = Math.min(...flatMat);
             let max = Math.max(...flatMat);
@@ -191,7 +209,7 @@ export default class NumPOSET
                     }));
             }
         }
-        else if(normalizationOrStandardization === "standardization")
+        else if(normOrStandOrByPage === "stand")
         {
             let avg = flatMat.reduce((sum, curr) => sum + curr, 0) / flatMat.length;
             let sd = Math.sqrt(flatMat.map(x => Math.pow(x - avg, 2)).reduce((a, b) => a + b) / flatMat.length);
