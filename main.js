@@ -11,6 +11,7 @@ import filesSystem from "fs";
 import predeterminedObjects from "./configFiles/predeterminedObjects.json";
 import GENERAL_CONFIG from "./configFiles/generalConfig.json";
 import NumPOSET from "./entities/NumPOSET";
+import ActivityResult from "./entities/ActivityResult";
 
 //Keep JSDOM errors
 const originalConsoleError = console.error;
@@ -130,8 +131,12 @@ async function addOrderedObjectsToObj(obj, useOfPredeterminedObjects, predetermi
     };
 }
 
-function initiatePOSETActivityResult(resOneWebPage, activityResult)
+function updateActivityResultWithOnePage(resOneWebPage, activityResult)
 {
+    //Add 1 to number of pages value
+    activityResult.numberOfWebPages += 1;
+
+    //Add the corresponding Ids in matrix
     resOneWebPage.orderedObjects.forEach(id =>
     {
         //if id doesn't already exist
@@ -140,11 +145,8 @@ function initiatePOSETActivityResult(resOneWebPage, activityResult)
             activityResult.numPOSET.addId(id);
         }
     });
-    return resOneWebPage;
-}
 
-function updatePOSETActivityResult(resOneWebPage, activityResult)
-{
+    //Add 1 when there's a relation
     for(let i= 0; i< resOneWebPage.orderedObjects.length; i++)
     {
         for(let j= i+1; j <resOneWebPage.orderedObjects.length; j++)
@@ -177,9 +179,7 @@ function processOneActivity(activityResult, dataset)
         //Stream of {fileName, path} in one activity folder (Filter the web pages which are not "descriptive" using dataset)
         .pipe(concatMap(resOneWebPage => from(addOrderedObjectsToObj(resOneWebPage, GENERAL_CONFIG.useOfPredeterminedObjects, predeterminedObjectsOneActivty))))
         //Stream of {fileName, path, orderedObjects} in one activity folder (Extract ordered objects from html files)
-        .pipe(map(resOneWebPage => initiatePOSETActivityResult(resOneWebPage, activityResult)))
-        //Stream of {fileName, path, orderedObjects} in one activity folder (Creating the matrix in NumPOSET)
-        .pipe(map(resOneWebPage => updatePOSETActivityResult(resOneWebPage, activityResult)))
+        .pipe(map(resOneWebPage => updateActivityResultWithOnePage(resOneWebPage, activityResult)))
         //Stream of activityResult (for each webpage)
         .pipe(takeLast(1))
         //Stream of activityResult (for each webpage) (keeping only the last updated)
@@ -202,11 +202,11 @@ function processOneActivity(activityResult, dataset)
     //Use the HTML files in folders to deduce NumPOSETs
     let res = await from(folderNames)
         //Stream of folders names
-        .pipe(map(activity => ({activityName:activity, pathToWebPages: `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, numPOSET: new NumPOSET([])})))
+        .pipe(map(activity => new ActivityResult(activity, `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, new NumPOSET([]), 0)))
         //Stream of folders names
         .pipe(take(GENERAL_CONFIG.limitNumberActivityForDebug))
         //Stream of activity result
-        .pipe(concatMap(activityObj => processOneActivity(activityObj, dataset)))
+        .pipe(concatMap(activityRes => processOneActivity(activityRes, dataset)))
         //Stream of activity result
         .pipe(toArray())
         //Stream of array activity result (only one)
