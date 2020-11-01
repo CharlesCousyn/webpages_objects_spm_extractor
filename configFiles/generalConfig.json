@@ -10,5 +10,6 @@
     "ignoreImage": true
   },
   "limitNumberActivityForDebug": 1000000,
-  "normOrStandOrByPage": "byPage"
+  "normOrStandOrByPage": "byPage",
+  "thresholdStrongRelations": 0.1
 }

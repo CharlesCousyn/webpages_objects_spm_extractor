@@ -2,15 +2,17 @@
   "name": "webpages_poset_extractor",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "getRawPOSETs.js",
   "scripts": {
-    "start": "node -r esm main.js",
+    "getRawPOSETs": "node -r esm getRawPOSETs.js",
+    "processPOSETs": "node -r esm processPOSETs.js",
     "test": "node -r esm ./tests/testPOSET.js"
   },
   "keywords": [],
   "author": "Charles Cousyn",
   "license": "MIT",
   "dependencies": {
+    "clone": "^2.1.2",
     "csv-parse": "^4.12.0",
     "esm": "^3.2.25",
     "html-to-text": "^5.1.1",

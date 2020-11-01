@@ -2,7 +2,7 @@ export default class NumPOSET
 {
     //elementsIds --- array of ids ["cup", "mug", ...]
     //matrix -- squared array of array of numbers [[1, 0, 4], [1, 0, 5],[5, 0, 4]]
-    constructor(elementsIds, matrix, matrixNorm)
+    constructor(elementsIds, matrix)
     {
         //Check duplicates
         if(new Set(elementsIds).size !== elementsIds.length )
@@ -26,16 +26,6 @@ export default class NumPOSET
         else
         {
             this._matrix = matrix;
-        }
-
-        //Check if matrixNorm is defined in constructor
-        if(matrixNorm === undefined)
-        {
-            this._matrixNorm = this.getInitMatFromElements();
-        }
-        else
-        {
-            this._matrixNorm = matrix;
         }
     }
 
@@ -70,7 +60,7 @@ export default class NumPOSET
 
         //Deleting the corresponding line and column
         this._matrix = this._matrix.filter((line, index) => index !== indexId);
-        console.log("indexId: ", indexId);
+
         this._matrix = this._matrix
             .map(line =>
             {
@@ -153,84 +143,6 @@ export default class NumPOSET
         tableToPrint = [...tableToPrint, ...(this._matrix.map((el, index) => [this._elementsIds[index], ...el]))];
 
         console.table(tableToPrint);
-    }
-    printMatrixNorm()
-    {
-        let tableToPrint = [];
-        //Adding column names
-        tableToPrint.push([null, ...this._elementsIds]);
-
-        tableToPrint = [...tableToPrint, ...(this._matrixNorm.map((el, index) => [this._elementsIds[index], ...el]))];
-
-        console.table(tableToPrint);
-    }
-
-
-    normalize(newMin, newMax, normOrStandOrByPage, numberOfWebPages)
-    {
-        let flatMat = this._matrix.flat();
-
-        if(normOrStandOrByPage === "byPage")
-        {
-            if(numberOfWebPages === 0)
-            {
-                this._matrixNorm = this._matrix.map(line => [...line]);//Deep copy of the matrix
-            }
-            else
-            {
-                this._matrixNorm = this._matrix.map(line => line.map(val =>
-                {
-                    if(val === null)
-                    {
-                        return null;
-                    }
-                    return val / numberOfWebPages;
-                }));
-            }
-        }
-        else if(normOrStandOrByPage === "norm")
-        {
-            let min = Math.min(...flatMat);
-            let max = Math.max(...flatMat);
-            if(min === max)
-            {
-                this._matrixNorm = this._matrix.map(line => [...line]);//Deep copy of the matrix
-            }
-            else
-            {
-                this._matrixNorm = this._matrix.map(line =>
-                    line.map(val =>
-                    {
-                        if(val === null)
-                        {
-                            return null;
-                        }
-                        return newMin + (val - min) * (newMax - newMin) / (max - min);
-                    }));
-            }
-        }
-        else if(normOrStandOrByPage === "stand")
-        {
-            let avg = flatMat.reduce((sum, curr) => sum + curr, 0) / flatMat.length;
-            let sd = Math.sqrt(flatMat.map(x => Math.pow(x - avg, 2)).reduce((a, b) => a + b) / flatMat.length);
-            if(avg === sd)
-            {
-                this._matrixNorm = this._matrix.map(line => [...line]);//Deep copy of the matrix
-            }
-            else
-            {
-                this._matrixNorm = this._matrix.map(line =>
-                    line.map(val =>
-                    {
-                        if(val === null)
-                        {
-                            return null;
-                        }
-                        return (val - avg)/sd;
-                    }));
-            }
-        }
-
     }
 
     //Getters and setters
