@@ -109,6 +109,7 @@ function applyThresholdToPOSET(POSET, threshold)
 
 function applyThresholdToActivityResult(activityRes, threshold)
 {
+    activityRes.threshold = threshold;
     activityRes.numPOSET = applyThresholdToPOSET(activityRes.numPOSET, threshold);
     return activityRes;
 }
@@ -163,7 +164,8 @@ function cleanActivityRes(activityRes)
             jsonActRes._activityName,
             jsonActRes._pathToWebPages,
             new NumPOSET(jsonActRes._numPOSET._elementsIds, jsonActRes._numPOSET._matrix),
-            jsonActRes._numberOfWebPages));
+            jsonActRes._numberOfWebPages,
+            jsonActRes._threshold));
 
     //Compute processed Activity results
     let res = await from(clone(rawActivityResults))

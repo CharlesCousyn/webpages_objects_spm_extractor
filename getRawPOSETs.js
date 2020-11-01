@@ -183,7 +183,7 @@ function processOneActivity(activityResult, dataset)
     //Use the HTML files in folders to deduce RawNumPOSETs
     let res = await from(folderNames)
         //Stream of folders names
-        .pipe(map(activity => new ActivityResult(activity, `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, new NumPOSET([]), 0)))
+        .pipe(map(activity => new ActivityResult(activity, `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, new NumPOSET([]), 0, 0)))
         //Stream of folders names
         .pipe(take(GENERAL_CONFIG.limitNumberActivityForDebug))
         //Stream of activity result
