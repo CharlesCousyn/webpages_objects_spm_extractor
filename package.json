@@ -6,7 +6,8 @@
   "scripts": {
     "getRawPOSETs": "node -r esm getRawPOSETs.js",
     "processPOSETs": "node -r esm processPOSETs.js",
-    "test": "node -r esm ./tests/testPOSET.js"
+    "testPOSET": "node -r esm ./tests/testPOSET.js",
+    "testFin": "node -r esm ./tests/testFin.js"
   },
   "keywords": [],
   "author": "Charles Cousyn",
@@ -14,9 +15,13 @@
   "dependencies": {
     "clone": "^2.1.2",
     "csv-parse": "^4.12.0",
+    "en-norm": "0.0.3",
+    "en-parse": "^1.1.7",
+    "en-pos": "^1.0.16",
     "esm": "^3.2.25",
     "html-to-text": "^5.1.1",
     "jsdom": "^16.4.0",
+    "lexed": "^1.0.10",
     "rxjs": "^6.6.3",
     "wordpos": "^2.0.0"
   }
