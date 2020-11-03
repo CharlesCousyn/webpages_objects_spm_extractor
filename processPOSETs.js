@@ -2,7 +2,7 @@
 import { from, of, ReplaySubject, partition} from 'rxjs';
 import { filter, map, concatMap, tap, groupBy, reduce, mergeMap, mergeAll, toArray, takeLast, bufferCount, count, distinct, take} from 'rxjs/operators';
 import filesSystem from "fs";
-import clone from "clone"
+import clone from "clone";
 
 //Personal imports
 import GENERAL_CONFIG from "./configFiles/generalConfig.json";

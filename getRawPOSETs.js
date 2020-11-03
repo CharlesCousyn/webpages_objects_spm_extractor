@@ -5,6 +5,13 @@ import csvParse from "csv-parse/lib/sync"
 import { from, of, ReplaySubject, partition} from 'rxjs';
 import { filter, map, concatMap, tap, groupBy, reduce, mergeMap, mergeAll, toArray, takeLast, bufferCount, count, distinct, take} from 'rxjs/operators';
 import filesSystem from "fs";
+import clone from "clone";
+import Lexed from 'lexed';
+import {Tag} from 'en-pos';
+import parser from 'en-parse';
+import {normalizeCaps, replaceConfusables, resolveContractions} from "en-norm";
+import {replaceHTMLEntities} from "./libs/fin-html-entities";
+import {reverseSlang} from "./libs/fin-slang";
 
 //Personal imports
 import predeterminedObjects from "./configFiles/predeterminedObjects.json";
@@ -25,78 +32,138 @@ console.error = function(msg)
 //Init wordpos
 let wordpos = new Wordpos();
 
+function htmlStringToCleanText(htmlString)
+{
+    let text = htmlToText.fromString(htmlString, GENERAL_CONFIG.configHTML2Text);
+
+    //Delete all non pure text things...
+    //JSON strings
+    let processedText = text.replace(new RegExp("({\".*})", "gs"), "");
+    //Urls
+    processedText = processedText.replace(new RegExp("(https?:\\/\\/)?([\\w\\-])+\\.{1}([a-zA-Z]{2,63})([\\/\\w-]*)*\\/?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)", "g"), "");
+    //HTML entities and slang
+    processedText = replaceHTMLEntities(reverseSlang(resolveContractions(replaceConfusables(processedText))));
+
+    return processedText;
+}
+
+async function getObjectsFromTextWordpos(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+{
+    //Extract objects from text
+    let nouns = await wordpos.getNouns(cleanText);
+
+    return keepNounsWithValidLexName(nouns, useOfPredeterminedObjects, predeterminedObjectsOneActivty);
+}
+
+async function keepNounsWithValidLexName(nouns, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+{
+    let detectedObjects = [];
+    if(useOfPredeterminedObjects)
+    {
+        //Use our the predeterminedObjects
+        let definitionsPresentNouns = await from(nouns)
+            //Get definitions keeping + the original noun
+            .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
+            //Keep only definition where the lexName is allowed
+            .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
+            //Keep only nouns where there's at least one definition
+            .pipe(filter(definitionsOneNoun => Array.isArray(definitionsOneNoun) && definitionsOneNoun.length))
+            .pipe(toArray())
+            .toPromise();
+
+        let predeterminedObjectsLemma = await from(predeterminedObjectsOneActivty)
+            //Get definitions keeping + the original noun
+            .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
+            //Keep only definition where the lexName is allowed
+            .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
+            .map(obj => obj.lemma)
+            .pipe(toArray())
+            .toPromise();
+
+        //Get the intersection between the 2 arrays
+        let intersec = definitionsPresentNouns.filter(presentNoun => predeterminedObjectsLemma.includes(presentNoun.lemma));
+
+        //Get only the original forms of noun/objects
+        detectedObjects = intersec.map(el => el.noun);
+    }
+    else
+    {
+        //Find our own set of objects
+        detectedObjects = await from(nouns)
+            //Get definitions keeping + the original noun
+            .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
+            //Keep only definition where the lexName is allowed
+            .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
+            //Keep only nouns where there's at least one definition
+            .pipe(filter(definitionsOneNoun => Array.isArray(definitionsOneNoun) && definitionsOneNoun.length))
+            //Keep only the noun
+            .pipe(map(noun => noun[0].noun))
+            //Keep no duplicates when in lower case
+            .pipe(distinct(noun => noun.toLowerCase()))
+            .pipe(toArray())
+            .toPromise();
+    }
+
+    return detectedObjects;
+}
+
+async function getObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+{
+    let tokenizedText = (new Lexed(cleanText)).lexer().tokens;
+    let clonedTokenizedText = clone(tokenizedText);
+    let normalizedTokenizedText = clonedTokenizedText.map(sentenceArr => normalizeCaps(sentenceArr));
+    let POSText = normalizedTokenizedText.map(sentenceArr => new Tag(sentenceArr).initial().smooth().tags);
+    let depParsed = normalizedTokenizedText.map((tokensOneSentence, indexOneSentence) => parser(POSText[indexOneSentence], tokensOneSentence));
+
+    let processedText = normalizedTokenizedText.map((normalizedTokensOneSentence, indexOneSentence) =>
+        normalizedTokensOneSentence.map((normalizedToken, indexTok) =>
+        {
+                return {
+                    originalToken: tokenizedText[indexOneSentence][indexTok],
+                    normalizedToken: normalizedToken,
+                    POS: POSText[indexOneSentence][indexTok],
+                    depParsed: depParsed[indexOneSentence][indexTok]
+                }}));
+
+    //Keep all nouns
+    processedText = processedText.flat().filter((tokInfo, indexTokInfo) => tokInfo.POS.startsWith("NN"));
+
+    return keepNounsWithValidLexName(processedText.map(tokInfo => tokInfo.originalToken), useOfPredeterminedObjects, predeterminedObjectsOneActivty);
+}
+
 async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
 {
     //Extract text from HTML
     try
     {
-        let htmlText = filesSystem.readFileSync(pathWebPage, 'utf8');
-        let text = htmlToText.fromString(htmlText, GENERAL_CONFIG.configHTML2Text);
+        //Get the HTML string
+        let htmlString = TOOLS.readTextFile(pathWebPage);
+        //Clean the text
+        let cleanText = htmlStringToCleanText(htmlString);
+        //Write a new text file
+        let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
+        TOOLS.writeTextFile(cleanText, pathToTextFile);
 
-        //Delete all non pure text things...
-        text = text.replace(new RegExp("({\".*})", "gs"), "");//JSON strings
-        text = text.replace(new RegExp("(https?:\\/\\/)?([\\w\\-])+\\.{1}([a-zA-Z]{2,63})([\\/\\w-]*)*\\/?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)", "g"), "");//Urls
-
-        //TOOLS.writeTextFile(text, `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`);
-
-        //console.log(await wordpos.parse(text));
-
-        //Extract objects from text
-        let nouns = await wordpos.getNouns(text);
-
-
+        //Extract object from text
         let detectedObjects = [];
-        if(useOfPredeterminedObjects)
+        if(GENERAL_CONFIG.wordposOrFinNLP === "finNLP")
         {
-            //Use our the predeterminedObjects
-            let definitionsPresentNouns = await from(nouns)
-                //Get definitions keeping + the original noun
-                .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
-                //Keep only definition where the lexName is allowed
-                .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
-                //Keep only nouns where there's at least one definition
-                .pipe(filter(definitionsOneNoun => Array.isArray(definitionsOneNoun) && definitionsOneNoun.length))
-                .pipe(toArray())
-                .toPromise();
-
-            let predeterminedObjectsLemma = await from(predeterminedObjectsOneActivty)
-                //Get definitions keeping + the original noun
-                .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
-                //Keep only definition where the lexName is allowed
-                .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
-                .map(obj => obj.lemma)
-                .pipe(toArray())
-                .toPromise();
-
-            //Get the intersection between the 2 arrays
-            let intersec = definitionsPresentNouns.filter(presentNoun => predeterminedObjectsLemma.includes(presentNoun.lemma));
-
-            //Get only the original forms of noun/objects
-            detectedObjects = intersec.map(el => el.noun);
+            detectedObjects = await getObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty);
+        }
+        else if(GENERAL_CONFIG.wordposOrFinNLP === "wordpos")
+        {
+            detectedObjects = await getObjectsFromTextWordpos(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty);
         }
         else
         {
-            //Find our own set of objects
-            detectedObjects = await from(nouns)
-                //Get definitions keeping + the original noun
-                .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
-                //Keep only definition where the lexName is allowed
-                .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
-                //Keep only nouns where there's at least one definition
-                .pipe(filter(definitionsOneNoun => Array.isArray(definitionsOneNoun) && definitionsOneNoun.length))
-                //Keep only the noun
-                .pipe(map(noun => noun[0].noun))
-                //Keep no duplicates when in lower case
-                .pipe(distinct(noun => noun.toLowerCase()))
-                .pipe(toArray())
-                .toPromise();
+            throw new Error("Bad 'wordposOrFinNLP' configuration !!!");
         }
 
         //Get indexes for each object in text
         let objIndex = detectedObjects.map(object =>
         {
             const reg = new RegExp(`(${object})`);
-            return [object, text.match(reg).index];
+            return [object, cleanText.match(reg).index];
         });
 
         //Sort the objects by indexes and keep only the name in lower case
