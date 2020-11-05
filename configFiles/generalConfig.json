@@ -12,5 +12,5 @@
   "limitNumberActivityForDebug": 1000000,
   "normOrStandOrByPage": "byPage",
   "thresholdStrongRelations": 0.1,
-  "wordposOrFinNLP": "finNLP"
+  "considerSeveralTimesWord": true
 }

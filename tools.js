@@ -1,8 +1,17 @@
 import filesSystem from "fs";
 
-export function writeJSONFile(data, path)
+export function writeJSONFile(data, path, isIndent)
 {
-    filesSystem.writeFileSync(path, JSON.stringify(data, null, 4), "utf8");
+    let string = "";
+    if(isIndent)
+    {
+        string = JSON.stringify(data, null, 4);
+    }
+    else
+    {
+        string = JSON.stringify(data);
+    }
+    filesSystem.writeFileSync(path, string, "utf8");
 }
 
 export function writeTextFile(data, path)

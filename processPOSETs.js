@@ -181,6 +181,6 @@ function cleanActivityRes(activityRes)
         .toPromise();
 
 
-    TOOLS.writeJSONFile(res, "./output/processedActivityResults.json");
+    TOOLS.writeJSONFile(res, "./output/processedActivityResults.json", true);
 
 })();

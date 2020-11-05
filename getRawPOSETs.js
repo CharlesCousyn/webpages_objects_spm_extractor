@@ -3,7 +3,7 @@ import Wordpos from "wordpos";
 import htmlToText  from "html-to-text";
 import csvParse from "csv-parse/lib/sync"
 import { from, of, ReplaySubject, partition} from 'rxjs';
-import { filter, map, concatMap, tap, groupBy, reduce, mergeMap, mergeAll, toArray, takeLast, bufferCount, count, distinct, take} from 'rxjs/operators';
+import { filter, map, concatMap, tap, groupBy, reduce, mergeMap, mergeAll, toArray, takeLast, bufferCount, count, distinct, take, isEmpty} from 'rxjs/operators';
 import filesSystem from "fs";
 import clone from "clone";
 import Lexed from 'lexed';
@@ -47,67 +47,27 @@ function htmlStringToCleanText(htmlString)
     return processedText;
 }
 
-async function getObjectsFromTextWordpos(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+async function keepTokensNounAndValidLexName(processedSentences)
 {
-    //Extract objects from text
-    let nouns = await wordpos.getNouns(cleanText);
+    let promisesAddingDefToTokInfos = processedSentences
+        .flat()
+        .filter(tokInfo=> tokInfo.POS.startsWith("NN"))
+        .map(async tokInfo => ({...tokInfo, definitions: await wordpos.lookupNoun(tokInfo.normalizedToken)}));
 
-    return keepNounsWithValidLexName(nouns, useOfPredeterminedObjects, predeterminedObjectsOneActivty);
+    let newTokInfos = await Promise.all(promisesAddingDefToTokInfos);
+
+    newTokInfos = newTokInfos
+        .map(tokInfo =>
+        {
+            tokInfo.definitions = tokInfo.definitions.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName));
+            return tokInfo;
+        })
+        .filter(tokInfo => Array.isArray(tokInfo.definitions) && tokInfo.definitions.length);
+
+    return newTokInfos;
 }
 
-async function keepNounsWithValidLexName(nouns, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
-{
-    let detectedObjects = [];
-    if(useOfPredeterminedObjects)
-    {
-        //Use our the predeterminedObjects
-        let definitionsPresentNouns = await from(nouns)
-            //Get definitions keeping + the original noun
-            .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
-            //Keep only definition where the lexName is allowed
-            .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
-            //Keep only nouns where there's at least one definition
-            .pipe(filter(definitionsOneNoun => Array.isArray(definitionsOneNoun) && definitionsOneNoun.length))
-            .pipe(toArray())
-            .toPromise();
-
-        let predeterminedObjectsLemma = await from(predeterminedObjectsOneActivty)
-            //Get definitions keeping + the original noun
-            .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
-            //Keep only definition where the lexName is allowed
-            .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
-            .map(obj => obj.lemma)
-            .pipe(toArray())
-            .toPromise();
-
-        //Get the intersection between the 2 arrays
-        let intersec = definitionsPresentNouns.filter(presentNoun => predeterminedObjectsLemma.includes(presentNoun.lemma));
-
-        //Get only the original forms of noun/objects
-        detectedObjects = intersec.map(el => el.noun);
-    }
-    else
-    {
-        //Find our own set of objects
-        detectedObjects = await from(nouns)
-            //Get definitions keeping + the original noun
-            .pipe(mergeMap(noun => from((async () => (await wordpos.lookupNoun(noun)).map(el => ({noun, ...el})))())))
-            //Keep only definition where the lexName is allowed
-            .pipe(map(definitionsOneNoun => definitionsOneNoun.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))))
-            //Keep only nouns where there's at least one definition
-            .pipe(filter(definitionsOneNoun => Array.isArray(definitionsOneNoun) && definitionsOneNoun.length))
-            //Keep only the noun
-            .pipe(map(noun => noun[0].noun))
-            //Keep no duplicates when in lower case
-            .pipe(distinct(noun => noun.toLowerCase()))
-            .pipe(toArray())
-            .toPromise();
-    }
-
-    return detectedObjects;
-}
-
-async function getObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+async function getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
 {
     let tokenizedText = (new Lexed(cleanText)).lexer().tokens;
     let clonedTokenizedText = clone(tokenizedText);
@@ -115,25 +75,61 @@ async function getObjectsFromTextFin(cleanText, useOfPredeterminedObjects, prede
     let POSText = normalizedTokenizedText.map(sentenceArr => new Tag(sentenceArr).initial().smooth().tags);
     let depParsed = normalizedTokenizedText.map((tokensOneSentence, indexOneSentence) => parser(POSText[indexOneSentence], tokensOneSentence));
 
-    let processedText = normalizedTokenizedText.map((normalizedTokensOneSentence, indexOneSentence) =>
+    let processedSentences = normalizedTokenizedText.map((normalizedTokensOneSentence, indexOneSentence) =>
         normalizedTokensOneSentence.map((normalizedToken, indexTok) =>
         {
                 return {
+                    indexSentence: indexOneSentence,
+                    indexToken: indexTok,
                     originalToken: tokenizedText[indexOneSentence][indexTok],
-                    normalizedToken: normalizedToken,
+                    normalizedToken: normalizedToken.toLowerCase(),
                     POS: POSText[indexOneSentence][indexTok],
                     depParsed: depParsed[indexOneSentence][indexTok]
                 }}));
 
-    //Keep all nouns
-    processedText = processedText.flat().filter((tokInfo, indexTokInfo) => tokInfo.POS.startsWith("NN"));
+    let validTokensInfos = await keepTokensNounAndValidLexName(processedSentences);// add definitions
 
-    return keepNounsWithValidLexName(processedText.map(tokInfo => tokInfo.originalToken), useOfPredeterminedObjects, predeterminedObjectsOneActivty);
+    //Order them using indexes (to be sure it's ordered)
+    validTokensInfos = validTokensInfos
+        .sort((tokInfo1, tokInfo2) =>
+        {
+            if(tokInfo1.indexSentence < tokInfo2.indexSentence)
+            {
+                if(tokInfo1.indexToken < tokInfo2.indexToken)
+                {
+                    return -1;
+                }
+            }
+            else if(tokInfo1.indexSentence === tokInfo2.indexSentence)
+            {
+                return 0;
+            }
+            return 1;
+        });
+
+    if(useOfPredeterminedObjects)
+    {
+        //Search definitions of each predetermined object
+        let promiseAddDefs = predeterminedObjectsOneActivty.objects.map(async obj => ({name:obj, definitions: await wordpos.lookupNoun(obj) }));
+        let predObjWithDefinitions = await Promise.all(promiseAddDefs);
+        let predObjLemmas = predObjWithDefinitions.map(obj => obj.definitions[0].lemma);
+
+        //Intersection between valid tokens found in text and predetermined objects
+        validTokensInfos = validTokensInfos.filter(tokInfo => predObjLemmas.includes(tokInfo.definitions[0].lemma));
+    }
+
+    //Only keep the pure form of the token to avoid synonyms abundance
+    let validTokens = validTokensInfos.map(tokInfo => tokInfo.definitions[0].lemma);
+
+    //Delete duplicates (keep the first only)
+    let uniqueValidTokens = validTokens.filter((tok, index, array) => array.indexOf(tok) === index);
+
+    return uniqueValidTokens;
 }
 
 async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
 {
-    //Extract text from HTML
+    console.log("pathWebPage", pathWebPage);
     try
     {
         //Get the HTML string
@@ -144,33 +140,8 @@ async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects,
         let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
         TOOLS.writeTextFile(cleanText, pathToTextFile);
 
-        //Extract object from text
-        let detectedObjects = [];
-        if(GENERAL_CONFIG.wordposOrFinNLP === "finNLP")
-        {
-            detectedObjects = await getObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty);
-        }
-        else if(GENERAL_CONFIG.wordposOrFinNLP === "wordpos")
-        {
-            detectedObjects = await getObjectsFromTextWordpos(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty);
-        }
-        else
-        {
-            throw new Error("Bad 'wordposOrFinNLP' configuration !!!");
-        }
-
-        //Get indexes for each object in text
-        let objIndex = detectedObjects.map(object =>
-        {
-            const reg = new RegExp(`(${object})`);
-            return [object, cleanText.match(reg).index];
-        });
-
-        //Sort the objects by indexes and keep only the name in lower case
-        return objIndex
-            .filter((el, index) => index <10)
-            .sort((a, b) => a[1]- b[1])
-            .map(el => el[0].toLowerCase());
+        //Extract object in order from text
+        return await getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty);
     }
     catch (e)
     {
@@ -180,11 +151,11 @@ async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects,
 
 }
 
-async function addOrderedObjectsToObj(obj, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+async function addOrderedObjectsToObj(resOneWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
 {
     return {
-        ...obj,
-        orderedObjects: await getOrderedObjectsFromHTML(obj.path, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+        ...resOneWebPage,
+        orderedObjects: await getOrderedObjectsFromHTML(resOneWebPage.path, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
     };
 }
 
@@ -260,6 +231,6 @@ function processOneActivity(activityResult, dataset)
         //Stream of array activity result (only one)
         .toPromise();
 
-    TOOLS.writeJSONFile(res, "./output/rawActivityResults.json");
+    TOOLS.writeJSONFile(res, "./output/rawActivityResults.json", false);
 
 })();

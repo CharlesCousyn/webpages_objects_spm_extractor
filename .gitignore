@@ -85,3 +85,4 @@ build/Release
 /data/*
 /resultFiles/*
 /textWebPages/*
+/output/*
