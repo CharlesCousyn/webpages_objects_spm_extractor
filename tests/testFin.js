@@ -2,6 +2,7 @@ import Lexed from 'lexed';
 import {Tag} from 'en-pos';
 import {normalizeCaps,replaceConfusables,resolveContractions} from "en-norm";
 import Wordpos from "wordpos";
+import { Inflectors } from "en-inflectors";
 
 (async () =>
 {
@@ -15,8 +16,12 @@ import Wordpos from "wordpos";
 	let POSText1 = normalizedTokenizedText1.map(sentenceArr => new Tag(sentenceArr).initial().smooth().tags);
 	console.log(POSText1);
 
-	let res = await wordpos.lookupNoun("boozing");
+	let res = await wordpos.lookupVerb("Understands");
 
 	console.log(res)
+
+	let res12 = new Inflectors("updated").conjugate("VBP");
+
+	console.log(res12);
 
 })();

@@ -11,6 +11,6 @@
   },
   "limitNumberActivityForDebug": 1000000,
   "normOrStandOrByPage": "byPage",
-  "thresholdStrongRelations": 0.1,
-  "considerSeveralTimesWord": true
+  "thresholdStrongRelations": 0.5,
+  "useVerb": false
 }

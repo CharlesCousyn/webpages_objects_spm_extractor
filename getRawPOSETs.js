@@ -9,6 +9,7 @@ import clone from "clone";
 import Lexed from 'lexed';
 import {Tag} from 'en-pos';
 import parser from 'en-parse';
+import { Inflectors } from "en-inflectors";
 import {normalizeCaps, replaceConfusables, resolveContractions} from "en-norm";
 import {replaceHTMLEntities} from "./libs/fin-html-entities";
 import {reverseSlang} from "./libs/fin-slang";
@@ -49,25 +50,93 @@ function htmlStringToCleanText(htmlString)
 
 async function keepTokensNounAndValidLexName(processedSentences)
 {
-    let promisesAddingDefToTokInfos = processedSentences
-        .flat()
-        .filter(tokInfo=> tokInfo.POS.startsWith("NN"))
-        .map(async tokInfo => ({...tokInfo, definitions: await wordpos.lookupNoun(tokInfo.normalizedToken)}));
-
-    let newTokInfos = await Promise.all(promisesAddingDefToTokInfos);
-
-    newTokInfos = newTokInfos
-        .map(tokInfo =>
+    return await from(processedSentences)
+        .pipe(mergeMap(processedSentence => from(processedSentence)))
+        .pipe(filter(tokInfo=> tokInfo.POS.startsWith("NN")))
+        .pipe(concatMap(async tokInfo => ({...tokInfo, definitions: await wordpos.lookupNoun(tokInfo.pureForm)})))
+        .pipe(map(tokInfo =>
         {
             tokInfo.definitions = tokInfo.definitions.filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName));
             return tokInfo;
-        })
-        .filter(tokInfo => Array.isArray(tokInfo.definitions) && tokInfo.definitions.length);
-
-    return newTokInfos;
+        }))
+        .pipe(filter(tokInfo => Array.isArray(tokInfo.definitions) && tokInfo.definitions.length))
+        .pipe(toArray())
+        .toPromise();
 }
 
-async function getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+async function getAssociatedVerbs(tokInfoObjects, processedSentences)
+{
+    return await from(tokInfoObjects)
+        .pipe(concatMap(async tokInfoObject =>
+        {
+            let nearestVerb = await from(processedSentences[tokInfoObject.indexSentence])
+                .pipe(filter(tokInfo => tokInfo.POS.startsWith("VB")))
+                .pipe(concatMap(async verbTokInfo => ({...verbTokInfo, definitions: await wordpos.lookupVerb(verbTokInfo.pureForm)})))
+                .pipe(reduce((goodTokInfoVerb, tokInfoVerb) =>
+                {
+                    if(goodTokInfoVerb === null || (Math.abs(tokInfoObject.indexToken - tokInfoVerb.indexToken) < Math.abs(tokInfoObject.indexToken - goodTokInfoVerb.indexToken)))
+                    {
+                        goodTokInfoVerb = tokInfoVerb;
+                    }
+                    return goodTokInfoVerb;
+                }, null))
+                .toPromise();
+
+            //If no verb in sentence or the nearest verb has no definition in wordnet
+            if(nearestVerb === undefined || nearestVerb === null || nearestVerb.definitions.length === 0)
+            {
+                return null;
+            }
+            else
+            {
+                return [nearestVerb, tokInfoObject];
+            }
+        }))
+        .pipe(filter(arr => arr !== null))
+        .pipe(toArray())
+        .toPromise();
+
+    /*let objVerbArrays = await Promise.all(
+        tokInfoObjects.map(async tokInfoObject =>
+    {
+        let currentSentence = processedSentences[tokInfoObject.indexSentence];
+
+        //Identify verbs in current sentence
+        let promiseVerbs = currentSentence.filter(tokInfo => tokInfo.POS.startsWith("VB"))
+            .map(async verbTokInfo => ({...verbTokInfo, definitions: await wordpos.lookupVerb(verbTokInfo.pureForm)}));
+
+        let verbs = await Promise.all(promiseVerbs);
+
+        //If no verb in sentence
+        if(verbs.length === 0)
+        {
+            return null;
+        }
+
+        //Find the nearest verb
+        let nearestVerb = verbs.reduce((goodTokInfoVerb, tokInfoVerb, index, array) =>
+        {
+            if(goodTokInfoVerb === null || (Math.abs(tokInfoObject.indexToken - tokInfoVerb.indexToken) < Math.abs(tokInfoObject.indexToken - goodTokInfoVerb.indexToken)))
+            {
+                goodTokInfoVerb = tokInfoVerb;
+            }
+            return goodTokInfoVerb;
+        }, null);
+
+        //If the nearest verb has no definition in wordnet
+        if(nearestVerb.definitions.length === 0)
+        {
+            return null;
+        }
+
+        return [nearestVerb, tokInfoObject];
+    }));
+
+    //Removing null values (token without associated verbs)
+    return objVerbArrays.filter(arr => arr !== null);*/
+}
+
+async function getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb)
 {
     let tokenizedText = (new Lexed(cleanText)).lexer().tokens;
     let clonedTokenizedText = clone(tokenizedText);
@@ -78,11 +147,21 @@ async function getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects
     let processedSentences = normalizedTokenizedText.map((normalizedTokensOneSentence, indexOneSentence) =>
         normalizedTokensOneSentence.map((normalizedToken, indexTok) =>
         {
+            let pureForm = normalizedToken.toLowerCase();
+            if(POSText[indexOneSentence][indexTok].startsWith("VB"))
+            {
+                pureForm = new Inflectors(pureForm).toPresent();
+            }
+            else if (POSText[indexOneSentence][indexTok].startsWith("NN"))
+            {
+                pureForm = new Inflectors(pureForm).toSingular();
+            }
                 return {
                     indexSentence: indexOneSentence,
                     indexToken: indexTok,
                     originalToken: tokenizedText[indexOneSentence][indexTok],
                     normalizedToken: normalizedToken.toLowerCase(),
+                    pureForm: pureForm,
                     POS: POSText[indexOneSentence][indexTok],
                     depParsed: depParsed[indexOneSentence][indexTok]
                 }}));
@@ -118,16 +197,36 @@ async function getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects
         validTokensInfos = validTokensInfos.filter(tokInfo => predObjLemmas.includes(tokInfo.definitions[0].lemma));
     }
 
-    //Only keep the pure form of the token to avoid synonyms abundance
-    let validTokens = validTokensInfos.map(tokInfo => tokInfo.definitions[0].lemma);
+    if(useVerb)
+    {
+        //Use sentences where valid tokens are to add to nearest verb
+        //Return arrays of array of type [tokInfoVerb, tokInfoObject]
+        let tokInfosWithVerbs = await getAssociatedVerbs(validTokensInfos, processedSentences);
 
-    //Delete duplicates (keep the first only)
-    let uniqueValidTokens = validTokens.filter((tok, index, array) => array.indexOf(tok) === index);
+        //Only keep the pure form of the token to avoid synonyms abundance
+        let validTokens = tokInfosWithVerbs.map(tokInfoWithVerbs =>
+        {
+            return `${tokInfoWithVerbs[0].definitions[0].lemma}||${tokInfoWithVerbs[1].definitions[0].lemma}`
+        });
 
-    return uniqueValidTokens;
+        //Delete duplicates (keep the first only)
+        let uniqueValidTokens = validTokens.filter((tok, index, array) => array.indexOf(tok) === index);
+
+        return uniqueValidTokens;
+    }
+    else
+    {
+        //Only keep the pure form of the token to avoid synonyms abundance
+        let validTokens = validTokensInfos.map(tokInfo => tokInfo.definitions[0].lemma);
+
+        //Delete duplicates (keep the first only)
+        let uniqueValidTokens = validTokens.filter((tok, index, array) => array.indexOf(tok) === index);
+
+        return uniqueValidTokens;
+    }
 }
 
-async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb)
 {
     console.log("pathWebPage", pathWebPage);
     try
@@ -141,7 +240,7 @@ async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects,
         TOOLS.writeTextFile(cleanText, pathToTextFile);
 
         //Extract object in order from text
-        return await getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty);
+        return await getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb);
     }
     catch (e)
     {
@@ -151,11 +250,11 @@ async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects,
 
 }
 
-async function addOrderedObjectsToObj(resOneWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+async function addOrderedObjectsToObj(resOneWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb)
 {
     return {
         ...resOneWebPage,
-        orderedObjects: await getOrderedObjectsFromHTML(resOneWebPage.path, useOfPredeterminedObjects, predeterminedObjectsOneActivty)
+        orderedObjects: await getOrderedObjectsFromHTML(resOneWebPage.path, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb)
     };
 }
 
@@ -198,7 +297,7 @@ function processOneActivity(activityResult, dataset)
         //Stream of {fileName, path} in one activity folder (Get the path for each webpage)
         .pipe(filter(resOneWebPage => dataset.find(data => data.fileName === resOneWebPage.fileName).class === "descriptive"))
         //Stream of {fileName, path} in one activity folder (Filter the web pages which are not "descriptive" using dataset)
-        .pipe(concatMap(resOneWebPage => from(addOrderedObjectsToObj(resOneWebPage, GENERAL_CONFIG.useOfPredeterminedObjects, predeterminedObjectsOneActivty))))
+        .pipe(concatMap(resOneWebPage => from(addOrderedObjectsToObj(resOneWebPage, GENERAL_CONFIG.useOfPredeterminedObjects, predeterminedObjectsOneActivty, GENERAL_CONFIG.useVerb))))
         //Stream of {fileName, path, orderedObjects} in one activity folder (Extract ordered objects from html files)
         .pipe(map(resOneWebPage => updateActivityResultWithOnePage(resOneWebPage, activityResult)))
         //Stream of activityResult (for each webpage)
@@ -218,6 +317,11 @@ function processOneActivity(activityResult, dataset)
     let text = filesSystem.readFileSync(GENERAL_CONFIG.pathToGenreDataset, { encoding: 'utf8'});
     let dataset  = csvParse(text, {columns: true, skip_empty_lines: true});
 
+    //Progress variables
+    let initTime = new Date();
+    let currentActivityProcessed = 0;
+    TOOLS.showProgress(currentActivityProcessed, folderNames.length, initTime);
+
     //Use the HTML files in folders to deduce RawNumPOSETs
     let res = await from(folderNames)
         //Stream of folders names
@@ -226,6 +330,12 @@ function processOneActivity(activityResult, dataset)
         .pipe(take(GENERAL_CONFIG.limitNumberActivityForDebug))
         //Stream of activity result
         .pipe(concatMap(activityRes => processOneActivity(activityRes, dataset)))
+        //Stream of activity result
+        .pipe(tap(() =>
+        {
+            currentActivityProcessed++;
+            TOOLS.showProgress(currentActivityProcessed, folderNames.length, initTime);
+        }))
         //Stream of activity result
         .pipe(toArray())
         //Stream of array activity result (only one)
