@@ -20,6 +20,7 @@ import GENERAL_CONFIG from "./configFiles/generalConfig.json";
 import NumPOSET from "./entities/NumPOSET";
 import ActivityResult from "./entities/ActivityResult";
 import * as TOOLS from "./tools";
+import GraphAdjList from "./entities/GraphAdjList";
 
 //Keep JSDOM errors
 const originalConsoleError = console.error;
@@ -71,7 +72,6 @@ async function getAssociatedVerbs(tokInfoObjects, processedSentences)
         {
             let nearestVerb = await from(processedSentences[tokInfoObject.indexSentence])
                 .pipe(filter(tokInfo => tokInfo.POS.startsWith("VB")))
-                .pipe(concatMap(async verbTokInfo => ({...verbTokInfo, definitions: await wordpos.lookupVerb(verbTokInfo.pureForm)})))
                 .pipe(reduce((goodTokInfoVerb, tokInfoVerb) =>
                 {
                     if(goodTokInfoVerb === null || (Math.abs(tokInfoObject.indexToken - tokInfoVerb.indexToken) < Math.abs(tokInfoObject.indexToken - goodTokInfoVerb.indexToken)))
@@ -80,6 +80,8 @@ async function getAssociatedVerbs(tokInfoObjects, processedSentences)
                     }
                     return goodTokInfoVerb;
                 }, null))
+                .pipe(filter(goodTokInfoVerb => goodTokInfoVerb !== null))
+                .pipe(concatMap(async verbTokInfo => ({...verbTokInfo, definitions: await wordpos.lookupVerb(verbTokInfo.pureForm)})))
                 .toPromise();
 
             //If no verb in sentence or the nearest verb has no definition in wordnet
@@ -284,12 +286,14 @@ function updateActivityResultWithOnePage(resOneWebPage, activityResult)
     return activityResult;
 }
 
-function processOneActivity(activityResult, dataset)
+
+
+async function processOneActivity(activityResult, dataset)
 {
     //Get the array of corresponding predeterminedObjects
     let predeterminedObjectsOneActivty = predeterminedObjects.find(el => el.activityName === activityResult.activityName);
 
-    return from(filesSystem.readdirSync(activityResult.pathToWebPages, { encoding: 'utf8', withFileTypes: true }))
+    let resAllPages = await from(filesSystem.readdirSync(activityResult.pathToWebPages, { encoding: 'utf8', withFileTypes: true }))
         //Stream of files and dir names in one activity folder
         .pipe(filter(dirent => !dirent.isDirectory()))
         //Stream of files in one activity folder
@@ -299,11 +303,32 @@ function processOneActivity(activityResult, dataset)
         //Stream of {fileName, path} in one activity folder (Filter the web pages which are not "descriptive" using dataset)
         .pipe(concatMap(resOneWebPage => from(addOrderedObjectsToObj(resOneWebPage, GENERAL_CONFIG.useOfPredeterminedObjects, predeterminedObjectsOneActivty, GENERAL_CONFIG.useVerb))))
         //Stream of {fileName, path, orderedObjects} in one activity folder (Extract ordered objects from html files)
-        .pipe(map(resOneWebPage => updateActivityResultWithOnePage(resOneWebPage, activityResult)))
-        //Stream of activityResult (for each webpage)
-        .pipe(takeLast(1))
-        //Stream of activityResult (for each webpage) (keeping only the last updated)
-        .pipe(tap(console.log))
+        .pipe(toArray())
+        .toPromise();
+
+    let allOrderedLists = resAllPages.map(res => res.orderedObjects);
+
+    //Get all the uniques ids
+    let allUniqueIds = [...new Set(allOrderedLists.flat())];
+
+    //Add uniques ids to numPOSET
+    allUniqueIds.forEach(id => activityResult.graphAdjList.addNode(id, true));
+
+    //Add Values in matrix
+    //Add 1 when there's a relation
+    allOrderedLists.forEach(orderedList =>
+    {
+        activityResult.numberOfWebPages += 1;
+        for(let i= 0; i< orderedList.length; i++)
+        {
+            for(let j= i+1; j <orderedList.length; j++)
+            {
+                activityResult.graphAdjList.addWeightToAnEdge(orderedList[i], orderedList[j], 1, true);
+            }
+        }
+    });
+
+    return activityResult;
 }
 
 (async ()=>
@@ -325,14 +350,15 @@ function processOneActivity(activityResult, dataset)
     //Use the HTML files in folders to deduce RawNumPOSETs
     let res = await from(folderNames)
         //Stream of folders names
-        .pipe(map(activity => new ActivityResult(activity, `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, new NumPOSET([]), 0, 0)))
+        .pipe(map(activity => new ActivityResult(activity, `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, new GraphAdjList(), 0, 0)))
         //Stream of folders names
         .pipe(take(GENERAL_CONFIG.limitNumberActivityForDebug))
         //Stream of activity result
         .pipe(concatMap(activityRes => processOneActivity(activityRes, dataset)))
         //Stream of activity result
-        .pipe(tap(() =>
+        .pipe(tap((activityResult) =>
         {
+            console.log("activityResult", activityResult);
             currentActivityProcessed++;
             TOOLS.showProgress(currentActivityProcessed, folderNames.length, initTime);
         }))
@@ -341,6 +367,7 @@ function processOneActivity(activityResult, dataset)
         //Stream of array activity result (only one)
         .toPromise();
 
-    TOOLS.writeJSONFile(res, "./output/rawActivityResults.json", false);
+    let preparedActivityResults = res.map(activityResult => TOOLS.prepareActivityResultToJSON(activityResult));
+    TOOLS.writeJSONFile(preparedActivityResults, "./output/rawActivityResults.json", false);
 
 })();

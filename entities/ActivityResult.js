@@ -1,10 +1,10 @@
 export default class ActivityResult
 {
-	constructor(activityName, pathToWebPages, numPOSET, numberOfWebPages, threshold)
+	constructor(activityName, pathToWebPages, graphAdjList, numberOfWebPages, threshold)
 	{
 		this._activityName = activityName;
 		this._pathToWebPages = pathToWebPages;
-		this._numPOSET = numPOSET;
+		this._graphAdjList = graphAdjList;
 		this._numberOfWebPages = numberOfWebPages;
 		this._threshold = threshold;
 	}
@@ -29,14 +29,14 @@ export default class ActivityResult
 		this._pathToWebPages = pathToWebPages;
 	}
 
-	get numPOSET()
+	get graphAdjList()
 	{
-		return this._numPOSET;
+		return this._graphAdjList;
 	}
 
-	set numPOSET(numPOSET)
+	set graphAdjList(graphAdjList)
 	{
-		this._numPOSET = numPOSET;
+		this._graphAdjList = graphAdjList;
 	}
 
 	get numberOfWebPages()

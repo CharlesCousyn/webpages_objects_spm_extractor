@@ -47,3 +47,10 @@ export function showProgress(currentNumberOfResults, totalNumberOfResults, begin
     const timeElapsed = timeConversion(new Date() - beginTime);
     console.log(`Progress ${currentNumberOfResults}/${totalNumberOfResults} (${100.0 * currentNumberOfResults/totalNumberOfResults} %) (${timeElapsed} elapsed)`);
 }
+
+export function prepareActivityResultToJSON(activityResult)
+{
+    activityResult.graphAdjList.adjList = [...activityResult.graphAdjList.adjList];//adjList is now an array of array [node, Map]
+    activityResult.graphAdjList.adjList = activityResult.graphAdjList.adjList.map(neighbors => [neighbors[0], [...neighbors[1]]]);
+    return activityResult;
+}

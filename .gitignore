@@ -86,3 +86,4 @@ build/Release
 /resultFiles/*
 /textWebPages/*
 /output/*
+v8.json

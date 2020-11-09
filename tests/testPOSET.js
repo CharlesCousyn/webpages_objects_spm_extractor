@@ -1,5 +1,6 @@
 import POSET from "../entities/POSET.js";
 import NumPOSET from "../entities/NumPOSET";
+import GraphAdjList from "../entities/GraphAdjList";
 
 (async ()=>
 {
@@ -10,7 +11,7 @@ import NumPOSET from "../entities/NumPOSET";
     pos1.setMatValue("pan", "cup", true);
     pos1.setMatValue("pan", "mug", true);
 
-    pos1.printMatrix();
+    pos1.print();
 
     let pos2 = new NumPOSET(["water", "pan", "spoon", "cup", "mug"]);
 
@@ -26,4 +27,33 @@ import NumPOSET from "../entities/NumPOSET";
 
     pos2.addId("water");
     pos2.printMatrix();
+
+    let graphAdjList1 = new GraphAdjList();
+
+    graphAdjList1.addNode("mug", false);
+    graphAdjList1.addNode("fork", false);
+    graphAdjList1.addNode("spoon", false);
+
+    graphAdjList1.addEdge("mug", "fork", 12, false);
+    graphAdjList1.addEdge("fork", "spoon", 42, false);
+
+    graphAdjList1.printAdjList();
+
+    graphAdjList1.deleteNode("spoon");
+
+    graphAdjList1.printAdjList();
+
+    graphAdjList1.addWeightToAnEdge("mug", "fork", 12, false);
+
+    graphAdjList1.printAdjList();
+
+    graphAdjList1.addWeightToAnEdge("fork", "spoon", 42, false);
+
+    graphAdjList1.printAdjList();
+
+    graphAdjList1.deleteEdge("mug", "fork");
+
+    graphAdjList1.printAdjList();
+
+
 })()

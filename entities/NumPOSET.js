@@ -29,13 +29,16 @@ export default class NumPOSET
         }
     }
 
-    addId(id)
+    addId(id, isUnsafe)
     {
-        //Check if id exists
-        let indexId = this._elementsIds.indexOf(id);
-        if(indexId !== -1)
+        if(isUnsafe)
         {
-            throw new Error("The id already exists!");
+            //Check if id exists
+            let indexId = this._elementsIds.indexOf(id);
+            if(indexId !== -1)
+            {
+                throw new Error("The id already exists!");
+            }
         }
 
         //Adding the id
@@ -81,10 +84,21 @@ export default class NumPOSET
         this._matrix[indexId1][indexId2] = val;
     }
 
-    addMatValue(id1, id2, val)
+    addMatValue(id1, id2, val, isIndex)
     {
-        let [indexId1, indexId2] = this.checkMatValueInputs(id1, id2, val);
-        this._matrix[indexId1][indexId2] += val;
+        if(isIndex)
+        {
+            if(id1 > this._elementsIds.length || id2 > this._elementsIds.length)
+            {
+                throw new Error("Index out of bound!")
+            }
+            this._matrix[id1][id2] += val;
+        }
+        else
+        {
+            let [indexId1, indexId2] = this.checkMatValueInputs(id1, id2, val);
+            this._matrix[indexId1][indexId2] += val;
+        }
     }
 
     checkMatValueInputs(id1, id2, val)
