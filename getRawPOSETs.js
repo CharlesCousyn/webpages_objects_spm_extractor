@@ -17,7 +17,6 @@ import {reverseSlang} from "./libs/fin-slang";
 //Personal imports
 import predeterminedObjects from "./configFiles/predeterminedObjects.json";
 import GENERAL_CONFIG from "./configFiles/generalConfig.json";
-import NumPOSET from "./entities/NumPOSET";
 import ActivityResult from "./entities/ActivityResult";
 import * as TOOLS from "./tools";
 import GraphAdjList from "./entities/GraphAdjList";
@@ -37,7 +36,11 @@ let wordpos = new Wordpos();
 function htmlStringToCleanText(htmlString)
 {
     let text = htmlToText.fromString(htmlString, GENERAL_CONFIG.configHTML2Text);
+    return stringToCleanText(text);
+}
 
+function stringToCleanText(text)
+{
     //Delete all non pure text things...
     //JSON strings
     let processedText = text.replace(new RegExp("({\".*})", "gs"), "");
@@ -228,18 +231,35 @@ async function getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects
     }
 }
 
-async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb)
+async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb, useSpecificStruct)
 {
     console.log("pathWebPage", pathWebPage);
     try
     {
-        //Get the HTML string
-        let htmlString = TOOLS.readTextFile(pathWebPage);
-        //Clean the text
-        let cleanText = htmlStringToCleanText(htmlString);
-        //Write a new text file
-        let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
-        TOOLS.writeTextFile(cleanText, pathToTextFile);
+        let cleanText= "";
+        if(useSpecificStruct)
+        {
+            let plans = await TOOLS.extractPlans(pathWebPage);
+            let plan = plans[0];
+            let steps = plan.join(" ");
+
+            //Clean the text
+            cleanText = stringToCleanText(steps);
+
+            //Write a new text file
+            let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
+            TOOLS.writeTextFile(cleanText, pathToTextFile);
+        }
+        else
+        {
+            //Get the HTML string
+            let htmlString = TOOLS.readTextFile(pathWebPage);
+            //Clean the text
+            cleanText = htmlStringToCleanText(htmlString);
+            //Write a new text file
+            let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
+            TOOLS.writeTextFile(cleanText, pathToTextFile);
+        }
 
         //Extract object in order from text
         return await getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb);
@@ -252,41 +272,13 @@ async function getOrderedObjectsFromHTML(pathWebPage, useOfPredeterminedObjects,
 
 }
 
-async function addOrderedObjectsToObj(resOneWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb)
+async function addOrderedObjectsToObj(resOneWebPage, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb, useSpecificStruct)
 {
     return {
         ...resOneWebPage,
-        orderedObjects: await getOrderedObjectsFromHTML(resOneWebPage.path, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb)
+        orderedObjects: await getOrderedObjectsFromHTML(resOneWebPage.path, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb, useSpecificStruct)
     };
 }
-
-function updateActivityResultWithOnePage(resOneWebPage, activityResult)
-{
-    //Add 1 to number of pages value
-    activityResult.numberOfWebPages += 1;
-
-    //Add the corresponding Ids in matrix
-    resOneWebPage.orderedObjects.forEach(id =>
-    {
-        //if id doesn't already exist
-        if(!activityResult.numPOSET.checkIdExist(id))
-        {
-            activityResult.numPOSET.addId(id);
-        }
-    });
-
-    //Add 1 when there's a relation
-    for(let i= 0; i< resOneWebPage.orderedObjects.length; i++)
-    {
-        for(let j= i+1; j <resOneWebPage.orderedObjects.length; j++)
-        {
-            activityResult.numPOSET.addMatValue(resOneWebPage.orderedObjects[i], resOneWebPage.orderedObjects[j], 1);
-        }
-    }
-    return activityResult;
-}
-
-
 
 async function processOneActivity(activityResult, dataset)
 {
@@ -299,9 +291,9 @@ async function processOneActivity(activityResult, dataset)
         //Stream of files in one activity folder
         .pipe(map(dirent => ({fileName: dirent.name, path: `${activityResult.pathToWebPages}/${dirent.name}`})))
         //Stream of {fileName, path} in one activity folder (Get the path for each webpage)
-        .pipe(filter(resOneWebPage => dataset.find(data => data.fileName === resOneWebPage.fileName).class === "descriptive"))
+        .pipe(filter(resOneWebPage => !GENERAL_CONFIG.filterUsingDataset || dataset.find(data => data.fileName === resOneWebPage.fileName).class === "descriptive"))
         //Stream of {fileName, path} in one activity folder (Filter the web pages which are not "descriptive" using dataset)
-        .pipe(concatMap(resOneWebPage => from(addOrderedObjectsToObj(resOneWebPage, GENERAL_CONFIG.useOfPredeterminedObjects, predeterminedObjectsOneActivty, GENERAL_CONFIG.useVerb))))
+        .pipe(concatMap(resOneWebPage => from(addOrderedObjectsToObj(resOneWebPage, GENERAL_CONFIG.useOfPredeterminedObjects, predeterminedObjectsOneActivty, GENERAL_CONFIG.useVerb, GENERAL_CONFIG.useSpecificStruct))))
         //Stream of {fileName, path, orderedObjects} in one activity folder (Extract ordered objects from html files)
         .pipe(toArray())
         .toPromise();

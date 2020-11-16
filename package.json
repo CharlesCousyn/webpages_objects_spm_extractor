@@ -7,7 +7,8 @@
     "getRawPOSETs": "node -r esm getRawPOSETs.js",
     "processPOSETs": "node -r esm processPOSETs.js",
     "testPOSET": "node -r esm ./tests/testPOSET.js",
-    "testFin": "node -r esm ./tests/testFin.js"
+    "testFin": "node -r esm ./tests/testFin.js",
+    "testSelector": "node -r esm ./tests/testSelector.js"
   },
   "keywords": [],
   "author": "Charles Cousyn",

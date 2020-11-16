@@ -1,7 +1,8 @@
 {
   "allowedLexNames": ["noun.artifact",  "noun.object", "noun.substance", "noun.plant", "noun.animal", "noun.food", "noun.body"],
-  "pathToWebPagesFolder": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/",
+  "pathToWebPagesFolder": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/",
   "pathToGenreDataset": "C:/Users/Charles/WebstormProjects/webpages_labeling/datasetGenreClass.csv",
+  "filterUsingDataset": false,
   "useOfPredeterminedObjects": false,
   "configHTML2Text":
   {
@@ -11,6 +12,7 @@
   },
   "limitNumberActivityForDebug": 1000000,
   "normOrStandOrByPage": "byPage",
-  "thresholdStrongRelations": 0.5,
-  "useVerb": false
+  "thresholdStrongRelations": 0.51,
+  "useVerb": true,
+  "useSpecificStruct": true
 }
