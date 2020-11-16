@@ -2,10 +2,10 @@
   "name": "webpages_poset_extractor",
   "version": "1.0.0",
   "description": "",
-  "main": "getRawPOSETs.js",
+  "main": "getRawGraphs.js",
   "scripts": {
-    "getRawPOSETs": "node -r esm getRawPOSETs.js",
-    "processPOSETs": "node -r esm processPOSETs.js",
+    "getRawGraphs": "node -r esm getRawGraphs.js",
+    "processGraphs": "node -r esm processGraphs.js",
     "testPOSET": "node -r esm ./tests/testPOSET.js",
     "testFin": "node -r esm ./tests/testFin.js",
     "testSelector": "node -r esm ./tests/testSelector.js"
