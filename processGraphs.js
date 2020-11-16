@@ -161,6 +161,6 @@ function cleanActivityRes(activityRes)
         .toPromise();
 
     let preparedActivityResults = res.map(activityResult => TOOLS.prepareActivityResultToJSON(activityResult));
-    TOOLS.writeJSONFile(preparedActivityResults, "./output/processedActivityResults.json", true);
+    TOOLS.writeJSONFile(preparedActivityResults, "./output/processedActivityResults.json", GENERAL_CONFIG.indentProcessedFile);
 
 })();

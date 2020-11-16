@@ -49,6 +49,10 @@ function stringToCleanText(text)
     //HTML entities and slang
     processedText = replaceHTMLEntities(reverseSlang(resolveContractions(replaceConfusables(processedText))));
 
+    if(GENERAL_CONFIG.showCleanTextForDebug)
+    {
+        console.log("processedText", processedText);
+    }
     return processedText;
 }
 
@@ -291,6 +295,8 @@ async function processOneActivity(activityResult, dataset)
         //Stream of files in one activity folder
         .pipe(map(dirent => ({fileName: dirent.name, path: `${activityResult.pathToWebPages}/${dirent.name}`})))
         //Stream of {fileName, path} in one activity folder (Get the path for each webpage)
+        .pipe(take(GENERAL_CONFIG.limitNumberPagesByActivityForDebug))
+        //Stream of {fileName, path} in one activity folder (Get the path for each webpage)
         .pipe(filter(resOneWebPage => !GENERAL_CONFIG.filterUsingDataset || dataset.find(data => data.fileName === resOneWebPage.fileName).class === "descriptive"))
         //Stream of {fileName, path} in one activity folder (Filter the web pages which are not "descriptive" using dataset)
         .pipe(concatMap(resOneWebPage => from(addOrderedObjectsToObj(resOneWebPage, GENERAL_CONFIG.useOfPredeterminedObjects, predeterminedObjectsOneActivty, GENERAL_CONFIG.useVerb, GENERAL_CONFIG.useSpecificStruct))))
@@ -360,6 +366,6 @@ async function processOneActivity(activityResult, dataset)
         .toPromise();
 
     let preparedActivityResults = res.map(activityResult => TOOLS.prepareActivityResultToJSON(activityResult));
-    TOOLS.writeJSONFile(preparedActivityResults, "./output/rawActivityResults.json", false);
+    TOOLS.writeJSONFile(preparedActivityResults, "./output/rawActivityResults.json", GENERAL_CONFIG.indentRawFile);
 
 })();
