@@ -26,7 +26,7 @@ import { Inflectors } from "en-inflectors";
 
 	console.log(res12);
 
-	let cleanText = "Before killing you, i kill your father."
+	let cleanText = "You have to answer the phone."
 	let tokenizedText = (new Lexed(cleanText)).lexer().tokens;
 	let clonedTokenizedText = clone(tokenizedText);
 	let normalizedTokenizedText = clonedTokenizedText.map(sentenceArr => normalizeCaps(sentenceArr));
@@ -36,15 +36,17 @@ import { Inflectors } from "en-inflectors";
 	let processedSentences = normalizedTokenizedText.map((normalizedTokensOneSentence, indexOneSentence) =>
 		normalizedTokensOneSentence.map((normalizedToken, indexTok) =>
 		{
-			return {
-				indexSentence: indexOneSentence,
-				indexToken: indexTok,
+			return depParsed;
+			/*return {
+				//indexSentence: indexOneSentence,
+				//indexToken: indexTok,
 				originalToken: tokenizedText[indexOneSentence][indexTok],
-				normalizedToken: normalizedToken.toLowerCase(),
+				//normalizedToken: normalizedToken.toLowerCase(),
 				POS: POSText[indexOneSentence][indexTok],
 				depParsed: depParsed[indexOneSentence][indexTok]
-			}}));
+			}*/}));
 
-	console.log(processedSentences);
+	console.log(POSText);
+	console.log(depParsed);
 
 })();

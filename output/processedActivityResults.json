@@ -36,7 +36,7 @@
                                 1
                             ],
                             [
-                                "be||meat",
+                                "make||meat",
                                 1
                             ]
                         ]
@@ -52,7 +52,7 @@
                                 1
                             ],
                             [
-                                "be||meat",
+                                "make||meat",
                                 1
                             ]
                         ]
@@ -64,14 +64,14 @@
                         0.5,
                         [
                             [
-                                "be||meat",
+                                "make||meat",
                                 1
                             ]
                         ]
                     ]
                 ],
                 [
-                    "be||meat",
+                    "make||meat",
                     [
                         0.5,
                         []
@@ -103,7 +103,7 @@
                                 1
                             ],
                             [
-                                "reduce||heating_system",
+                                "continue||heating_system",
                                 1
                             ],
                             [
@@ -139,7 +139,7 @@
                                 1
                             ],
                             [
-                                "reduce||heating_system",
+                                "continue||heating_system",
                                 1
                             ],
                             [
@@ -171,7 +171,7 @@
                                 1
                             ],
                             [
-                                "reduce||heating_system",
+                                "continue||heating_system",
                                 1
                             ],
                             [
@@ -199,7 +199,7 @@
                                 1
                             ],
                             [
-                                "reduce||heating_system",
+                                "continue||heating_system",
                                 1
                             ],
                             [
@@ -223,7 +223,7 @@
                                 1
                             ],
                             [
-                                "reduce||heating_system",
+                                "continue||heating_system",
                                 1
                             ],
                             [
@@ -243,7 +243,7 @@
                         0.5,
                         [
                             [
-                                "reduce||heating_system",
+                                "continue||heating_system",
                                 1
                             ],
                             [
@@ -258,7 +258,7 @@
                     ]
                 ],
                 [
-                    "reduce||heating_system",
+                    "continue||heating_system",
                     [
                         0.5,
                         [
@@ -339,7 +339,7 @@
                                 1
                             ],
                             [
-                                "keep||kitchen",
+                                "clean||kitchen",
                                 1
                             ],
                             [
@@ -367,7 +367,7 @@
                                 1
                             ],
                             [
-                                "keep||kitchen",
+                                "clean||kitchen",
                                 1
                             ],
                             [
@@ -391,7 +391,7 @@
                                 1
                             ],
                             [
-                                "keep||kitchen",
+                                "clean||kitchen",
                                 1
                             ],
                             [
@@ -411,7 +411,7 @@
                         0.5,
                         [
                             [
-                                "keep||kitchen",
+                                "clean||kitchen",
                                 1
                             ],
                             [
@@ -426,7 +426,7 @@
                     ]
                 ],
                 [
-                    "keep||kitchen",
+                    "clean||kitchen",
                     [
                         0.5,
                         [
@@ -757,7 +757,7 @@
                             ],
                             [
                                 "stir||pasta",
-                                0.5
+                                0.75
                             ]
                         ]
                     ]
@@ -781,7 +781,7 @@
                             ],
                             [
                                 "stir||pasta",
-                                0.6666666666666666
+                                1
                             ]
                         ]
                     ]
@@ -802,6 +802,10 @@
                             [
                                 "use||sauce",
                                 0.75
+                            ],
+                            [
+                                "stir||pasta",
+                                0.5
                             ]
                         ]
                     ]
@@ -844,7 +848,7 @@
                 [
                     "stir||pasta",
                     [
-                        0.3,
+                        0.4,
                         []
                     ]
                 ],

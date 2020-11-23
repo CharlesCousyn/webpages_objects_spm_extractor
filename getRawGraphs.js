@@ -77,19 +77,49 @@ async function getAssociatedVerbs(tokInfoObjects, processedSentences)
     return await from(tokInfoObjects)
         .pipe(concatMap(async tokInfoObject =>
         {
-            let nearestVerb = await from(processedSentences[tokInfoObject.indexSentence])
-                .pipe(filter(tokInfo => tokInfo.POS.startsWith("VB")))
-                .pipe(reduce((goodTokInfoVerb, tokInfoVerb) =>
+            //Search the nearest verb in the dependency parse tree
+            let nearestVerb = null;
+            if(GENERAL_CONFIG.useDepTreeToFindAssociatedVerb)
+            {
+                let sentence = processedSentences[tokInfoObject.indexSentence];
+                let rootNode = tokInfoObject.depParsed.parent === -1;
+                let currTok = sentence[tokInfoObject.depParsed.parent] ;
+                while(nearestVerb === null && !rootNode)
                 {
-                    if(goodTokInfoVerb === null || (Math.abs(tokInfoObject.indexToken - tokInfoVerb.indexToken) < Math.abs(tokInfoObject.indexToken - goodTokInfoVerb.indexToken)))
+                    if(currTok.depParsed.type === "VP" || currTok.depParsed.type.startsWith("VB"))
                     {
-                        goodTokInfoVerb = tokInfoVerb;
+                        nearestVerb = currTok;
+                        nearestVerb = {...nearestVerb, definitions: await wordpos.lookupVerb(nearestVerb.pureForm)};
                     }
-                    return goodTokInfoVerb;
-                }, null))
-                .pipe(filter(goodTokInfoVerb => goodTokInfoVerb !== null))
-                .pipe(concatMap(async verbTokInfo => ({...verbTokInfo, definitions: await wordpos.lookupVerb(verbTokInfo.pureForm)})))
-                .toPromise();
+                    else
+                    {
+                        if(currTok.depParsed.parent === -1)
+                        {
+                            rootNode = true;
+                        }
+                        else
+                        {
+                            currTok = sentence[currTok.depParsed.parent];
+                        }
+                    }
+                }
+            }
+            else
+            {
+                nearestVerb = await from(processedSentences[tokInfoObject.indexSentence])
+                    .pipe(filter(tokInfo => tokInfo.POS.startsWith("VB")))
+                    .pipe(reduce((goodTokInfoVerb, tokInfoVerb) =>
+                    {
+                        if(goodTokInfoVerb === null || (Math.abs(tokInfoObject.indexToken - tokInfoVerb.indexToken) < Math.abs(tokInfoObject.indexToken - goodTokInfoVerb.indexToken)))
+                        {
+                            goodTokInfoVerb = tokInfoVerb;
+                        }
+                        return goodTokInfoVerb;
+                    }, null))
+                    .pipe(filter(goodTokInfoVerb => goodTokInfoVerb !== null))
+                    .pipe(concatMap(async verbTokInfo => ({...verbTokInfo, definitions: await wordpos.lookupVerb(verbTokInfo.pureForm)})))
+                    .toPromise();
+            }
 
             //If no verb in sentence or the nearest verb has no definition in wordnet
             if(nearestVerb === undefined || nearestVerb === null || nearestVerb.definitions.length === 0)
@@ -104,45 +134,6 @@ async function getAssociatedVerbs(tokInfoObjects, processedSentences)
         .pipe(filter(arr => arr !== null))
         .pipe(toArray())
         .toPromise();
-
-    /*let objVerbArrays = await Promise.all(
-        tokInfoObjects.map(async tokInfoObject =>
-    {
-        let currentSentence = processedSentences[tokInfoObject.indexSentence];
-
-        //Identify verbs in current sentence
-        let promiseVerbs = currentSentence.filter(tokInfo => tokInfo.POS.startsWith("VB"))
-            .map(async verbTokInfo => ({...verbTokInfo, definitions: await wordpos.lookupVerb(verbTokInfo.pureForm)}));
-
-        let verbs = await Promise.all(promiseVerbs);
-
-        //If no verb in sentence
-        if(verbs.length === 0)
-        {
-            return null;
-        }
-
-        //Find the nearest verb
-        let nearestVerb = verbs.reduce((goodTokInfoVerb, tokInfoVerb, index, array) =>
-        {
-            if(goodTokInfoVerb === null || (Math.abs(tokInfoObject.indexToken - tokInfoVerb.indexToken) < Math.abs(tokInfoObject.indexToken - goodTokInfoVerb.indexToken)))
-            {
-                goodTokInfoVerb = tokInfoVerb;
-            }
-            return goodTokInfoVerb;
-        }, null);
-
-        //If the nearest verb has no definition in wordnet
-        if(nearestVerb.definitions.length === 0)
-        {
-            return null;
-        }
-
-        return [nearestVerb, tokInfoObject];
-    }));
-
-    //Removing null values (token without associated verbs)
-    return objVerbArrays.filter(arr => arr !== null);*/
 }
 
 async function getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects, predeterminedObjectsOneActivty, useVerb)
@@ -213,9 +204,9 @@ async function getOrderedObjectsFromTextFin(cleanText, useOfPredeterminedObjects
         let tokInfosWithVerbs = await getAssociatedVerbs(validTokensInfos, processedSentences);
 
         //Only keep the pure form of the token to avoid synonyms abundance
-        let validTokens = tokInfosWithVerbs.map(tokInfoWithVerbs =>
+        let validTokens = tokInfosWithVerbs.map(([nearestVerb, tokInfoObject]) =>
         {
-            return `${tokInfoWithVerbs[0].definitions[0].lemma}||${tokInfoWithVerbs[1].definitions[0].lemma}`
+            return `${nearestVerb.definitions[0].lemma}||${tokInfoObject.definitions[0].lemma}`;
         });
 
         //Delete duplicates (keep the first only)

@@ -19,5 +19,6 @@
   "minSupportNode": 0.25,
   "minConfidenceRelation": 0.5,
   "useVerb": true,
+  "useDepTreeToFindAssociatedVerb":  true,
   "useSpecificStruct": true
 }
