@@ -52,19 +52,20 @@ export function showProgress(currentNumberOfResults, totalNumberOfResults, begin
 export function prepareActivityResultToJSON(activityResult)
 {
     activityResult.graphAdjList.adjList = [...activityResult.graphAdjList.adjList];//adjList is now an array of array [node, Map]
-    activityResult.graphAdjList.adjList = activityResult.graphAdjList.adjList.map(neighbors => [neighbors[0], [...neighbors[1]]]);
+    activityResult.graphAdjList.adjList = activityResult.graphAdjList.adjList.map(([id, [occurences, neighbors]]) => [id, [occurences, [...neighbors]]]);
     return activityResult;
 }
 
 export async function extractPlans(path)
 {
-    let selectorPlansHTML = "[id^=mf-section-] > div.steps.steps_first.sticky";
-    let selectorStepsHTML = "[id^=step-id-] .step";
+    let selectorPlansHTML = "div.steps.sticky:not(.sample)";
+    let selectorStepsHTML = "[id^=step-id-] .step b";
     let document = (await JSDOM.fromFile(path)).window.document;
 
     //Extract all plans with all steps for each plan
     let plans = [];
     let plansHTML = document.querySelectorAll(selectorPlansHTML);
+
     plansHTML.forEach(planHTML =>
     {
         let steps = [];
@@ -72,11 +73,25 @@ export async function extractPlans(path)
 
         stepsHTML.forEach(stepHTML =>
         {
-            stepHTML.querySelectorAll('*').forEach(n => n.remove());
+            //stepHTML.querySelectorAll('*').forEach(n => n.remove());
             steps.push(stepHTML.textContent);
         });
         plans.push(steps);
     });
+
+
+    //Check if it's multiple plans or multiple parts
+    if(plansHTML.length > 1)
+    {
+        let discriminatingEl = plansHTML[0].querySelector("h3 > div > div");
+        discriminatingEl.querySelectorAll('*').forEach(n => n.remove());
+        let typeOfContent= discriminatingEl.textContent;
+        //Only one plan
+        if(typeOfContent.startsWith("Part"))
+        {
+            plans = [plans.flat()];
+        }
+    }
 
     return plans;
 }

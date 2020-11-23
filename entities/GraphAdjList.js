@@ -12,7 +12,7 @@ export default class GraphAdjList
         }
     }
 
-    addNode(id, isUnsafe)
+    addNode(id, occurences, isUnsafe)
     {
         if(isUnsafe)
         {
@@ -22,7 +22,29 @@ export default class GraphAdjList
                 throw new Error("The id already exists!");
             }
         }
-        this._adjList.set(id, new Map());
+        if(occurences === undefined)
+        {
+            occurences = 0;
+        }
+        this._adjList.set(id, [occurences, new Map()]);
+    }
+
+    addWeightToANode(id, value, isUnsafe)
+    {
+        if(isUnsafe)
+        {
+            if(!this._adjList.has(od))
+            {
+                throw new Error("Specified id does not exist!! " + id);
+            }
+        }
+        let weight = this._adjList.get(id)[0];
+        let successors = this._adjList.get(id)[1];
+        if(weight === undefined)
+        {
+            weight = 0;
+        }
+        this._adjList.set(id, [weight + value, successors]);
     }
 
     //firstId precede secondId
@@ -40,12 +62,13 @@ export default class GraphAdjList
                 throw new Error("Second id for the edge does not exist!! " + secondId);
             }
         }
-        let weight = this._adjList.get(firstId).get(secondId);
+        let nodeInfosFirstId = this._adjList.get(firstId);
+        let weight = nodeInfosFirstId[1].get(secondId);
         if(weight === undefined)
         {
             weight = 0;
         }
-        this._adjList.set(firstId, this._adjList.get(firstId).set(secondId, weight + value));
+        this._adjList.set(firstId, [nodeInfosFirstId[0], nodeInfosFirstId[1].set(secondId, weight + value)]);
     }
 
     //firstId precede secondId
@@ -58,7 +81,8 @@ export default class GraphAdjList
                 throw new Error("One of the ids given for the edge does not exist!!")
             }
         }
-        this._adjList.set(firstId, this._adjList.get(firstId).set(secondId, value));
+        let nodeInfos = this._adjList.get(firstId);
+        this._adjList.set(firstId, [nodeInfos[0], nodeInfos[1].set(secondId, value)]);
     }
 
     deleteNode(idToDelete)
@@ -67,9 +91,13 @@ export default class GraphAdjList
         this._adjList.delete(idToDelete);
 
         //Delete id for all nodes
-        this._adjList.forEach((adjMap, key, map) =>
+        this._adjList.forEach((value, key, map) =>
         {
-            adjMap.delete(idToDelete);
+            if(value !== null)
+            {
+                let [, adjMap] = value;
+                adjMap.delete(idToDelete);
+            }
         });
     }
 
@@ -81,7 +109,7 @@ export default class GraphAdjList
 
     deleteEdge(firstId, secondId)
     {
-        this._adjList.get(firstId).delete(secondId);
+        this._adjList.get(firstId)[1].delete(secondId);
     }
 
     printAdjList()

@@ -306,11 +306,19 @@ async function processOneActivity(activityResult, dataset)
 
     let allOrderedLists = resAllPages.map(res => res.orderedObjects);
 
-    //Get all the uniques ids
-    let allUniqueIds = [...new Set(allOrderedLists.flat())];
+    //Count the number of occurence of each objet
+    let allUniqueIdsWithOcc = allOrderedLists.flat().reduce((acc, curr) =>
+    {
+        let currentOcc = acc.get(curr);
+        if(currentOcc === undefined)
+        {
+            currentOcc = 0;
+        }
+        return acc.set(curr, currentOcc + 1);
+    }, new Map());
 
-    //Add uniques ids to numPOSET
-    allUniqueIds.forEach(id => activityResult.graphAdjList.addNode(id, true));
+    //Add uniques ids to graph
+    allUniqueIdsWithOcc.forEach((occ, id) => activityResult.graphAdjList.addNode(id, occ,true));
 
     //Add Values in matrix
     //Add 1 when there's a relation
@@ -319,7 +327,7 @@ async function processOneActivity(activityResult, dataset)
         activityResult.numberOfWebPages += 1;
         for(let i= 0; i< orderedList.length; i++)
         {
-            for(let j= i+1; j <orderedList.length; j++)
+            for(let j= i+1; j < orderedList.length; j++)
             {
                 activityResult.graphAdjList.addWeightToAnEdge(orderedList[i], orderedList[j], 1, true);
             }
@@ -348,7 +356,7 @@ async function processOneActivity(activityResult, dataset)
     //Use the HTML files in folders to deduce RawNumPOSETs
     let res = await from(folderNames)
         //Stream of folders names
-        .pipe(map(activity => new ActivityResult(activity, `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, new GraphAdjList(), 0, 0)))
+        .pipe(map(activity => new ActivityResult(activity, `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, new GraphAdjList(), 0, 0, 0)))
         //Stream of folders names
         .pipe(take(GENERAL_CONFIG.limitNumberActivityForDebug))
         //Stream of activity result

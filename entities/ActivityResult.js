@@ -1,12 +1,13 @@
 export default class ActivityResult
 {
-	constructor(activityName, pathToWebPages, graphAdjList, numberOfWebPages, threshold)
+	constructor(activityName, pathToWebPages, graphAdjList, numberOfWebPages, minSupportNode, minConfidenceRelation)
 	{
 		this._activityName = activityName;
 		this._pathToWebPages = pathToWebPages;
 		this._graphAdjList = graphAdjList;
 		this._numberOfWebPages = numberOfWebPages;
-		this._threshold = threshold;
+		this._minSupportNode = minSupportNode;
+		this._minConfidenceRelation = minConfidenceRelation;
 	}
 
 	get activityName()
@@ -49,13 +50,23 @@ export default class ActivityResult
 		this._numberOfWebPages = numberOfWebPages;
 	}
 
-	get threshold()
+	get minSupportNode()
 	{
-		return this._threshold;
+		return this._minSupportNode;
 	}
 
-	set threshold(threshold)
+	set minSupportNode(minSupportNode)
 	{
-		this._threshold = threshold;
+		this._minSupportNode = minSupportNode;
+	}
+
+	get minConfidenceRelation()
+	{
+		return this._minConfidenceRelation;
+	}
+
+	set minConfidenceRelation(minConfidenceRelation)
+	{
+		this._minConfidenceRelation = minConfidenceRelation;
 	}
 }

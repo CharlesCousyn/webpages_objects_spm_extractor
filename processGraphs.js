@@ -11,7 +11,7 @@ import * as TOOLS from "./tools";
 import GraphAdjList from "./entities/GraphAdjList";
 
 
-function normalizeGraph(graph, newMin, newMax, normOrStandOrByPage, numberOfWebPages)
+function normalizeNodesGraph(graph, newMin, newMax, normOrStandOrByPage, numberOfWebPages)
 {
     let newGraph = clone(graph);
     //console.log("activityResAfter", activityRes.graphAdjList.adjList.get("help||dwelling"));
@@ -23,15 +23,10 @@ function normalizeGraph(graph, newMin, newMax, normOrStandOrByPage, numberOfWebP
         }
         else
         {
-            newGraph.adjList.forEach(map =>
+            //Get support for each node
+            newGraph.adjList.forEach((nodeInfos, keyNode) =>
             {
-                map.forEach((weight, key, littleMap) =>
-                {
-                    if(weight !== null)
-                    {
-                        littleMap.set(key, weight/ numberOfWebPages);
-                    }
-                });
+                nodeInfos[0] /= numberOfWebPages;
             });
 
             return newGraph;
@@ -42,18 +37,57 @@ function normalizeGraph(graph, newMin, newMax, normOrStandOrByPage, numberOfWebP
     }
 }
 
-function normalizeActivityResult(activityRes, newMin, newMax, normOrStandOrByPage, numberOfWebPages)
+function normalizeRelationsGraph(graph, numberOfWebPages)
 {
-    //console.log("numberOfWebPages", numberOfWebPages);
-    //console.log("activityResBefore", activityRes);
-    activityRes.graphAdjList = normalizeGraph(activityRes.graphAdjList, newMin, newMax, normOrStandOrByPage, numberOfWebPages);
+    let newGraph = clone(graph);
+
+    //For each relations, compute confidence = occurences(A -> B)/occurences(A)
+
+    //Get support for each node
+    newGraph.adjList.forEach(([occurenceBigId, mapBigId], bigId) =>
+    {
+        mapBigId.forEach((occurenceRelation, littleId, littleMap)=>
+        {
+            littleMap.set(littleId, occurenceRelation / (occurenceBigId*numberOfWebPages));
+        });
+    });
+
+    return newGraph;
+}
+
+function normalizeNodesActivityResult(activityRes, newMin, newMax, normOrStandOrByPage, numberOfWebPages)
+{
+    activityRes.graphAdjList = normalizeNodesGraph(activityRes.graphAdjList, newMin, newMax, normOrStandOrByPage, numberOfWebPages);
     return activityRes;
 }
 
-function applyThresholdToGraph(graph, threshold)
+function normalizeRelationsActivityResult(activityRes)
+{
+    activityRes.graphAdjList = normalizeRelationsGraph(activityRes.graphAdjList, activityRes.numberOfWebPages);
+    return activityRes;
+}
+
+function applyThresholdToNodeInGraph(graph, threshold)
 {
     //console.log("graph applyThresholdToGraph", graph);
-    graph.adjList.forEach((map, node) =>
+    graph.adjList.forEach((nodeInfos, id, bigMap) =>
+    {
+        if(nodeInfos[0] !== null)
+        {
+            if(nodeInfos[0] < threshold)
+            {
+                bigMap.set(id, null);
+            }
+        }
+    });
+
+    return graph;
+}
+
+function applyThresholdToRelationsInGraph(graph, threshold)
+{
+    //console.log("graph applyThresholdToGraph", graph);
+    graph.adjList.forEach(([, map], id) =>
     {
         map.forEach((weight, key, littleMap) =>
         {
@@ -61,7 +95,7 @@ function applyThresholdToGraph(graph, threshold)
             {
                 if(weight < threshold)
                 {
-                    littleMap.set(key, 0);
+                    littleMap.set(key, null);
                 }
             }
         });
@@ -70,60 +104,67 @@ function applyThresholdToGraph(graph, threshold)
     return graph;
 }
 
-function applyThresholdToActivityResult(activityRes, threshold)
+function applyThresholdToNodesInActivityResult(activityRes, minSupportNode)
 {
-    activityRes.threshold = threshold;
-    activityRes.graphAdjList = applyThresholdToGraph(activityRes.graphAdjList, threshold);
+    activityRes.minSupportNode = minSupportNode;
+    activityRes.graphAdjList = applyThresholdToNodeInGraph(activityRes.graphAdjList, minSupportNode);
     return activityRes;
 }
 
-function cleanGraph(graph)
+function applyThresholdToRelationsInActivityResult(activityRes, minConfidenceRelation)
 {
-    //console.log("cleanGraph before", graph);
+    activityRes.minConfidenceRelation = minConfidenceRelation;
+    activityRes.graphAdjList = applyThresholdToRelationsInGraph(activityRes.graphAdjList, minConfidenceRelation);
+    return activityRes;
+}
+
+function cleanRelationsGraph(graph)
+{
     //Delete edges with 0 in relations
     let edgesToDelete = [];
-    let numberOfEdges = 0;
-    graph.adjList.forEach((map, bigNode) =>
+    graph.adjList.forEach(([, map], bigNode) =>
     {
         map.forEach((weight, littleNode) =>
         {
-            numberOfEdges++;
-            if(weight === 0)
+            if(weight === null)
             {
                 edgesToDelete.push([bigNode, littleNode]);
             }
         });
     });
 
-
-    //Delete edges with 0 in relation weight
-    edgesToDelete.forEach(arr => graph.deleteEdge(arr[0], arr[1]));
-
-    //Delete nodes without any connection..
-    let listNodeWithConnections = [];
-    graph.adjList.forEach((map, bigNode) =>
-    {
-        //Edge from bigNode, Connection out
-        if(map.size !== 0)
-        {
-            listNodeWithConnections.push(bigNode);
-        }
-        //Edges to bigNode!!
-        else if([...graph.adjList].some((arr) => arr[1].has(bigNode)))
-        {
-            listNodeWithConnections.push(bigNode);
-        }
-    });
-
-    let nodesToDelete = [...graph.adjList.keys()].filter(key => !listNodeWithConnections.includes(key));
-    nodesToDelete.forEach(node => graph.deleteNode(node));
+    //Delete edges with null in relation weight
+    edgesToDelete.forEach(([firstId, secondId]) => graph.deleteEdge(firstId, secondId));
 
     return graph;
 }
 
-function cleanActivityRes(activityRes)
+function cleanNodesGraph(graph)
 {
-    activityRes.graphAdjList = cleanGraph(activityRes.graphAdjList);
+    //Delete nodes with null in value
+    let nodesToDelete = [];
+
+    graph.adjList.forEach((value, id) =>
+    {
+        if(value === null)
+        {
+            nodesToDelete.push(id);
+        }
+    });
+
+    nodesToDelete.forEach(idNode => graph.deleteNode(idNode));
+    return graph;
+}
+
+function cleanNodesActivityRes(activityRes)
+{
+    activityRes.graphAdjList = cleanNodesGraph(activityRes.graphAdjList);
+    return activityRes;
+}
+
+function cleanRelationsActivityRes(activityRes)
+{
+    activityRes.graphAdjList = cleanRelationsGraph(activityRes.graphAdjList);
     return activityRes;
 }
 
@@ -137,25 +178,28 @@ function cleanActivityRes(activityRes)
         //console.log("jsonActRes", jsonActRes._graphAdjList._adjList);
         //console.log("jsonActRes", jsonActRes._graphAdjList._adjList.map(array => [array[0], new Map(array[1])]));
         //console.log("jsonActRes", jsonActRes._graphAdjList._adjList.map(array => [array[0], new Map(array[1])]));
-
         return  new ActivityResult(
             jsonActRes._activityName,
             jsonActRes._pathToWebPages,
-            new GraphAdjList(new Map(jsonActRes._graphAdjList._adjList.map(array => [array[0], new Map(array[1])]))),
+            new GraphAdjList(new Map(jsonActRes._graphAdjList._adjList.map(([id, [occurences, neighbors]]) => [id, [occurences, new Map(neighbors)]]))),
             jsonActRes._numberOfWebPages,
-            jsonActRes._threshold);
+            jsonActRes._minSupportNode,
+            jsonActRes._minConfidenceRelation);
     });
 
 
     //Compute processed Activity results
     let res = await from(clone(rawActivityResults))
         //Stream of activity results
-        .pipe(map(activityRes => normalizeActivityResult(activityRes, 0, 1, GENERAL_CONFIG.normOrStandOrByPage, activityRes.numberOfWebPages)))
+        .pipe(map(activityRes => normalizeNodesActivityResult(activityRes, 0, 1, GENERAL_CONFIG.normOrStandOrByPage, activityRes.numberOfWebPages)))
         //Stream of normalized activity results
-        .pipe(map(activityRes => applyThresholdToActivityResult(activityRes, GENERAL_CONFIG.thresholdStrongRelations)))
+        .pipe(map(activityRes => applyThresholdToNodesInActivityResult(activityRes, GENERAL_CONFIG.minSupportNode)))
         //Stream of normalized activity results and filter relation using a thresholdStrongRelations
-        .pipe(map(activityRes => cleanActivityRes(activityRes)))
+        .pipe(map(activityRes => cleanNodesActivityRes(activityRes)))
         //Stream of normalized activity results and objects without any relation
+        .pipe(map(activityRes => normalizeRelationsActivityResult(activityRes)))
+        .pipe(map(activityRes => applyThresholdToRelationsInActivityResult(activityRes, GENERAL_CONFIG.minConfidenceRelation)))
+        .pipe(map(activityRes => cleanRelationsActivityRes(activityRes)))
         .pipe(toArray())
         //Stream of array activity result (only one)
         .toPromise();

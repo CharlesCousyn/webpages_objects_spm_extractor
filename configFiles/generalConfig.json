@@ -11,12 +11,13 @@
     "ignoreImage": true
   },
   "limitNumberActivityForDebug": 1000000,
-  "limitNumberPagesByActivityForDebug": 1,
-  "showCleanTextForDebug": true,
+  "limitNumberPagesByActivityForDebug": 100000,
+  "showCleanTextForDebug": false,
   "indentRawFile": true,
   "indentProcessedFile": true,
   "normOrStandOrByPage": "byPage",
-  "thresholdStrongRelations": 0.51,
-  "useVerb": false,
+  "minSupportNode": 0.25,
+  "minConfidenceRelation": 0.5,
+  "useVerb": true,
   "useSpecificStruct": true
 }
