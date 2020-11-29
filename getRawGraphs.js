@@ -297,6 +297,7 @@ async function processOneActivity(activityResult, dataset)
 
     let allOrderedLists = resAllPages.map(res => res.orderedObjects);
 
+    /*
     //Count the number of occurence of each objet
     let allUniqueIdsWithOcc = allOrderedLists.flat().reduce((acc, curr) =>
     {
@@ -323,7 +324,12 @@ async function processOneActivity(activityResult, dataset)
                 activityResult.graphAdjList.addWeightToAnEdge(orderedList[i], orderedList[j], 1, true);
             }
         }
-    });
+    });*/
+
+    let res = TOOLS.PrefixSpan(allOrderedLists, 0.3);
+
+
+    activityResult.graphAdjList = res;
 
     return activityResult;
 }
@@ -355,7 +361,7 @@ async function processOneActivity(activityResult, dataset)
         //Stream of activity result
         .pipe(tap((activityResult) =>
         {
-            console.log("activityResult", activityResult);
+            //console.log("activityResult", activityResult);
             currentActivityProcessed++;
             TOOLS.showProgress(currentActivityProcessed, folderNames.length, initTime);
         }))
