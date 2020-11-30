@@ -1,13 +1,18 @@
 export default class ActivityResult
 {
-	constructor(activityName, pathToWebPages, graphAdjList, numberOfWebPages, minSupportNode, minConfidenceRelation)
+	constructor(activityName, pathToWebPages, frequentSequentialPatterns, numberOfWebPages, minSupport)
 	{
 		this._activityName = activityName;
 		this._pathToWebPages = pathToWebPages;
-		this._graphAdjList = graphAdjList;
+		this._frequentSequentialPatterns = frequentSequentialPatterns;
 		this._numberOfWebPages = numberOfWebPages;
-		this._minSupportNode = minSupportNode;
-		this._minConfidenceRelation = minConfidenceRelation;
+		this._minSupport = minSupport;
+	}
+
+	prepareActivityResultToJSON()
+	{
+		this._frequentSequentialPatterns = [...this._frequentSequentialPatterns];
+		return this;
 	}
 
 	get activityName()
@@ -30,14 +35,14 @@ export default class ActivityResult
 		this._pathToWebPages = pathToWebPages;
 	}
 
-	get graphAdjList()
+	get frequentSequentialPatterns()
 	{
-		return this._graphAdjList;
+		return this._frequentSequentialPatterns;
 	}
 
-	set graphAdjList(graphAdjList)
+	set frequentSequentialPattern(frequentSequentialPatterns)
 	{
-		this._graphAdjList = graphAdjList;
+		this._frequentSequentialPatterns = frequentSequentialPatterns;
 	}
 
 	get numberOfWebPages()
@@ -50,23 +55,13 @@ export default class ActivityResult
 		this._numberOfWebPages = numberOfWebPages;
 	}
 
-	get minSupportNode()
+	get minSupport()
 	{
-		return this._minSupportNode;
+		return this._minSupport;
 	}
 
-	set minSupportNode(minSupportNode)
+	set minSupport(minSupport)
 	{
-		this._minSupportNode = minSupportNode;
-	}
-
-	get minConfidenceRelation()
-	{
-		return this._minConfidenceRelation;
-	}
-
-	set minConfidenceRelation(minConfidenceRelation)
-	{
-		this._minConfidenceRelation = minConfidenceRelation;
+		this._minSupport= minSupport;
 	}
 }
