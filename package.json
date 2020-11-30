@@ -1,5 +1,5 @@
 {
-  "name": "webpages_poset_extractor",
+  "name": "webpages_objects_spm_extractor",
   "version": "1.0.0",
   "description": "",
   "main": "getSequentialPatterns.js",
