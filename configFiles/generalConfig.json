@@ -19,5 +19,7 @@
   "minSupport": 0.3,
   "useVerb": true,
   "useDepTreeToFindAssociatedVerb":  true,
-  "useSpecificStruct": true
+  "useSpecificStruct": true,
+  "closedMention": true,
+  "maximalMention": true
 }

@@ -77,7 +77,7 @@ async function extractPlans(path)
 function htmlStringToCleanText(htmlString, config)
 {
     let text = htmlToText.fromString(htmlString, config.configHTML2Text);
-    return stringToCleanText(text);
+    return stringToCleanText(text, config);
 }
 
 function stringToCleanText(text, config)
@@ -207,7 +207,7 @@ async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneAc
                     depParsed: depParsed[indexOneSentence][indexTok]
                 }}));
 
-    let validTokensInfos = await keepTokensNounAndValidLexName(processedSentences);// add definitions
+    let validTokensInfos = await keepTokensNounAndValidLexName(processedSentences, config);// add definitions
 
     //Order them using indexes (to be sure it's ordered)
     validTokensInfos = validTokensInfos
@@ -242,7 +242,7 @@ async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneAc
     {
         //Use sentences where valid tokens are to add to nearest verb
         //Return arrays of array of type [tokInfoVerb, tokInfoObject]
-        let tokInfosWithVerbs = await getAssociatedVerbs(validTokensInfos, processedSentences);
+        let tokInfosWithVerbs = await getAssociatedVerbs(validTokensInfos, processedSentences, config);
 
         //Only keep the pure form of the token to avoid synonyms abundance
         let validTokens = tokInfosWithVerbs.map(([nearestVerb, tokInfoObject]) =>
@@ -280,7 +280,7 @@ async function getOrderedObjectsFromHTML(pathWebPage, predeterminedObjectsOneAct
             let steps = plan.join(" ");
 
             //Clean the text
-            cleanText = stringToCleanText(steps);
+            cleanText = stringToCleanText(steps, config);
 
             //Write a new text file
             let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
@@ -338,7 +338,7 @@ async function processOneActivity(activityResult, dataset, config)
 
     let allOrderedLists = resAllPages.map(res => res.orderedObjects);
 
-    activityResult.frequentSequentialPatterns = SPM.PrefixSpan(allOrderedLists, config.minSupport);
+    activityResult.frequentSequentialPatterns = SPM.PrefixSpan(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
 
     return activityResult;
 }

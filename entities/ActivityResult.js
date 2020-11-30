@@ -40,7 +40,7 @@ export default class ActivityResult
 		return this._frequentSequentialPatterns;
 	}
 
-	set frequentSequentialPattern(frequentSequentialPatterns)
+	set frequentSequentialPatterns(frequentSequentialPatterns)
 	{
 		this._frequentSequentialPatterns = frequentSequentialPatterns;
 	}
