@@ -14,8 +14,8 @@
                 ]
             ]
         ],
-        "_numberOfWebPages": 0,
-        "_minSupport": 0
+        "_numberOfPlans": 5,
+        "_minSupport": 0.3
     },
     {
         "_activityName": "bake_parmesan_turkey_meatballs",
@@ -7092,8 +7092,8 @@
                 ]
             ]
         ],
-        "_numberOfWebPages": 0,
-        "_minSupport": 0
+        "_numberOfPlans": 2,
+        "_minSupport": 0.3
     },
     {
         "_activityName": "choosing_outfit",
@@ -7110,8 +7110,8 @@
                 ]
             ]
         ],
-        "_numberOfWebPages": 0,
-        "_minSupport": 0
+        "_numberOfPlans": 5,
+        "_minSupport": 0.3
     },
     {
         "_activityName": "clean",
@@ -23036,8 +23036,8 @@
                 ]
             ]
         ],
-        "_numberOfWebPages": 0,
-        "_minSupport": 0
+        "_numberOfPlans": 2,
+        "_minSupport": 0.3
     },
     {
         "_activityName": "cook_pasta",
@@ -23214,7 +23214,7 @@
                 ]
             ]
         ],
-        "_numberOfWebPages": 0,
-        "_minSupport": 0
+        "_numberOfPlans": 10,
+        "_minSupport": 0.3
     }
 ]

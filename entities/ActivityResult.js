@@ -1,11 +1,11 @@
 export default class ActivityResult
 {
-	constructor(activityName, pathToWebPages, frequentSequentialPatterns, numberOfWebPages, minSupport)
+	constructor(activityName, pathToWebPages, frequentSequentialPatterns, numberOfPlans, minSupport)
 	{
 		this._activityName = activityName;
 		this._pathToWebPages = pathToWebPages;
 		this._frequentSequentialPatterns = frequentSequentialPatterns;
-		this._numberOfWebPages = numberOfWebPages;
+		this._numberOfPlans = numberOfPlans;
 		this._minSupport = minSupport;
 	}
 
@@ -45,14 +45,14 @@ export default class ActivityResult
 		this._frequentSequentialPatterns = frequentSequentialPatterns;
 	}
 
-	get numberOfWebPages()
+	get numberOfPlans()
 	{
-		return this._numberOfWebPages;
+		return this._numberOfPlans;
 	}
 
-	set numberOfWebPages(numberOfWebPages)
+	set numberOfPlans(numberOfPlans)
 	{
-		this._numberOfWebPages = numberOfWebPages;
+		this._numberOfPlans = numberOfPlans;
 	}
 
 	get minSupport()

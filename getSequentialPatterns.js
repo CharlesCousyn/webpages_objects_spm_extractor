@@ -338,6 +338,8 @@ async function processOneActivity(activityResult, dataset, config)
 
     let allOrderedLists = resAllPages.map(res => res.orderedObjects);
 
+    activityResult.numberOfPlans = allOrderedLists.length;
+    activityResult.minSupport = config.minSupport;
     activityResult.frequentSequentialPatterns = SPM.PrefixSpan(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
 
     return activityResult;
