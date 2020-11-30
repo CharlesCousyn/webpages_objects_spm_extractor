@@ -335,7 +335,10 @@ function PrefixSpanRecurs(database, minSupport, sequentialPattern, length, fullD
                 //Only keep the sequence when the suffix is empty or not containing -1
                 .filter(([, pseudoProjMap]) => pseudoProjMap.get(oneSizedItemSets[i]).length === 0 || pseudoProjMap.get(oneSizedItemSets[i])[0] !== -1)
                 //Use indexes to extract suffixes
-                .flatMap(([dataSeq, pseudoProjMap]) => pseudoProjMap.get(oneSizedItemSets[i]).map(index => dataSeq.filter((item, i) => i >= index)));
+                .flatMap(([dataSeq, pseudoProjMap]) =>
+                    pseudoProjMap.get(oneSizedItemSets[i])
+                    .map(index => dataSeq.filter((item, i) => i >= index))
+                    .filter((val, index) => index === 0));
 
             allNewDBs.set(newPatterns[i], db);
         }
@@ -359,7 +362,20 @@ function PrefixSpanRecurs(database, minSupport, sequentialPattern, length, fullD
     }
 }
 
-export function PrefixSpan(database, minSupport)
+function isClosed(pat1, freq1, mapOfSeqPatterns)
+{
+    return ![...mapOfSeqPatterns]
+        .some(([pat2, freq2]) => freq1 === freq2 && pat2.length > pat1.length && isSupported(pat1, pat2));
+}
+
+function isMaximal(pat1, freq1, mapOfSeqPatterns)
+{
+    return ![...mapOfSeqPatterns]
+    .filter(([, [, closed]]) => closed)
+    .some(([pat2, [, ]]) => pat2.length > pat1.length && isSupported(pat1, pat2));
+}
+
+export function PrefixSpan(database, minSupport, closedMention, maximalMention)
 {
     //Get length DB
     let fullDBLength = database.length;
@@ -367,5 +383,22 @@ export function PrefixSpan(database, minSupport)
     {
         return;
     }
-    return PrefixSpanRecurs(database, minSupport, [], 0, fullDBLength)
+    let mapOfSeqPatterns = PrefixSpanRecurs(database, minSupport, [], 0, fullDBLength);
+
+    if(closedMention)
+    {
+        mapOfSeqPatterns = new Map(
+            [...mapOfSeqPatterns]
+            .map(([pat, freq]) => [pat, [freq, isClosed(pat, freq, mapOfSeqPatterns)]])
+        );
+        if(maximalMention)
+        {
+            mapOfSeqPatterns = new Map(
+                [...mapOfSeqPatterns]
+                .map(([pat, [freq, closed]]) => [pat, [freq, closed, isMaximal(pat, freq, mapOfSeqPatterns)]])
+            );
+        }
+    }
+
+    return mapOfSeqPatterns;
 }

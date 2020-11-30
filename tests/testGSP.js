@@ -21,5 +21,5 @@ let database = [
     console.log(TOOLS.getIndexesSuffixes(["b", "a", "c", "e", "b", "c"], ["b", "a", "c", "e", "b", "c", "a"]));
     console.log(TOOLS.getIndexesSuffixes([], ["b", "a", "c", "e", "b", "c", "a"]));
     console.log(TOOLS.GSP(database, 0.3));
-    console.log(TOOLS.PrefixSpan(database, 0.3));
+    console.log(TOOLS.PrefixSpan(database, 0.3, true, true));
 })();
