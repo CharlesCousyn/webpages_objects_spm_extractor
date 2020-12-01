@@ -318,6 +318,7 @@ async function addOrderedObjectsToObj(resOneWebPage, predeterminedObjectsOneActi
 
 async function processOneActivity(activityResult, dataset, config)
 {
+    console.log(`\nProcessing activity ${activityResult.activityName}...`);
     //Get the array of corresponding predeterminedObjects
     let predeterminedObjectsOneActivty = predeterminedObjects.find(el => el.activityName === activityResult.activityName);
 
@@ -339,6 +340,8 @@ async function processOneActivity(activityResult, dataset, config)
     let allOrderedLists = resAllPages.map(res => res.orderedObjects);
 
     activityResult.numberOfPlans = allOrderedLists.length;
+    console.log(`${activityResult.numberOfPlans} plans found!`);
+    console.log(`${(new Set(allOrderedLists.flat()).size)} distinct objects or couples (verb, object) found!`);
     activityResult.minSupport = config.minSupport;
     activityResult.frequentSequentialPatterns = SPM.PrefixSpan(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
 
@@ -370,9 +373,8 @@ async function processOneActivity(activityResult, dataset, config)
         //Stream of activity result
         .pipe(concatMap(activityRes => processOneActivity(activityRes, dataset, GENERAL_CONFIG)))
         //Stream of activity result
-        .pipe(tap((activityResult) =>
+        .pipe(tap(() =>
         {
-            //console.log("activityResult", activityResult);
             currentActivityProcessed++;
             TOOLS.showProgress(currentActivityProcessed, folderNames.length, initTime);
         }))

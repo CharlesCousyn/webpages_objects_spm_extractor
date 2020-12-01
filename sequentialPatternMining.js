@@ -1,7 +1,8 @@
 import * as TOOLS from "./tools.js";
 
-export function GSP(database, minSupport)
+export function GSP(database, minSupport, closedMention, maximalMention)
 {
+	console.log("Getting sequential patterns...");
 	//Get length DB
 	let dbLength = database.length;
 	if(dbLength === 0)
@@ -83,7 +84,8 @@ export function GSP(database, minSupport)
 		allFrequentItemSets = new Map([...allFrequentItemSets, ...freqItemSetsFixedLevel]);
 	}
 
-	return allFrequentItemSets;
+	console.log(`${allFrequentItemSets.size} sequential patterns found!`);
+	return handleClosedAndMaximalPat(allFrequentItemSets, closedMention, maximalMention);
 }
 
 export function isSupported(orderedElements, sequence)
@@ -127,7 +129,6 @@ function isClosed(pat1, freq1, mapOfSeqPatterns)
 	return ![...mapOfSeqPatterns]
 	.some(([pat2, freq2]) => freq1 === freq2 && pat2.length > pat1.length && isSupported(pat1, pat2));
 }
-
 
 function isMaximal(pat1, freq1, mapOfSeqPatterns)
 {
@@ -261,6 +262,7 @@ function PrefixSpanRecurs(database, minSupport, sequentialPattern, length, fullD
 
 export function PrefixSpan(database, minSupport, closedMention, maximalMention)
 {
+	console.log(`Getting sequential patterns with minSupport ${minSupport}...`);
 	//Get length DB
 	let fullDBLength = database.length;
 	if(fullDBLength === 0)
@@ -269,18 +271,28 @@ export function PrefixSpan(database, minSupport, closedMention, maximalMention)
 	}
 	let mapOfSeqPatterns = PrefixSpanRecurs(database, minSupport, [], 0, fullDBLength);
 
+	console.log(`${mapOfSeqPatterns.size} sequential patterns found!`);
+	return handleClosedAndMaximalPat(mapOfSeqPatterns, closedMention, maximalMention);
+}
+
+function handleClosedAndMaximalPat(mapOfSeqPatterns, closedMention, maximalMention)
+{
 	if(closedMention)
 	{
+		console.log("Finding closed sequential patterns...");
 		mapOfSeqPatterns = new Map(
 			[...mapOfSeqPatterns]
-			.map(([pat, freq]) => [pat, [freq, isClosed(pat, freq, mapOfSeqPatterns)]])
+				.map(([pat, freq]) => [pat, [freq, isClosed(pat, freq, mapOfSeqPatterns)]])
 		);
+		console.log(`${[...mapOfSeqPatterns].filter(([pat, [freq, closed]]) => closed).length} closed patterns found!`);
 		if(maximalMention)
 		{
+			console.log("Finding maximal sequential patterns...");
 			mapOfSeqPatterns = new Map(
 				[...mapOfSeqPatterns]
-				.map(([pat, [freq, closed]]) => [pat, [freq, closed, isMaximal(pat, freq, mapOfSeqPatterns)]])
+					.map(([pat, [freq, closed]]) => [pat, [freq, closed, isMaximal(pat, freq, mapOfSeqPatterns)]])
 			);
+			console.log(`${[...mapOfSeqPatterns].filter(([pat, [freq, closed, maximal]]) => maximal).length} maximal patterns found!`);
 		}
 	}
 
