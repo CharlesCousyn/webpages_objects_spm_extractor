@@ -339,6 +339,11 @@ async function processOneActivity(activityResult, dataset, config)
 
     let allOrderedLists = resAllPages.map(res => res.orderedObjects);
 
+    if(config.pruningObjectsUsingWordnet)
+    {
+        allOrderedLists = await pruningObjectsByDirectHypernym(allOrderedLists);
+    }
+
     activityResult.numberOfPlans = allOrderedLists.length;
     console.log(`${activityResult.numberOfPlans} plans found!`);
     console.log(`${(new Set(allOrderedLists.flat()).size)} distinct objects or couples (verb, object) found!`);
@@ -346,6 +351,55 @@ async function processOneActivity(activityResult, dataset, config)
     activityResult.frequentSequentialPatterns = SPM.PrefixSpan(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
 
     return activityResult;
+}
+
+async function pruningObjectsByDirectHypernym(allOrderedLists)
+{
+    console.log("Pruning objects by search of direct hypernym...")
+    //Extract all the objects
+    let uniqueObjects = new Set(allOrderedLists.flat().map(string => string.split("||")[1]));
+
+    //Getting direct hypernyms
+    let objWithHypernyms = await Promise.all([...uniqueObjects].map(async object => ({name: object, directHypernyms: await getDirectHypernyms(object)})));
+
+    //Find objects to transform
+    let arrayOfObjectToTransform = [];
+    objWithHypernyms.forEach(obj1=>
+    {
+        //If a hypernym of name1 exists in the objects
+        objWithHypernyms.forEach(obj2=>
+        {
+            if(obj1.name !== obj2.name && obj1.directHypernyms.includes(obj2.name))
+            {
+                arrayOfObjectToTransform.push([obj1.name, obj2.name]);
+            }
+        });
+    });
+
+    //Pruning transformation to convert A->B and B->C to A->C
+    arrayOfObjectToTransform = arrayOfObjectToTransform.reduce((acc, curr) =>
+    {
+        return acc;
+    }, []);
+
+    //Apply transformation...
+
+    return allOrderedLists;
+}
+
+async function getDirectHypernyms(object)
+{
+    let groupsOfPointers = (await wordpos.lookupNoun(object))
+        //Keeping definitions of senses included in our categories
+        .filter(def => GENERAL_CONFIG.allowedLexNames.includes(def.lexName))
+        //Keeping pointers only
+        .map(def => def.ptrs)
+        //Keeping the most common sense only
+        .filter((pointers, index) => index === 0);
+    //Getting the hypernyms pointers only
+    let relationsToUse = groupsOfPointers.flatMap(pointers => pointers.find(relation => relation.pointerSymbol === "@"));
+    //using hypernymPointers to get hypernyms
+    return Promise.all(relationsToUse.map(async hypernymPointer => (await wordpos.seek(hypernymPointer.synsetOffset, hypernymPointer.pos)).lemma));
 }
 
 (async ()=>

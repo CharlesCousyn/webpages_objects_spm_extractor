@@ -5,11 +5,11 @@ import clone from "clone";
 import {normalizeCaps,replaceConfusables,resolveContractions} from "en-norm";
 import Wordpos from "wordpos";
 import { Inflectors } from "en-inflectors";
+import GENERAL_CONFIG from "./../configFiles/generalConfig.json";
 
 (async () =>
 {
 	let testText = 'The angry bear chased the frightened little squirrel. The event is traumatic.';
-	let wordpos = new Wordpos();
 	let posWordpos = await wordpos.getPOS(testText);
 	console.log(posWordpos);
 
@@ -18,9 +18,11 @@ import { Inflectors } from "en-inflectors";
 	let POSText1 = normalizedTokenizedText1.map(sentenceArr => new Tag(sentenceArr).initial().smooth().tags);
 	console.log(POSText1);
 
-	let res = await wordpos.lookupVerb("Understands");
+	console.log("squirrel 1: ", await wordpos.seek("02332053", "n"));
+	console.log("squirrel 2: ", await wordpos.lookupNoun("dish"));
 
-	console.log(res)
+	console.log("awesome 1: ", await wordpos.seek(1285602, 'a'));
+	console.log("awesome 2: ", await wordpos.lookupAdjective('awesome'));
 
 	let res12 = new Inflectors("updated").conjugate("VBP");
 

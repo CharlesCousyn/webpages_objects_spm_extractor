@@ -18,6 +18,7 @@
   "normOrStandOrByPage": "byPage",
   "minSupport": 0.3,
   "useVerb": true,
+  "pruningObjectsUsingWordnet": false,
   "useDepTreeToFindAssociatedVerb":  true,
   "useSpecificStruct": true,
   "closedMention": true,
