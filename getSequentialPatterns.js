@@ -20,7 +20,9 @@ import predeterminedObjects from "./configFiles/predeterminedObjects.json";
 import GENERAL_CONFIG from "./configFiles/generalConfig.json";
 import ActivityResult from "./entities/ActivityResult";
 import * as TOOLS from "./tools";
-import * as SPM from "./sequentialPatternMining.js";
+import * as GSP from "./sequentialPatternMining/GSP";
+import * as PrefixSpan from "./sequentialPatternMining/PrefixSpan";
+import * as VMSP from "./sequentialPatternMining/VMSP";
 
 //Keep JSDOM errors
 const originalConsoleError = console.error;
@@ -348,7 +350,9 @@ async function processOneActivity(activityResult, dataset, config)
     console.log(`${activityResult.numberOfPlans} plans found!`);
     console.log(`${(new Set(allOrderedLists.flat()).size)} distinct objects or couples (verb, object) found!`);
     activityResult.minSupport = config.minSupport;
-    activityResult.frequentSequentialPatterns = SPM.PrefixSpan(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
+    //activityResult.frequentSequentialPatterns = GSP.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
+    //activityResult.frequentSequentialPatterns = PrefixSpan.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
+    activityResult.frequentSequentialPatterns = VMSP.run(allOrderedLists, config.minSupport);
 
     return activityResult;
 }

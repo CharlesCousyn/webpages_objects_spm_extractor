@@ -1,4 +1,7 @@
-import * as SPM from "./../sequentialPatternMining.js";
+import * as GSP from "./../sequentialPatternMining/GSP";
+import * as PrefixSpan from "./../sequentialPatternMining/PrefixSpan";
+import * as VMSP from "./../sequentialPatternMining/VMSP";
+import * as COMMON from "./../sequentialPatternMining/common";
 
 let database = [
     ["a", "b", "c", "a"],
@@ -12,14 +15,8 @@ let database = [
 
 (async() =>
 {
-    console.log(SPM.isSupported(["c", "c", "e"], ["b", "c", "d", "e", "b"]));
-    console.log(SPM.getIndexesSuffixes(["b", "c"], ["b", "a", "c", "e", "b", "c", "a"]));
-    console.log(SPM.getIndexesSuffixes(["b", "r"], ["b", "a", "c", "e", "b", "c", "a"]));
-    console.log(SPM.getIndexesSuffixes(["b", "a", "c"], ["b", "a", "c", "e", "b", "c", "a"]));
-    console.log(SPM.getIndexesSuffixes(["b", "b"], ["b", "a", "c", "e", "b", "c", "a"]));
-    console.log(SPM.getIndexesSuffixes(["b", "a", "c", "e", "b", "c", "a"], ["b", "a", "c", "e", "b", "c", "a"]));
-    console.log(SPM.getIndexesSuffixes(["b", "a", "c", "e", "b", "c"], ["b", "a", "c", "e", "b", "c", "a"]));
-    console.log(SPM.getIndexesSuffixes([], ["b", "a", "c", "e", "b", "c", "a"]));
-    console.log(SPM.GSP(database, 0.3));
-    console.log(SPM.PrefixSpan(database, 0.3, true, true));
+    console.log(COMMON.horizontalDBToVerticalDB(database));
+    console.log(GSP.run(database, 0.3, true, true));
+    console.log(PrefixSpan.run(database, 0.3, true, true));
+    console.log(VMSP.run(database, 0.3));
 })();
