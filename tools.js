@@ -68,3 +68,9 @@ export function arraysMatch (arr1, arr2)
     // Otherwise, return true
     return true;
 }
+
+export function dbToSPMFFormat(db, path)
+{
+    let dataString = db.map(sequence => sequence.join(" ")).join(". ");
+    writeTextFile(dataString, path);
+}
