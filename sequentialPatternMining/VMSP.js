@@ -50,7 +50,7 @@ function addPatternWithStrategies([pattern, support], Z)
     }
 }
 
-function search([pattern, idList, support], freqItems, verticalDB, minSupport, fullDBLength, Z)
+function search([pattern, idList, support], freqItems, minSupport, fullDBLength, Z)
 {
     //Update Z
     addPatternWithStrategies([pattern, support], Z);
@@ -73,7 +73,6 @@ function search([pattern, idList, support], freqItems, verticalDB, minSupport, f
         search(
             [pat, idListPat, supportPat],
             STemp,
-            verticalDB,
             minSupport,
             fullDBLength,
             Z);
@@ -112,9 +111,9 @@ export function run(db, minSupport)
 
     for(let [pat, listId, support] of freqItems)
     {
-        search([pat, listId, support], freqItems, verticalDB, minSupport, fullDBLength, Z);
+        search([pat, listId, support], freqItems, minSupport, fullDBLength, Z);
     }
 
     console.log(`${Z.length} maximal patterns found!`);
-    return Z;
+    return new Map(Z);
 }

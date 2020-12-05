@@ -12,6 +12,14 @@ let database = [
     ["a", "b", "e", "v"],
     ["b", "a", "c", "e", "b", "c", "a"]
 ];
+let database2 = [
+    ["a", "b", "c", "f"],
+    ["a", "d", "c", "b", "b"],
+    ["a", "b", "e"],
+    ["b", "c", "e", "t"],
+    ["o", "b", "y", "v"]
+];
+
 
 (async() =>
 {
@@ -19,4 +27,9 @@ let database = [
     console.log(GSP.run(database, 0.3, true, true));
     console.log(PrefixSpan.run(database, 0.3, true, true));
     console.log(VMSP.run(database, 0.3));
+
+    console.log(COMMON.horizontalDBToVerticalDB(database2));
+    console.log(GSP.run(database2, 0.3, true, true));
+    console.log(PrefixSpan.run(database2, 0.3, true, true));
+    console.log(VMSP.run(database2, 0.3));
 })();
