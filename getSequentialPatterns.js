@@ -346,6 +346,9 @@ async function processOneActivity(activityResult, dataset, config)
         allOrderedLists = await pruningObjectsByDirectHypernym(allOrderedLists);
     }
 
+    //Saving allOrderedLists (useful in case of recovering of all frequent patterns from maximal only)
+    TOOLS.writeJSONFile(allOrderedLists, `./output/${activityResult.activityName}__allOrderedLists.json`, true);
+
     activityResult.numberOfPlans = allOrderedLists.length;
     console.log(`${activityResult.numberOfPlans} plans found!`);
     console.log(`${(new Set(allOrderedLists.flat()).size)} distinct objects or couples (verb, object) found!`);
