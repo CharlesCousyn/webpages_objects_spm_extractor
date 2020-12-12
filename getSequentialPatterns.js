@@ -362,12 +362,17 @@ async function processOneActivity(activityResult, dataset, config)
 
 async function pruningObjectsByDirectHypernym(allOrderedLists)
 {
-    console.log("Pruning objects by search of direct hypernym...")
-    //Extract all the objects
-    let uniqueObjects = new Set(allOrderedLists.flat().map(string => string.split("||")[1]));
+    console.log("Pruning objects by search of direct hypernym...");
+
+    //Get ordered objects and orderedVerbs
+    let allOrderedVerbs = allOrderedLists.map(orderedList => orderedList.map(string => string.split("||")[0]));
+    let allOrderedObjects = allOrderedLists.map(orderedList => orderedList.map(string => string.split("||")[1]));
+
+    //Extract all the unique objects
+    let uniqueObjects = [...new Set(allOrderedObjects.flat())];
 
     //Getting direct hypernyms
-    let objWithHypernyms = await Promise.all([...uniqueObjects].map(async object => ({name: object, directHypernyms: await getDirectHypernyms(object)})));
+    let objWithHypernyms = await Promise.all(uniqueObjects.map(async object => ({name: object, directHypernyms: await getDirectHypernyms(object)})));
 
     //Find objects to transform
     let arrayOfObjectToTransform = [];
@@ -383,13 +388,14 @@ async function pruningObjectsByDirectHypernym(allOrderedLists)
         });
     });
 
-    //Pruning transformation to convert A->B and B->C to A->C
-    arrayOfObjectToTransform = arrayOfObjectToTransform.reduce((acc, curr) =>
-    {
-        return acc;
-    }, []);
-
     //Apply transformation...
+    allOrderedLists = allOrderedLists.map((orderedList, indexPlan) =>
+        orderedList.map((string, indexCouple)=>
+        {
+            let transformation = arrayOfObjectToTransform.filter(([hypo, hyper]) => hypo === string);
+            let newObject = transformation.length === 1 ? transformation[0][1] : string;
+            return `${allOrderedVerbs[indexPlan][indexCouple]}||${newObject}`;
+        }));
 
     return allOrderedLists;
 }
