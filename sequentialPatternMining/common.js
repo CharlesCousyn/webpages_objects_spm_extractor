@@ -154,7 +154,7 @@ export function recoverAllSeqPatsFromMaximalPats(maximalPatterns)
     //Using GSP to find all patterns for each max pattern
     for(let maxPat of maximalPatterns)
     {
-        let patternsWithSupp = GSP.run([maxPat], 1.0, false, false, false);
+        let patternsWithSupp = GSP.run([maxPat], 0.5, false, false, false);
         patternsWithSupp.forEach((support, pat)=>
         {
             allPatterns.add(pat);
