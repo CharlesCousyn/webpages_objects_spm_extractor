@@ -1,3 +1,5 @@
+import * as GSP from "./GSP";
+
 export function isSupported(orderedElements, sequence)
 {
     let minIndex = -1;
@@ -135,4 +137,50 @@ export function horizontalDBToVerticalDB(db)
                         .map(idres => idres !== -1 ? [id, idres] : [])
                         .filter(arr => arr.length !== 0))])
         .map(([pat, idList]) => [pat, idList, (new Set(idList.map(([sid, eid])=> sid))).size / db.length]);
+}
+
+export function recoverAllSeqPatsFromMaximalPats(maximalPatterns)
+{
+    class ArraySet extends Set {
+        add(arr) {
+            super.add(JSON.stringify(arr));
+        }
+        has(arr) {
+            return super.has(JSON.stringify(arr));
+        }
+    }
+
+    let allPatterns = new ArraySet();
+    //Using GSP to find all patterns for each max pattern
+    for(let maxPat of maximalPatterns)
+    {
+        let patternsWithSupp = GSP.run([maxPat], 1.0, false, false, false);
+        patternsWithSupp.forEach((support, pat)=>
+        {
+            allPatterns.add(pat);
+        });
+    }
+
+    //From a set of string array to array of array
+    allPatterns = [...allPatterns].map(stringArr => JSON.parse(stringArr));
+
+    return allPatterns;
+}
+
+export function getSupportPatternsFromDB(db, arrayPatterns)
+{
+    let patternsWithSupp = arrayPatterns.map(pat => [pat, 0.0]);
+    for(let sequence of db)
+    {
+        patternsWithSupp = patternsWithSupp.map(([pat, sup]) =>
+        {
+            console.log(isSupported(pat, sequence))
+            if(isSupported(pat, sequence))
+            {
+                sup += 1.0 / db.length;
+            }
+            return [pat, sup];
+        });
+    }
+    return new Map(patternsWithSupp);
 }

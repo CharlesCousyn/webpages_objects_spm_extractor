@@ -85,7 +85,7 @@ function PrefixSpanRecurs(database, minSupport, sequentialPattern, length, fullD
 
 export function run(database, minSupport, closedMention, maximalMention)
 {
-    console.log(`Getting sequential patterns with minSupport ${minSupport}...`);
+    console.log(`PrefixSpan: Getting sequential patterns with minSupport ${minSupport}...`);
     //Get length DB
     let fullDBLength = database.length;
     if(fullDBLength === 0)

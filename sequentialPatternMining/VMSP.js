@@ -85,7 +85,7 @@ function search([pattern, idList, support], freqItems, minSupport, fullDBLength,
 //Without Candidate Pruning with Co-occurrence map (CPC)
 export function run(db, minSupport)
 {
-    console.log(`Getting maximal sequential patterns with minSupport ${minSupport}...`);
+    console.log(`VMSP: Getting maximal sequential patterns with minSupport ${minSupport}...`);
     //Get length DB
     let fullDBLength = db.length;
     if(fullDBLength === 0)

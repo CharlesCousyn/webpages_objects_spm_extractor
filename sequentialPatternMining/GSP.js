@@ -1,9 +1,12 @@
 import * as TOOLS from "../tools";
 import * as COMMON from "./common";
 
-export function run(database, minSupport, closedMention, maximalMention)
+export function run(database, minSupport, closedMention, maximalMention, boolLog)
 {
-    console.log("Getting sequential patterns...");
+    if(boolLog)
+    {
+        console.log(`GSP: Getting sequential patterns with min support ${minSupport}...`);
+    }
     //Get length DB
     let dbLength = database.length;
     if(dbLength === 0)
@@ -85,6 +88,9 @@ export function run(database, minSupport, closedMention, maximalMention)
         allFrequentItemSets = new Map([...allFrequentItemSets, ...freqItemSetsFixedLevel]);
     }
 
-    console.log(`${allFrequentItemSets.size} sequential patterns found!`);
+    if(boolLog)
+    {
+        console.log(`${allFrequentItemSets.size} sequential patterns found!`);
+    }
     return COMMON.handleClosedAndMaximalPat(allFrequentItemSets, closedMention, maximalMention);
 }
