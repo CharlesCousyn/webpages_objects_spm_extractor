@@ -174,7 +174,6 @@ export function getSupportPatternsFromDB(db, arrayPatterns)
     {
         patternsWithSupp = patternsWithSupp.map(([pat, sup]) =>
         {
-            console.log(isSupported(pat, sequence))
             if(isSupported(pat, sequence))
             {
                 sup += 1.0 / db.length;
