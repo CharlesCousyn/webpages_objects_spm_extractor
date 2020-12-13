@@ -95,6 +95,7 @@
                     "follow||fashion",
                     "find||coloring_material",
                     "find||work",
+                    "buy||clothing",
                     "pay||item",
                     "pick||coloring_material",
                     "pick||workhorse",
@@ -112,6 +113,7 @@
                     "see||layer",
                     "choose||jacket",
                     "choose||coat",
+                    "choose||layer",
                     "choose||shoe",
                     "complement||style",
                     "complement||outfit",
@@ -140,6 +142,7 @@
                     "look||face",
                     "color||clothing",
                     "pick||accessory",
+                    "pick||coloring_material",
                     "pick||coloring_material",
                     "put||outfit",
                     "convey||coloring_material"
@@ -184,6 +187,7 @@
                     "wash||reservoir",
                     "soak||water",
                     "soak||tank",
+                    "soak||water",
                     "let||buttocks",
                     "let||reservoir",
                     "let||tank",
@@ -207,6 +211,10 @@
                     "put||timer",
                     "stir||noodle",
                     "put||cup",
+                    "put||colander",
+                    "put||sink",
+                    "shake||pasta",
+                    "shake||colander",
                     "put||pasta"
                 ],
                 0.2
@@ -219,22 +227,8 @@
                     "put||timer",
                     "stir||noodle",
                     "put||cup",
-                    "put||colander",
-                    "put||sink",
-                    "shake||pasta",
-                    "shake||colander"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "fill||pot",
-                    "fill||water",
-                    "bring||water",
-                    "put||timer",
-                    "stir||noodle",
-                    "put||cup",
-                    "use||sauce"
+                    "use||sauce",
+                    "put||pasta"
                 ],
                 0.2
             ],

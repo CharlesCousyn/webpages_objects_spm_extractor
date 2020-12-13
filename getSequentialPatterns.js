@@ -252,20 +252,14 @@ async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneAc
             return `${nearestVerb.definitions[0].lemma}||${tokInfoObject.definitions[0].lemma}`;
         });
 
-        //Delete duplicates (keep the first only)
-        let uniqueValidTokens = validTokens.filter((tok, index, array) => array.indexOf(tok) === index);
-
-        return uniqueValidTokens;
+        return validTokens;
     }
     else
     {
         //Only keep the pure form of the token to avoid synonyms abundance
         let validTokens = validTokensInfos.map(tokInfo => tokInfo.definitions[0].lemma);
 
-        //Delete duplicates (keep the first only)
-        let uniqueValidTokens = validTokens.filter((tok, index, array) => array.indexOf(tok) === index);
-
-        return uniqueValidTokens;
+        return validTokens;
     }
 }
 
@@ -389,11 +383,11 @@ async function pruningObjectsByDirectHypernym(allOrderedLists)
     });
 
     //Apply transformation...
-    allOrderedLists = allOrderedLists.map((orderedList, indexPlan) =>
-        orderedList.map((string, indexCouple)=>
+    allOrderedLists = allOrderedObjects.map((orderedObjects, indexPlan) =>
+        orderedObjects.map((objectString, indexCouple)=>
         {
-            let transformation = arrayOfObjectToTransform.filter(([hypo, hyper]) => hypo === string);
-            let newObject = transformation.length === 1 ? transformation[0][1] : string;
+            let transformation = arrayOfObjectToTransform.filter(([hypo, hyper]) => hypo === objectString);
+            let newObject = transformation.length === 1 ? transformation[0][1] : objectString;
             return `${allOrderedVerbs[indexPlan][indexCouple]}||${newObject}`;
         }));
 
