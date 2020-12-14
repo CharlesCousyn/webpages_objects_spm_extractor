@@ -20,19 +20,20 @@ export function run(database, minSupport, closedMention, maximalMention, boolLog
     //Find frequent 1-sequences
     let freqItemSetsLevelOne = uniqueItems.reduce((acc, currItem) => {
         //Count the freq of each item
-        let countItem = 0.0;
+        let supp = 0.0;
         database.forEach(transaction =>
         {
             if(COMMON.isSupported([currItem], transaction))
             {
-                countItem += (1 / dbLength);
+                supp += 1.0;
             }
         });
+        supp = supp / dbLength;
 
         //Only keep itemSets with sufficient support
-        if(countItem >= minSupport)
+        if(supp >= minSupport)
         {
-            acc.set([currItem], countItem);
+            acc.set([currItem], supp);
         }
 
         return acc;
@@ -60,23 +61,30 @@ export function run(database, minSupport, closedMention, maximalMention, boolLog
             }
         }
 
-        //Increment counts
+        //Increment count support
         for(let trans of database)
         {
-            for(let [orderedItems, count] of candidateSets)
+            for(let [orderedItems, countSupp] of candidateSets)
             {
                 //Increment count if trans support candidateSet
                 if(COMMON.isSupported(orderedItems, trans))
                 {
-                    candidateSets.set(orderedItems, count + (1 / dbLength));
+                    candidateSets.set(orderedItems, countSupp + 1.0 );
                 }
             }
         }
 
-        //Only keep itemSets with sufficient support
-        for (let [orderedItems, count] of candidateSets)
+        //Compute supp
+        for(let [orderedItems, countSupp] of candidateSets)
         {
-            if (count < minSupport)
+            //Divide by dbLength
+            candidateSets.set(orderedItems, countSupp / dbLength);
+        }
+
+        //Only keep itemSets with sufficient support
+        for (let [orderedItems, supp] of candidateSets)
+        {
+            if (supp < minSupport)
             {
                 candidateSets.delete(orderedItems);
             }

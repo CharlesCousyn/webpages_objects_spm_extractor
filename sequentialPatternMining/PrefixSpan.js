@@ -9,19 +9,20 @@ function PrefixSpanRecurs(database, minSupport, sequentialPattern, length, fullD
     //Find unique 1-sequences: give a map of form[ ["a"]: 0.3, ["b"]:0.4, ...]
     let oneSizedItemSetsWithSupp = uniqueItems.reduce((acc, currItem) => {
         //Count the freq of each item
-        let countItem = 0.0;
+        let supp = 0.0;
         database.forEach(sequence =>
         {
             if(sequence.includes(currItem))
             {
-                countItem += (1 / fullDBLength);
+                supp += 1.0;
             }
         });
+        supp = supp / fullDBLength;
 
         //Only keep itemSets with sufficient support
-        if(countItem >= minSupport)
+        if(supp >= minSupport)
         {
-            acc.set([currItem], countItem);
+            acc.set([currItem], supp);
         }
         return acc;
     }, new Map());

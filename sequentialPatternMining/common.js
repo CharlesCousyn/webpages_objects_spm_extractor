@@ -141,12 +141,20 @@ export function horizontalDBToVerticalDB(db)
 
 export function recoverAllSeqPatsFromMaximalPats(maximalPatterns)
 {
-    class ArraySet extends Set {
-        add(arr) {
+    //Class of set of array allowing to get unique arrays
+    class ArraySet extends Set
+    {
+        add(arr)
+        {
             super.add(JSON.stringify(arr));
         }
-        has(arr) {
+        has(arr)
+        {
             return super.has(JSON.stringify(arr));
+        }
+        toArray()
+        {
+            return  [...this].map(stringArr => JSON.parse(stringArr));
         }
     }
 
@@ -161,8 +169,8 @@ export function recoverAllSeqPatsFromMaximalPats(maximalPatterns)
         });
     }
 
-    //From a set of string array to array of array
-    allPatterns = [...allPatterns].map(stringArr => JSON.parse(stringArr));
+    //From a ArraySet to array of array
+    allPatterns = allPatterns.toArray();
 
     return allPatterns;
 }
@@ -176,10 +184,10 @@ export function getSupportPatternsFromDB(db, arrayPatterns)
         {
             if(isSupported(pat, sequence))
             {
-                sup += 1.0 / db.length;
+                sup += 1.0;
             }
             return [pat, sup];
         });
     }
-    return new Map(patternsWithSupp);
+    return new Map(patternsWithSupp.map(([arr, supp])=> [arr, supp / db.length]));
 }
