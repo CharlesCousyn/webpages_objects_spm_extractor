@@ -1,7 +1,7 @@
 //Libs
 import Wordpos from "wordpos";
 import htmlToText  from "html-to-text";
-import csvParse from "csv-parse/lib/sync"
+import csvParse from "csv-parse/lib/sync";
 import { from, of, ReplaySubject, partition} from 'rxjs';
 import { filter, map, concatMap, tap, groupBy, reduce, mergeMap, mergeAll, toArray, takeLast, bufferCount, count, distinct, take, isEmpty} from 'rxjs/operators';
 import filesSystem from "fs";
