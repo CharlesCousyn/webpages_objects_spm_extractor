@@ -2,5 +2,21 @@
   {
     "activityName": "answer_the_phone",
     "objects": ["phone"]
+  },
+  {
+    "activityName": "bake_parmesan_turkey_meatballs",
+    "objects": ["parmesan", "meatball"]
+  },
+  {
+    "activityName": "choosing_outfit",
+    "objects": ["dress"]
+  },
+  {
+    "activityName": "clean",
+    "objects": ["sponge"]
+  },
+  {
+    "activityName": "cook_pasta",
+    "objects": ["pasta", "sauce", "salt", "pepper"]
   }
 ]
