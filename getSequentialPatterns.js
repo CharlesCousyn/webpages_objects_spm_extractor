@@ -202,38 +202,45 @@ async function getPlansFromHTML(pathWebPage, predeterminedObjectsOneActivty, con
 {
     console.log("pathWebPage", pathWebPage);
 
-    let cleanPlans = [];
-    if(config.useSpecificStruct)
+    try
     {
-        let rawPlans = await htmlProcessing.extractPlans(pathWebPage);
-
-        for(let rawPlan of rawPlans)
+        let cleanPlans = [];
+        if(config.useSpecificStruct)
         {
-            let rawSteps = rawPlan.join(" ");
+            let rawPlans = await htmlProcessing.extractPlans(pathWebPage);
 
-            //Clean the text of each raw plan
-            cleanPlans.push(htmlProcessing.stringToCleanText(rawSteps, config));
+            for(let rawPlan of rawPlans)
+            {
+                let rawSteps = rawPlan.join(" ");
+
+                //Clean the text of each raw plan
+                cleanPlans.push(htmlProcessing.stringToCleanText(rawSteps, config));
+
+                //Write a new text file
+                //let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
+                //TOOLS.writeTextFile(cleanText, pathToTextFile);
+            }
+        }
+        else
+        {
+            //Get the HTML string
+            let htmlString = TOOLS.readTextFile(pathWebPage);
+            //Clean the text
+            cleanPlans.push(htmlProcessing.htmlStringToCleanText(htmlString, config));
 
             //Write a new text file
             //let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
             //TOOLS.writeTextFile(cleanText, pathToTextFile);
         }
+
+        //Extract object in order from text
+        return await Promise.all(cleanPlans.map(cleanPlan => getOrderedObjectsFromTextFin(cleanPlan, predeterminedObjectsOneActivty, config)));
     }
-    else
+    catch(e)
     {
-        //Get the HTML string
-        let htmlString = TOOLS.readTextFile(pathWebPage);
-        //Clean the text
-        cleanPlans.push(htmlProcessing.htmlStringToCleanText(htmlString, config));
-
-        //Write a new text file
-        //let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
-        //TOOLS.writeTextFile(cleanText, pathToTextFile);
+        console.error(e);
+        return [];
     }
-
-    //Extract object in order from text
-    return await Promise.all(cleanPlans.map(cleanPlan => getOrderedObjectsFromTextFin(cleanPlan, predeterminedObjectsOneActivty, config)));
-
 }
 
 async function addPlansToObj(resOneWebPage, predeterminedObjectsOneActivty, config)
