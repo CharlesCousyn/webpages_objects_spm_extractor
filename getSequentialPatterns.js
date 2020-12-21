@@ -198,52 +198,49 @@ async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneAc
     }
 }
 
-async function getOrderedObjectsFromHTML(pathWebPage, predeterminedObjectsOneActivty, config)
+async function getPlansFromHTML(pathWebPage, predeterminedObjectsOneActivty, config)
 {
     console.log("pathWebPage", pathWebPage);
-    try
-    {
-        let cleanText= "";
-        if(config.useSpecificStruct)
-        {
-            let plans = await htmlProcessing.extractPlans(pathWebPage);
-            let plan = plans[0];
-            let steps = plan.join(" ");
 
-            //Clean the text
-            cleanText = htmlProcessing.stringToCleanText(steps, config);
+    let cleanPlans = [];
+    if(config.useSpecificStruct)
+    {
+        let rawPlans = await htmlProcessing.extractPlans(pathWebPage);
+
+        for(let rawPlan of rawPlans)
+        {
+            let rawSteps = rawPlan.join(" ");
+
+            //Clean the text of each raw plan
+            cleanPlans.push(htmlProcessing.stringToCleanText(rawSteps, config));
 
             //Write a new text file
-            let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
-            TOOLS.writeTextFile(cleanText, pathToTextFile);
+            //let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
+            //TOOLS.writeTextFile(cleanText, pathToTextFile);
         }
-        else
-        {
-            //Get the HTML string
-            let htmlString = TOOLS.readTextFile(pathWebPage);
-            //Clean the text
-            cleanText = htmlProcessing.htmlStringToCleanText(htmlString, config);
-            //Write a new text file
-            let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
-            TOOLS.writeTextFile(cleanText, pathToTextFile);
-        }
-
-        //Extract object in order from text
-        return await getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneActivty, config);
     }
-    catch (e)
+    else
     {
-        console.error(e);
-        return [];
+        //Get the HTML string
+        let htmlString = TOOLS.readTextFile(pathWebPage);
+        //Clean the text
+        cleanPlans.push(htmlProcessing.htmlStringToCleanText(htmlString, config));
+
+        //Write a new text file
+        //let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
+        //TOOLS.writeTextFile(cleanText, pathToTextFile);
     }
+
+    //Extract object in order from text
+    return await Promise.all(cleanPlans.map(cleanPlan => getOrderedObjectsFromTextFin(cleanPlan, predeterminedObjectsOneActivty, config)));
 
 }
 
-async function addOrderedObjectsToObj(resOneWebPage, predeterminedObjectsOneActivty, config)
+async function addPlansToObj(resOneWebPage, predeterminedObjectsOneActivty, config)
 {
     return {
         ...resOneWebPage,
-        orderedObjects: await getOrderedObjectsFromHTML(resOneWebPage.path, predeterminedObjectsOneActivty, config)
+        plans: await getPlansFromHTML(resOneWebPage.path, predeterminedObjectsOneActivty, config)
     };
 }
 
@@ -263,12 +260,12 @@ async function processOneActivity(activityResult, dataset, config)
         //Stream of {fileName, path} in one activity folder (Get the path for each webpage)
         .pipe(filter(resOneWebPage => !config.filterUsingDataset || dataset.find(data => data.fileName === resOneWebPage.fileName).class === "descriptive"))
         //Stream of {fileName, path} in one activity folder (Filter the web pages which are not "descriptive" using dataset)
-        .pipe(concatMap(resOneWebPage => from(addOrderedObjectsToObj(resOneWebPage, predeterminedObjectsOneActivty, config))))
-        //Stream of {fileName, path, orderedObjects} in one activity folder (Extract ordered objects from html files)
+        .pipe(concatMap(resOneWebPage => from(addPlansToObj(resOneWebPage, predeterminedObjectsOneActivty, config))))
+        //Stream of {fileName, path, plans} in one activity folder (Extract ordered objects from html files)
         .pipe(toArray())
         .toPromise();
 
-    let allOrderedLists = resAllPages.map(res => res.orderedObjects);
+    let allOrderedLists = resAllPages.flatMap(res => res.plans);
 
     if(config.pruningObjectsUsingWordnet)
     {

@@ -40,9 +40,9 @@ async function extractPlans2(path)
 (async () =>
 {
     let allPlans = [];
-    for(let i = 0; i < 5; i++)
+    for(let i = 0; i < 10; i++)
     {
-        let pathToFileTest = `C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/answer_the_phone/answer_the_phone_${i}.html`;
+        let pathToFileTest = `C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/cook_pasta/cook_pasta_${i}.html`;
         let plans = await extractPlans(pathToFileTest);
         plans.forEach(plan => allPlans.push(plan));
     }

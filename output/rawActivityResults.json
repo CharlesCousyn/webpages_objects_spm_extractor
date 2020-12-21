@@ -5,39 +5,25 @@
         "_frequentSequentialPatterns": [
             [
                 [
-                    "pick||hoop",
-                    "talk||mouthpiece"
+                    "name||person"
                 ],
-                0.2
+                0.16666666666666666
             ],
             [
                 [
-                    "put||telephone",
-                    "put||face",
-                    "take||breath",
-                    "keep||pen",
-                    "keep||notepad",
-                    "keep||telephone",
-                    "transfer||person"
+                    "answer||telephone"
                 ],
-                0.2
+                0.16666666666666666
             ],
             [
                 [
-                    "keep||pen",
-                    "keep||paper",
-                    "ask||right_field",
-                    "wait||hold",
-                    "take||need",
-                    "name||person",
-                    "talk||lower_berth",
-                    "interact||homo"
+                    "keep||pen"
                 ],
-                0.2
+                0.16666666666666666
             ]
         ],
-        "_numberOfPlans": 5,
-        "_minSupport": 0.2
+        "_numberOfPlans": 12,
+        "_minSupport": 0.15
     },
     {
         "_activityName": "bake_parmesan_turkey_meatballs",
@@ -50,7 +36,7 @@
                     "fix||sheet",
                     "make||meat"
                 ],
-                0.5
+                0.3333333333333333
             ],
             [
                 [
@@ -64,11 +50,11 @@
                     "fix||porcupine",
                     "serve||way"
                 ],
-                0.5
+                0.3333333333333333
             ]
         ],
-        "_numberOfPlans": 2,
-        "_minSupport": 0.2
+        "_numberOfPlans": 3,
+        "_minSupport": 0.15
     },
     {
         "_activityName": "choosing_outfit",
@@ -76,92 +62,13 @@
         "_frequentSequentialPatterns": [
             [
                 [
-                    "desire||clothing",
-                    "gather||accessory",
-                    "get||style",
-                    "outwear||outfit",
-                    "wear||right_field",
-                    "wear||shoe",
-                    "add||accessory"
+                    "pick||coloring_material"
                 ],
-                0.2
-            ],
-            [
-                [
-                    "tailor||type",
-                    "suit||clothing",
-                    "buy||clothing",
-                    "look||clothing",
-                    "follow||fashion",
-                    "find||coloring_material",
-                    "find||work",
-                    "buy||clothing",
-                    "pay||item",
-                    "pick||coloring_material",
-                    "pick||workhorse",
-                    "pick||piece"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "choose||suit",
-                    "choose||dress",
-                    "choose||layer",
-                    "suit||base",
-                    "add||piece",
-                    "see||layer",
-                    "choose||jacket",
-                    "choose||coat",
-                    "choose||layer",
-                    "choose||shoe",
-                    "complement||style",
-                    "complement||outfit",
-                    "look||change",
-                    "add||belt",
-                    "flatter||jewelry",
-                    "flatter||outfit",
-                    "choose||item",
-                    "buy||piece",
-                    "form||coloring_material",
-                    "form||cupboard"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "determine||skin",
-                    "state||coloring_material",
-                    "keep||skin",
-                    "keep||shade",
-                    "wear||top",
-                    "wear||scarf",
-                    "bring||coloring_material",
-                    "bring||eye",
-                    "catch||coloring_material",
-                    "look||face",
-                    "color||clothing",
-                    "pick||accessory",
-                    "pick||coloring_material",
-                    "pick||coloring_material",
-                    "put||outfit",
-                    "convey||coloring_material"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "use||outfit",
-                    "use||piece",
-                    "use||inspiration",
-                    "have||outfit",
-                    "choose||coloring_material"
-                ],
-                0.2
+                0.2857142857142857
             ]
         ],
-        "_numberOfPlans": 5,
-        "_minSupport": 0.2
+        "_numberOfPlans": 7,
+        "_minSupport": 0.15
     },
     {
         "_activityName": "clean",
@@ -177,7 +84,7 @@
                     "clean||counter",
                     "arrange||down"
                 ],
-                0.5
+                0.2
             ],
             [
                 [
@@ -193,11 +100,66 @@
                     "let||tank",
                     "let||air"
                 ],
-                0.5
+                0.2
+            ],
+            [
+                [
+                    "pull||pod",
+                    "pull||holder",
+                    "pull||top",
+                    "separate||funnel",
+                    "separate||pod",
+                    "separate||holder",
+                    "funnel||rinse",
+                    "funnel||pod",
+                    "funnel||holder",
+                    "funnel||water",
+                    "put||pod",
+                    "put||holder",
+                    "put||machine",
+                    "run||bicycle",
+                    "run||machine"
+                ],
+                0.2
+            ],
+            [
+                [
+                    "empty||water",
+                    "remove||tank",
+                    "remove||filter",
+                    "scale||mix",
+                    "scale||part",
+                    "scale||solution",
+                    "scale||water",
+                    "scale||tank",
+                    "add||water",
+                    "blink||light",
+                    "fill||tank",
+                    "fill||water",
+                    "run||bicycle"
+                ],
+                0.2
+            ],
+            [
+                [
+                    "soak||filter",
+                    "soak||water",
+                    "pull||filter",
+                    "pull||tube",
+                    "pull||water",
+                    "pull||tank",
+                    "take||buttocks",
+                    "remove||tube",
+                    "remove||filter",
+                    "put||filter",
+                    "put||tube",
+                    "put||tank"
+                ],
+                0.2
             ]
         ],
-        "_numberOfPlans": 2,
-        "_minSupport": 0.2
+        "_numberOfPlans": 5,
+        "_minSupport": 0.15
     },
     {
         "_activityName": "cook_pasta",
@@ -207,93 +169,72 @@
                 [
                     "fill||pot",
                     "fill||water",
-                    "bring||water",
-                    "put||timer",
-                    "stir||noodle",
-                    "put||cup",
-                    "put||colander",
-                    "put||sink",
-                    "shake||pasta",
-                    "shake||colander",
-                    "put||pasta"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "fill||pot",
-                    "fill||water",
-                    "bring||water",
-                    "put||timer",
-                    "stir||noodle",
-                    "put||cup",
-                    "use||sauce",
-                    "put||pasta"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "fill||pot",
-                    "fill||water",
-                    "bring||water",
                     "stir||pasta"
                 ],
-                0.2
+                0.1875
             ],
             [
                 [
                     "fill||pot",
                     "bring||water",
+                    "use||sauce"
+                ],
+                0.1875
+            ],
+            [
+                [
+                    "add||salt",
+                    "add||water"
+                ],
+                0.1875
+            ],
+            [
+                [
+                    "add||salt",
+                    "add||pepper"
+                ],
+                0.1875
+            ],
+            [
+                [
                     "add||pasta",
+                    "add||water"
+                ],
+                0.1875
+            ],
+            [
+                [
                     "add||water",
-                    "use||sauce"
+                    "add||noodle"
                 ],
-                0.2
+                0.1875
             ],
             [
                 [
-                    "fill||pot",
-                    "bring||water",
-                    "bring||heating_system",
-                    "use||sauce"
+                    "put||timer"
                 ],
-                0.2
+                0.1875
             ],
             [
                 [
-                    "bring||water",
+                    "put||pasta"
+                ],
+                0.1875
+            ],
+            [
+                [
                     "serve||sauce"
                 ],
-                0.2
-            ],
-            [
-                [
-                    "put||timer",
-                    "stir||pasta"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "make||pasta"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "fix||pasta"
-                ],
-                0.2
+                0.1875
             ],
             [
                 [
                     "add||sauce"
                 ],
-                0.4
+                0.375
             ]
         ],
-        "_numberOfPlans": 10,
-        "_minSupport": 0.2
+        "_numberOfPlans": 16,
+        "_minSupport": 0.15
     }
 ]
