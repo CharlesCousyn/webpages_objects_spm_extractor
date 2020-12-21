@@ -1,4 +1,5 @@
 import {JSDOM} from "jsdom";
+import {extractPlans} from "../htmlProcessing";
 
 
 //Keep JSDOM errors
@@ -9,7 +10,7 @@ console.error = function(msg)
     originalConsoleError(msg);
 }*/
 
-async function extractPlans(path)
+async function extractPlans2(path)
 {
     let selectorPlansHTML = "[id^=mf-section-] > div.steps.steps_first.sticky";
     let selectorStepsHTML = "[id^=step-id-] .step";
@@ -38,7 +39,15 @@ async function extractPlans(path)
 
 (async () =>
 {
-    let pathToFileTest = "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/bake_parmesan_turkey_meatballs/bake_parmesan_turkey_meatballs_0.html";
-    console.log(await extractPlans(pathToFileTest));
+    let allPlans = [];
+    for(let i = 0; i < 5; i++)
+    {
+        let pathToFileTest = `C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/answer_the_phone/answer_the_phone_${i}.html`;
+        let plans = await extractPlans(pathToFileTest);
+        plans.forEach(plan => allPlans.push(plan));
+    }
+    console.log("totalNumberOfPlans: ", allPlans.length);
+    console.log("allPlans: ", allPlans);
+
 
 })();

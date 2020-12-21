@@ -11,14 +11,12 @@ import {Tag} from 'en-pos';
 import parser from 'en-parse';
 import { Inflectors } from "en-inflectors";
 import {normalizeCaps, replaceConfusables, resolveContractions} from "en-norm";
-import {replaceHTMLEntities} from "./libs/fin-html-entities";
-import {reverseSlang} from "./libs/fin-slang";
-import {JSDOM} from "jsdom";
 
 //Personal imports
 import predeterminedObjects from "./configFiles/predeterminedObjects.json";
 import GENERAL_CONFIG from "./configFiles/generalConfig.json";
 import ActivityResult from "./entities/ActivityResult";
+import * as htmlProcessing from "./htmlProcessing";
 import * as TOOLS from "./tools";
 import * as GSP from "./sequentialPatternMining/GSP";
 import * as PrefixSpan from "./sequentialPatternMining/PrefixSpan";
@@ -35,69 +33,6 @@ console.error = function(msg)
 
 //Init wordpos
 let wordpos = new Wordpos();
-
-async function extractPlans(path)
-{
-    let selectorPlansHTML = "div.steps.sticky:not(.sample)";
-    let selectorStepsHTML = "[id^=step-id-] .step b";
-    let document = (await JSDOM.fromFile(path)).window.document;
-
-    //Extract all plans with all steps for each plan
-    let plans = [];
-    let plansHTML = document.querySelectorAll(selectorPlansHTML);
-
-    plansHTML.forEach(planHTML =>
-    {
-        let steps = [];
-        let stepsHTML = planHTML.querySelectorAll(selectorStepsHTML);
-
-        stepsHTML.forEach(stepHTML =>
-        {
-            //stepHTML.querySelectorAll('*').forEach(n => n.remove());
-            steps.push(stepHTML.textContent);
-        });
-        plans.push(steps);
-    });
-
-
-    //Check if it's multiple plans or multiple parts
-    if(plansHTML.length > 1)
-    {
-        let discriminatingEl = plansHTML[0].querySelector("h3 > div > div");
-        discriminatingEl.querySelectorAll('*').forEach(n => n.remove());
-        let typeOfContent= discriminatingEl.textContent;
-        //Only one plan
-        if(typeOfContent.startsWith("Part"))
-        {
-            plans = [plans.flat()];
-        }
-    }
-
-    return plans;
-}
-
-function htmlStringToCleanText(htmlString, config)
-{
-    let text = htmlToText.fromString(htmlString, config.configHTML2Text);
-    return stringToCleanText(text, config);
-}
-
-function stringToCleanText(text, config)
-{
-    //Delete all non pure text things...
-    //JSON strings
-    let processedText = text.replace(new RegExp("({\".*})", "gs"), "");
-    //Urls
-    processedText = processedText.replace(new RegExp("(https?:\\/\\/)?([\\w\\-])+\\.{1}([a-zA-Z]{2,63})([\\/\\w-]*)*\\/?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)", "g"), "");
-    //HTML entities and slang
-    processedText = replaceHTMLEntities(reverseSlang(resolveContractions(replaceConfusables(processedText))));
-
-    if(config.showCleanTextForDebug)
-    {
-        console.log("processedText", processedText);
-    }
-    return processedText;
-}
 
 async function keepTokensNounAndValidLexName(processedSentences, config)
 {
@@ -271,12 +206,12 @@ async function getOrderedObjectsFromHTML(pathWebPage, predeterminedObjectsOneAct
         let cleanText= "";
         if(config.useSpecificStruct)
         {
-            let plans = await extractPlans(pathWebPage);
+            let plans = await htmlProcessing.extractPlans(pathWebPage);
             let plan = plans[0];
             let steps = plan.join(" ");
 
             //Clean the text
-            cleanText = stringToCleanText(steps, config);
+            cleanText = htmlProcessing.stringToCleanText(steps, config);
 
             //Write a new text file
             let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
@@ -287,7 +222,7 @@ async function getOrderedObjectsFromHTML(pathWebPage, predeterminedObjectsOneAct
             //Get the HTML string
             let htmlString = TOOLS.readTextFile(pathWebPage);
             //Clean the text
-            cleanText = htmlStringToCleanText(htmlString, config);
+            cleanText = htmlProcessing.htmlStringToCleanText(htmlString, config);
             //Write a new text file
             let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
             TOOLS.writeTextFile(cleanText, pathToTextFile);
