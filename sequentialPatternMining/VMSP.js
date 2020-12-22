@@ -16,7 +16,7 @@ function addPatternWithStrategies([pattern, support], Z)
     let maximalUntilNow = true;
     for(let [patternZ, supportZ] of Z)
     {
-        if (patternZ.length > pattern.length && /*support >= supportZ &&*/ COMMON.isSupported(pattern, patternZ))
+        if (patternZ.length > pattern.length && support >= supportZ && COMMON.isSupported(pattern, patternZ))
         {
             maximalUntilNow = false;
             break;
@@ -32,7 +32,7 @@ function addPatternWithStrategies([pattern, support], Z)
         let patternsToRemove = [];
         for(let [patternZ, supportZ] of Z)
         {
-            if(patternZ.length < pattern.length && /*support < supportZ && */COMMON.isSupported(patternZ, pattern))
+            if(pattern.length > patternZ.length && supportZ >= support && COMMON.isSupported(patternZ, pattern))
             {
                 patternsToRemove.push(patternZ);
             }
@@ -80,7 +80,7 @@ function search([pattern, idList, support], freqItems, minSupport, fullDBLength,
 
 }
 
-//Implementation of VMSP with partial EFN (With sub and sup checking but without Size check optimization, Sum of items optimization and Support check optimization)
+//Implementation of VMSP with partial EFN (With sub and sup checking but with Size check optimization and Support check optimization but not Sum of items optimization)
 //Without Forward-Maximal Extension checking (FME)
 //Without Candidate Pruning with Co-occurrence map (CPC)
 export function run(db, minSupport)
