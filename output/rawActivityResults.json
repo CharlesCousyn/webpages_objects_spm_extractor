@@ -5,24 +5,18 @@
         "_frequentSequentialPatterns": [
             [
                 [
-                    "name||person"
-                ],
-                0.16666666666666666
-            ],
-            [
-                [
                     "answer||telephone"
                 ],
-                0.16666666666666666
+                0.21428571428571427
             ],
             [
                 [
                     "keep||pen"
                 ],
-                0.16666666666666666
+                0.21428571428571427
             ]
         ],
-        "_numberOfPlans": 12,
+        "_numberOfPlans": 14,
         "_minSupport": 0.15
     },
     {
@@ -31,29 +25,44 @@
         "_frequentSequentialPatterns": [
             [
                 [
-                    "stay||mixture",
-                    "make||human_body",
-                    "fix||sheet",
-                    "make||meat"
+                    "put||Parmesan",
+                    "put||herb",
+                    "put||milk",
+                    "put||tomato",
+                    "put||bowl",
+                    "add||egg",
+                    "add||garlic",
+                    "add||onion",
+                    "stir||mixture",
+                    "integrate||mix",
+                    "integrate||turkey",
+                    "arrange||meatball",
+                    "put||sheet",
+                    "put||oven",
+                    "serve||turkey",
+                    "serve||noodle",
+                    "serve||bread"
                 ],
-                0.3333333333333333
+                0.5
             ],
             [
                 [
-                    "unite||land",
-                    "unite||meat",
-                    "unite||bread",
-                    "unite||egg",
-                    "unite||bowl",
-                    "fix||dish",
-                    "continue||heating_system",
-                    "fix||porcupine",
-                    "serve||way"
+                    "put||cheese",
+                    "put||egg",
+                    "put||bowl",
+                    "stir||mixture",
+                    "put||pasta",
+                    "put||sauce",
+                    "put||cooker",
+                    "serve||cooker",
+                    "serve||turkey",
+                    "serve||rice",
+                    "serve||pasta"
                 ],
-                0.3333333333333333
+                0.5
             ]
         ],
-        "_numberOfPlans": 3,
+        "_numberOfPlans": 2,
         "_minSupport": 0.15
     },
     {
@@ -73,92 +82,8 @@
     {
         "_activityName": "clean",
         "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/clean",
-        "_frequentSequentialPatterns": [
-            [
-                [
-                    "take||hair",
-                    "keep||mouth",
-                    "extinguish||shoe",
-                    "make||bed",
-                    "clean||kitchen",
-                    "clean||counter",
-                    "arrange||down"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "wipe||machine",
-                    "wipe||water",
-                    "wash||buttocks",
-                    "wash||reservoir",
-                    "soak||water",
-                    "soak||tank",
-                    "soak||water",
-                    "let||buttocks",
-                    "let||reservoir",
-                    "let||tank",
-                    "let||air"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "pull||pod",
-                    "pull||holder",
-                    "pull||top",
-                    "separate||funnel",
-                    "separate||pod",
-                    "separate||holder",
-                    "funnel||rinse",
-                    "funnel||pod",
-                    "funnel||holder",
-                    "funnel||water",
-                    "put||pod",
-                    "put||holder",
-                    "put||machine",
-                    "run||bicycle",
-                    "run||machine"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "empty||water",
-                    "remove||tank",
-                    "remove||filter",
-                    "scale||mix",
-                    "scale||part",
-                    "scale||solution",
-                    "scale||water",
-                    "scale||tank",
-                    "add||water",
-                    "blink||light",
-                    "fill||tank",
-                    "fill||water",
-                    "run||bicycle"
-                ],
-                0.2
-            ],
-            [
-                [
-                    "soak||filter",
-                    "soak||water",
-                    "pull||filter",
-                    "pull||tube",
-                    "pull||water",
-                    "pull||tank",
-                    "take||buttocks",
-                    "remove||tube",
-                    "remove||filter",
-                    "put||filter",
-                    "put||tube",
-                    "put||tank"
-                ],
-                0.2
-            ]
-        ],
-        "_numberOfPlans": 5,
+        "_frequentSequentialPatterns": [],
+        "_numberOfPlans": 42,
         "_minSupport": 0.15
     },
     {
