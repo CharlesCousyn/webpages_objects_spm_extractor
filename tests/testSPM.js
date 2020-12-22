@@ -29,12 +29,14 @@ let database3 = [
     console.log(COMMON.horizontalDBToVerticalDB(database));
     console.log(GSP.run(database, 0.3, true, true, true));
     console.log(PrefixSpan.run(database, 0.3, true, true));
-    console.log(VMSP.run(database, 0.3));
+    console.log(VMSP.run(database, 0.3, true));
+    console.log(VMSP.run(database, 0.3, false));
 
     console.log(COMMON.horizontalDBToVerticalDB(database2));
     console.log(GSP.run(database2, 0.3, true, true, true));
     console.log(PrefixSpan.run(database2, 0.3, true, true));
-    console.log(VMSP.run(database2, 0.3));
+    console.log(VMSP.run(database2, 0.3, true));
+    console.log(VMSP.run(database2, 0.3, false));
 
     let allPats = COMMON.recoverAllSeqPatsFromMaximalPats(database3);
     console.log(allPats);

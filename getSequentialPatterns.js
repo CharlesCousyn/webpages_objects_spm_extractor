@@ -288,7 +288,7 @@ async function processOneActivity(activityResult, dataset, config)
     activityResult.minSupport = config.minSupport;
     //activityResult.frequentSequentialPatterns = GSP.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
     //activityResult.frequentSequentialPatterns = PrefixSpan.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
-    activityResult.frequentSequentialPatterns = VMSP.run(allOrderedLists, config.minSupport);
+    activityResult.frequentSequentialPatterns = VMSP.run(allOrderedLists, config.minSupport, config.maximalNotClosed);
 
     return activityResult;
 }

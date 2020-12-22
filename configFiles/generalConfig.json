@@ -22,5 +22,6 @@
   "useDepTreeToFindAssociatedVerb":  true,
   "useSpecificStruct": true,
   "closedMention": true,
-  "maximalMention": true
+  "maximalMention": true,
+  "maximalNotClosed": true
 }
