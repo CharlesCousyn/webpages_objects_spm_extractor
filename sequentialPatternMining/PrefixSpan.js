@@ -84,6 +84,7 @@ function PrefixSpanRecurs(database, minSupport, sequentialPattern, length, fullD
     }
 }
 
+//PrefixSpan implementation with the hypothesis of having a database only containing sequences of 1-itemSets
 export function run(database, minSupport, closedMention, maximalMention)
 {
     console.log(`PrefixSpan: Getting sequential patterns with minSupport ${minSupport}...`);

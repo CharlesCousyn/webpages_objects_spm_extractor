@@ -80,6 +80,7 @@ function search([pattern, idList, support], freqItems, minSupport, fullDBLength,
 
 }
 
+//VMSP implementation with the hypothesis of having a database only containing sequences of 1-itemSets
 //Implementation of VMSP with partial EFN (With sub and sup checking but with Size check optimization and Support check optimization but not Sum of items optimization)
 //Without Forward-Maximal Extension checking (FME)
 //Without Candidate Pruning with Co-occurrence map (CPC)

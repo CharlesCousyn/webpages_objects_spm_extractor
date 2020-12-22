@@ -1,6 +1,7 @@
 import * as TOOLS from "../tools";
 import * as COMMON from "./common";
 
+//GSP implementation with the hypothesis of having a database only containing sequences of 1-itemSets
 export function run(database, minSupport, closedMention, maximalMention, boolLog)
 {
     if(boolLog)
