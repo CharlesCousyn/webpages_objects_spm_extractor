@@ -23,5 +23,5 @@
   "useSpecificStruct": true,
   "closedMention": true,
   "maximalMention": true,
-  "maximalNotClosed": true
+  "maximalNotClosed": false
 }

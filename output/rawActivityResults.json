@@ -47,6 +47,14 @@
             ],
             [
                 [
+                    "put||bowl",
+                    "stir||mixture",
+                    "serve||turkey"
+                ],
+                1
+            ],
+            [
+                [
                     "put||cheese",
                     "put||egg",
                     "put||bowl",
@@ -92,6 +100,12 @@
         "_frequentSequentialPatterns": [
             [
                 [
+                    "fill||pot"
+                ],
+                0.25
+            ],
+            [
+                [
                     "fill||pot",
                     "fill||water",
                     "stir||pasta"
@@ -105,6 +119,18 @@
                     "use||sauce"
                 ],
                 0.1875
+            ],
+            [
+                [
+                    "bring||water"
+                ],
+                0.25
+            ],
+            [
+                [
+                    "add||salt"
+                ],
+                0.25
             ],
             [
                 [
@@ -122,10 +148,22 @@
             ],
             [
                 [
+                    "add||pasta"
+                ],
+                0.25
+            ],
+            [
+                [
                     "add||pasta",
                     "add||water"
                 ],
                 0.1875
+            ],
+            [
+                [
+                    "add||water"
+                ],
+                0.375
             ],
             [
                 [
@@ -151,6 +189,12 @@
                     "serve||sauce"
                 ],
                 0.1875
+            ],
+            [
+                [
+                    "stir||pasta"
+                ],
+                0.25
             ],
             [
                 [
