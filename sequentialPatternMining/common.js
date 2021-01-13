@@ -83,7 +83,6 @@ export function getIndexesSuffixes(orderedElements, sequence, suffixIndex)
             }
 
             lastIndexes = indexesEl.filter(index => index >= minIndex);
-            let i = 0;
         }
     }
 
