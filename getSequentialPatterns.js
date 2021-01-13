@@ -286,9 +286,11 @@ async function processOneActivity(activityResult, dataset, config)
     console.log(`${activityResult.numberOfPlans} plans found!`);
     console.log(`${(new Set(allOrderedLists.flat()).size)} distinct objects or couples (verb, object) found!`);
     activityResult.minSupport = config.minSupport;
+    activityResult.typeOfPattern = (config.maximalNotClosed ? "maximal" : "closed");
     //activityResult.frequentSequentialPatterns = GSP.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
     //activityResult.frequentSequentialPatterns = PrefixSpan.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
     activityResult.frequentSequentialPatterns = VMSP.run(allOrderedLists, config.minSupport, config.maximalNotClosed);
+    activityResult.numberOfPatterns = activityResult.frequentSequentialPatterns.size;
 
     return activityResult;
 }

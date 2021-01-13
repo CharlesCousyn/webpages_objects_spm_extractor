@@ -16,6 +16,8 @@
                 0.21428571428571427
             ]
         ],
+        "_numberOfPatterns": 2,
+        "_typeOfPattern": "closed",
         "_numberOfPlans": 14,
         "_minSupport": 0.15
     },
@@ -70,6 +72,8 @@
                 0.5
             ]
         ],
+        "_numberOfPatterns": 3,
+        "_typeOfPattern": "closed",
         "_numberOfPlans": 2,
         "_minSupport": 0.15
     },
@@ -84,6 +88,8 @@
                 0.2857142857142857
             ]
         ],
+        "_numberOfPatterns": 1,
+        "_typeOfPattern": "closed",
         "_numberOfPlans": 7,
         "_minSupport": 0.15
     },
@@ -91,6 +97,8 @@
         "_activityName": "clean",
         "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/clean",
         "_frequentSequentialPatterns": [],
+        "_numberOfPatterns": 0,
+        "_typeOfPattern": "closed",
         "_numberOfPlans": 42,
         "_minSupport": 0.15
     },
@@ -203,6 +211,8 @@
                 0.375
             ]
         ],
+        "_numberOfPatterns": 16,
+        "_typeOfPattern": "closed",
         "_numberOfPlans": 16,
         "_minSupport": 0.15
     }
