@@ -92,7 +92,7 @@ export function run(database, minSupport, closedMention, maximalMention)
     let fullDBLength = database.length;
     if(fullDBLength === 0)
     {
-        return;
+        return new Map();
     }
     let mapOfSeqPatterns = PrefixSpanRecurs(database, minSupport, [], 0, fullDBLength);
 

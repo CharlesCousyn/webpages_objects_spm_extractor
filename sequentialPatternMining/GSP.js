@@ -12,7 +12,7 @@ export function run(database, minSupport, closedMention, maximalMention, boolLog
     let dbLength = database.length;
     if(dbLength === 0)
     {
-        return;
+        return new Map();
     }
 
     //Compute 1-sequences

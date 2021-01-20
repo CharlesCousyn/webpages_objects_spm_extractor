@@ -93,7 +93,7 @@ export function run(db, minSupport, maximalNotClosed)
     let fullDBLength = db.length;
     if(fullDBLength === 0)
     {
-        return;
+        return new Map();
     }
 
     //Init list of maximal patterns

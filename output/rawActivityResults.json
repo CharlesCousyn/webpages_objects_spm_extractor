@@ -1,7 +1,7 @@
 [
     {
         "_activityName": "answer_the_phone",
-        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/answer_the_phone",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/answer_the_phone",
         "_frequentSequentialPatterns": [
             [
                 [
@@ -23,7 +23,7 @@
     },
     {
         "_activityName": "bake_parmesan_turkey_meatballs",
-        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/bake_parmesan_turkey_meatballs",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/bake_parmesan_turkey_meatballs",
         "_frequentSequentialPatterns": [
             [
                 [
@@ -79,7 +79,7 @@
     },
     {
         "_activityName": "choosing_outfit",
-        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/choosing_outfit",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/choosing_outfit",
         "_frequentSequentialPatterns": [
             [
                 [
@@ -95,7 +95,7 @@
     },
     {
         "_activityName": "clean",
-        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/clean",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/clean",
         "_frequentSequentialPatterns": [],
         "_numberOfPatterns": 0,
         "_typeOfPattern": "closed",
@@ -104,7 +104,7 @@
     },
     {
         "_activityName": "cook_pasta",
-        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputDataFiltered/cook_pasta",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/cook_pasta",
         "_frequentSequentialPatterns": [
             [
                 [
@@ -214,6 +214,347 @@
         "_numberOfPatterns": 16,
         "_typeOfPattern": "closed",
         "_numberOfPlans": 16,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "do_homework",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/do_homework",
+        "_frequentSequentialPatterns": [
+            [
+                [
+                    "take||fault"
+                ],
+                0.19444444444444445
+            ]
+        ],
+        "_numberOfPatterns": 1,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 36,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "fill_medicine_cabinet",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/fill_medicine_cabinet",
+        "_frequentSequentialPatterns": [],
+        "_numberOfPatterns": 0,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 0,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "make_coffee",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/make_coffee",
+        "_frequentSequentialPatterns": [
+            [
+                [
+                    "add||sugar"
+                ],
+                0.15
+            ],
+            [
+                [
+                    "add||coffee"
+                ],
+                0.2875
+            ],
+            [
+                [
+                    "add||milk"
+                ],
+                0.15
+            ]
+        ],
+        "_numberOfPatterns": 3,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 80,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "make_low_carb_pancakes",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/make_low_carb_pancakes",
+        "_frequentSequentialPatterns": [
+            [
+                [
+                    "unite||bowl",
+                    "stir||egg",
+                    "stir||bowl",
+                    "form||bubble",
+                    "flip||pancake",
+                    "turn||pancake",
+                    "make||pancake",
+                    "serve||pancake"
+                ],
+                0.25
+            ],
+            [
+                [
+                    "flip||pancake",
+                    "make||pancake",
+                    "serve||pancake"
+                ],
+                0.75
+            ],
+            [
+                [
+                    "make||pancake",
+                    "serve||pancake"
+                ],
+                1
+            ],
+            [
+                [
+                    "make||pancake",
+                    "run||batter",
+                    "serve||pancake"
+                ],
+                0.5
+            ],
+            [
+                [
+                    "whisk||almond",
+                    "whisk||flour",
+                    "whisk||milk",
+                    "flip||pancake",
+                    "make||rest",
+                    "make||pancake",
+                    "serve||pancake"
+                ],
+                0.25
+            ],
+            [
+                [
+                    "develop||pancake",
+                    "develop||bubble",
+                    "make||pancake",
+                    "run||batter",
+                    "serve||pancake"
+                ],
+                0.25
+            ],
+            [
+                [
+                    "make||oat",
+                    "make||oat",
+                    "make||flour",
+                    "flip||bubble",
+                    "flip||human_body",
+                    "flip||pancake",
+                    "make||pancake",
+                    "run||batter",
+                    "serve||pancake"
+                ],
+                0.25
+            ]
+        ],
+        "_numberOfPatterns": 7,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 4,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "make_mashed_potato_casserole",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/make_mashed_potato_casserole",
+        "_frequentSequentialPatterns": [],
+        "_numberOfPatterns": 0,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 0,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "make_stuffed_crust_pizza",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/make_stuffed_crust_pizza",
+        "_frequentSequentialPatterns": [],
+        "_numberOfPatterns": 0,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 0,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "make_tea",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/make_tea",
+        "_frequentSequentialPatterns": [
+            [
+                [
+                    "add||tea"
+                ],
+                0.1822429906542056
+            ],
+            [
+                [
+                    "boil||water"
+                ],
+                0.205607476635514
+            ]
+        ],
+        "_numberOfPatterns": 2,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 214,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "play_video_games",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/play_video_games",
+        "_frequentSequentialPatterns": [],
+        "_numberOfPatterns": 0,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 70,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "prepare_birthday_card",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/prepare_birthday_card",
+        "_frequentSequentialPatterns": [],
+        "_numberOfPatterns": 0,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 22,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "prepare_soup",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/prepare_soup",
+        "_frequentSequentialPatterns": [
+            [
+                [
+                    "simmer||soup"
+                ],
+                0.16296296296296298
+            ],
+            [
+                [
+                    "serve||soup"
+                ],
+                0.2740740740740741
+            ],
+            [
+                [
+                    "add||onion"
+                ],
+                0.23703703703703705
+            ],
+            [
+                [
+                    "add||salt"
+                ],
+                0.17037037037037037
+            ]
+        ],
+        "_numberOfPatterns": 4,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 135,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "vacuum",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/vacuum",
+        "_frequentSequentialPatterns": [
+            [
+                [
+                    "find||down",
+                    "find||rug"
+                ],
+                0.3333333333333333
+            ],
+            [
+                [
+                    "find||down",
+                    "find||rug",
+                    "vacuum||bang"
+                ],
+                0.16666666666666666
+            ],
+            [
+                [
+                    "be||bang"
+                ],
+                0.16666666666666666
+            ],
+            [
+                [
+                    "choose||type",
+                    "choose||vacuum",
+                    "choose||job",
+                    "remove||floor",
+                    "remove||mat",
+                    "travel||upholstery",
+                    "dislodge||air",
+                    "dislodge||debris",
+                    "forget||trunk"
+                ],
+                0.16666666666666666
+            ],
+            [
+                [
+                    "calm||vacuum",
+                    "calm||dog",
+                    "turn||vacuum",
+                    "turn||dog",
+                    "name||dog",
+                    "name||vacuum",
+                    "treat||dog",
+                    "treat||strengthener",
+                    "name||dog",
+                    "run||attachment",
+                    "run||dog",
+                    "give||dog",
+                    "vacuum||dainty",
+                    "vacuum||dog"
+                ],
+                0.16666666666666666
+            ]
+        ],
+        "_numberOfPatterns": 5,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 6,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "watch_tv",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/watch_tv",
+        "_frequentSequentialPatterns": [],
+        "_numberOfPatterns": 0,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 57,
+        "_minSupport": 0.15
+    },
+    {
+        "_activityName": "water_plants",
+        "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/water_plants",
+        "_frequentSequentialPatterns": [
+            [
+                [
+                    "soak||plant"
+                ],
+                0.16666666666666666
+            ],
+            [
+                [
+                    "keep||plant"
+                ],
+                0.16666666666666666
+            ],
+            [
+                [
+                    "fill||bottle"
+                ],
+                0.2222222222222222
+            ],
+            [
+                [
+                    "fill||bottle",
+                    "fill||water"
+                ],
+                0.16666666666666666
+            ],
+            [
+                [
+                    "fill||water"
+                ],
+                0.2222222222222222
+            ]
+        ],
+        "_numberOfPatterns": 5,
+        "_typeOfPattern": "closed",
+        "_numberOfPlans": 18,
         "_minSupport": 0.15
     }
 ]
