@@ -16,7 +16,7 @@
   "indentRawFile": true,
   "indentProcessedFile": true,
   "normOrStandOrByPage": "byPage",
-  "minSupport": 0.15,
+  "minSupport": 0.1,
   "useVerb": true,
   "pruningObjectsUsingWordnet": false,
   "useDepTreeToFindAssociatedVerb":  true,

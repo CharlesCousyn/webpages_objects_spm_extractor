@@ -21,6 +21,7 @@ import * as TOOLS from "./tools";
 import * as GSP from "./sequentialPatternMining/GSP";
 import * as PrefixSpan from "./sequentialPatternMining/PrefixSpan";
 import * as VMSP from "./sequentialPatternMining/VMSP";
+import {arraysMatch} from "./tools";
 
 //Keep JSDOM errors
 const originalConsoleError = console.error;
@@ -295,6 +296,39 @@ async function processOneActivity(activityResult, dataset, config)
     return activityResult;
 }
 
+function applyTfIdf(activityResults)
+{
+    let activitiesNumber = activityResults.length;
+
+    //Transform pattern infos into objects
+    activityResults = activityResults.map(activityResult =>
+    {
+        activityResult.frequentSequentialPatterns = activityResult.frequentSequentialPatterns.map(([pattern, patternFrequency]) => ({pattern, patternFrequency}));
+        return activityResult;
+    });
+
+    //Apply TFIDF for real
+    activityResults = activityResults.map(activityResult =>
+    {
+        activityResult.frequentSequentialPatterns = activityResult.frequentSequentialPatterns.map(({pattern, patternFrequency}) =>
+        {
+            let numberOfActivitiesWhereThePatternAppears = activityResults.reduce((count, activityResult) =>
+            {
+                if(activityResult.frequentSequentialPatterns.filter(patInfos => arraysMatch(pattern, patInfos.pattern)).length !== 0)
+                {
+                    count += 1;
+                }
+                return count;
+            }, 0);
+            let inverseActivityFrequency = Math.log10(activitiesNumber / numberOfActivitiesWhereThePatternAppears);
+            let pfIaf = patternFrequency * inverseActivityFrequency;
+            return {pattern, patternFrequency, inverseActivityFrequency, pfIaf};
+        });
+        return activityResult;
+    });
+    return activityResults;
+}
+
 async function pruningObjectsByDirectHypernym(allOrderedLists)
 {
     console.log("Pruning objects by search of direct hypernym...");
@@ -386,5 +420,9 @@ async function getDirectHypernyms(object)
         .toPromise();
 
     let preparedActivityResults = res.map(activityResult => activityResult.prepareActivityResultToJSON());
+
+    //Apply TFIDF
+    preparedActivityResults = applyTfIdf(preparedActivityResults);
+
     TOOLS.writeJSONFile(preparedActivityResults, "./output/rawActivityResults.json", GENERAL_CONFIG.indentRawFile);
 })();
