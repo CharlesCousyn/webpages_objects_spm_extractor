@@ -286,11 +286,22 @@ async function processOneActivity(activityResult, dataset, config)
     activityResult.numberOfPlans = allOrderedLists.length;
     console.log(`${activityResult.numberOfPlans} plans found!`);
     console.log(`${(new Set(allOrderedLists.flat()).size)} distinct objects or couples (verb, object) found!`);
-    activityResult.minSupport = config.minSupport;
     activityResult.typeOfPattern = (config.maximalNotClosed ? "maximal" : "closed");
-    //activityResult.frequentSequentialPatterns = GSP.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
-    //activityResult.frequentSequentialPatterns = PrefixSpan.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
-    activityResult.frequentSequentialPatterns = VMSP.run(allOrderedLists, config.minSupport, config.maximalNotClosed);
+    activityResult.minNumberPatterns = config.minNumberPatterns;
+
+    //Init minSupp
+    let currentMinSupp = config.minSupport;
+    do
+    {
+        activityResult.minSupport = currentMinSupp;
+        //SPM!!
+        //activityResult.frequentSequentialPatterns = GSP.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
+        //activityResult.frequentSequentialPatterns = PrefixSpan.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
+        activityResult.frequentSequentialPatterns = VMSP.run(allOrderedLists, currentMinSupp, config.maximalNotClosed);
+
+        currentMinSupp -= 0.01;
+    }while(activityResult.minNumberPatterns !== null && currentMinSupp > 0 && activityResult.frequentSequentialPatterns.size < activityResult.minNumberPatterns);
+
     activityResult.numberOfPatterns = activityResult.frequentSequentialPatterns.size;
 
     return activityResult;

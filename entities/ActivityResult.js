@@ -1,6 +1,6 @@
 export default class ActivityResult
 {
-	constructor(activityName, pathToWebPages, frequentSequentialPatterns, numberOfPatterns, typeOfPattern, numberOfPlans, minSupport)
+	constructor(activityName, pathToWebPages, frequentSequentialPatterns, numberOfPatterns, typeOfPattern, numberOfPlans, minSupport, minNumberPatterns)
 	{
 		this._activityName = activityName;
 		this._pathToWebPages = pathToWebPages;
@@ -9,6 +9,7 @@ export default class ActivityResult
 		this._typeOfPattern = typeOfPattern;
 		this._numberOfPlans = numberOfPlans;
 		this._minSupport = minSupport;
+		this._minNumberPatterns = minNumberPatterns;
 	}
 
 	prepareActivityResultToJSON()
@@ -75,6 +76,16 @@ export default class ActivityResult
 	set numberOfPatterns(value)
 	{
 		this._numberOfPatterns = value;
+	}
+
+	get minNumberPatterns()
+	{
+		return this._minNumberPatterns;
+	}
+
+	set minNumberPatterns(value)
+	{
+		this._minNumberPatterns = value;
 	}
 
 	get typeOfPattern()
