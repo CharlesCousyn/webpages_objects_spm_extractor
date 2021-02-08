@@ -299,7 +299,7 @@ async function processOneActivity(activityResult, dataset, config)
         //activityResult.frequentSequentialPatterns = PrefixSpan.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
         activityResult.frequentSequentialPatterns = VMSP.run(allOrderedLists, currentMinSupp, config.maximalNotClosed);
 
-        currentMinSupp -= 0.01;
+        currentMinSupp -= config.stepSupport;
     }while(activityResult.minNumberPatterns !== null && currentMinSupp > 0 && activityResult.frequentSequentialPatterns.size < activityResult.minNumberPatterns);
 
     activityResult.numberOfPatterns = activityResult.frequentSequentialPatterns.size;
