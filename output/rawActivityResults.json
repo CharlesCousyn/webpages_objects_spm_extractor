@@ -282,14 +282,14 @@
                 "pattern": [
                     "take||fault"
                 ],
-                "patternFrequency": 0.19444444444444445,
+                "patternFrequency": 0.175,
                 "inverseActivityFrequency": 1.255272505103306,
-                "pfIaf": 0.2440807648811984
+                "pfIaf": 0.21967268839307855
             }
         ],
         "_numberOfPatterns": 1,
         "_typeOfPattern": "closed",
-        "_numberOfPlans": 36,
+        "_numberOfPlans": 40,
         "_minSupport": 0.15,
         "_minNumberPatterns": 1
     },
@@ -463,22 +463,22 @@
                 "pattern": [
                     "add||tea"
                 ],
-                "patternFrequency": 0.1822429906542056,
+                "patternFrequency": 0.18981481481481483,
                 "inverseActivityFrequency": 1.255272505103306,
-                "pfIaf": 0.22876461541602305
+                "pfIaf": 0.23826931809831273
             },
             {
                 "pattern": [
                     "boil||water"
                 ],
-                "patternFrequency": 0.205607476635514,
+                "patternFrequency": 0.20833333333333334,
                 "inverseActivityFrequency": 1.255272505103306,
-                "pfIaf": 0.25809341226423116
+                "pfIaf": 0.26151510522985544
             }
         ],
         "_numberOfPatterns": 2,
         "_typeOfPattern": "closed",
-        "_numberOfPlans": 214,
+        "_numberOfPlans": 216,
         "_minSupport": 0.15,
         "_minNumberPatterns": 1
     },
@@ -490,15 +490,15 @@
                 "pattern": [
                     "play||game"
                 ],
-                "patternFrequency": 0.11428571428571428,
+                "patternFrequency": 0.1038961038961039,
                 "inverseActivityFrequency": 1.255272505103306,
-                "pfIaf": 0.14345971486894926
+                "pfIaf": 0.1304179226081357
             }
         ],
         "_numberOfPatterns": 1,
         "_typeOfPattern": "closed",
-        "_numberOfPlans": 70,
-        "_minSupport": 0.10999999999999999,
+        "_numberOfPlans": 77,
+        "_minSupport": 0.09999999999999999,
         "_minNumberPatterns": 1
     },
     {
@@ -619,38 +619,38 @@
                 "pattern": [
                     "simmer||soup"
                 ],
-                "patternFrequency": 0.16296296296296298,
+                "patternFrequency": 0.15714285714285714,
                 "inverseActivityFrequency": 1.255272505103306,
-                "pfIaf": 0.2045629267575758
+                "pfIaf": 0.19725710794480522
             },
             {
                 "pattern": [
                     "serve||soup"
                 ],
-                "patternFrequency": 0.2740740740740741,
+                "patternFrequency": 0.2642857142857143,
                 "inverseActivityFrequency": 1.255272505103306,
-                "pfIaf": 0.344037649546832
+                "pfIaf": 0.3317505906344452
             },
             {
                 "pattern": [
                     "add||onion"
                 ],
-                "patternFrequency": 0.23703703703703705,
+                "patternFrequency": 0.22857142857142856,
                 "inverseActivityFrequency": 1.255272505103306,
-                "pfIaf": 0.2975460752837466
+                "pfIaf": 0.2869194297378985
             },
             {
                 "pattern": [
                     "add||salt"
                 ],
-                "patternFrequency": 0.17037037037037037,
+                "patternFrequency": 0.16428571428571428,
                 "inverseActivityFrequency": 0.9542425094393249,
-                "pfIaf": 0.16257464975632943
+                "pfIaf": 0.15676841226503194
             }
         ],
         "_numberOfPatterns": 4,
         "_typeOfPattern": "closed",
-        "_numberOfPlans": 135,
+        "_numberOfPlans": 140,
         "_minSupport": 0.15,
         "_minNumberPatterns": 1
     },
