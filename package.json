@@ -8,12 +8,14 @@
     "testPOSET": "node -r esm ./tests/testPOSET.js",
     "testFin": "node -r esm ./tests/testFin.js",
     "testSelector": "node -r esm ./tests/testSelector.js",
-    "testSPM": "node -r esm ./tests/testSPM.js"
+    "testSPM": "node -r esm ./tests/testSPM.js",
+    "testCorrelation": "node -r esm ./tests/testCorrelation.js"
   },
   "keywords": [],
   "author": "Charles Cousyn",
   "license": "MIT",
   "dependencies": {
+    "@stdlib/stdlib": "^0.0.93",
     "clone": "^2.1.2",
     "csv-parse": "^4.14.1",
     "en-inflectors": "^1.0.12",

@@ -48,6 +48,30 @@ export function showProgress(currentNumberOfResults, totalNumberOfResults, begin
     console.log(`Progress ${currentNumberOfResults}/${totalNumberOfResults} (${100.0 * currentNumberOfResults/totalNumberOfResults} %) (${timeElapsed} elapsed)`);
 }
 
+export function mean(array)
+{
+    return array.reduce((acc, curr) =>
+    {
+        acc+= curr;
+        return acc;
+    }, 0.0)/array.length;
+}
+
+export function standardDeviation(array)
+{
+    let avg = mean(array);
+    let n = array.length;
+    return Math.sqrt(array.map(x => Math.pow(x - avg, 2)).reduce((a, b) => a + b) / n);
+}
+
+export function cov(array1, array2)
+{
+    let avg1 = mean(array1);
+    let avg2 = mean (array2);
+    let N = array1.length + 1;
+    return Math.sqrt(array.map(x => Math.pow(x - avg, 2)).reduce((a, b) => a + b) / n);
+}
+
 export function arraysMatch (arr1, arr2)
 {
     // Check if the arrays are the same length

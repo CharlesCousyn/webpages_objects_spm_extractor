@@ -31,12 +31,15 @@ export async function extractPlans(path)
     if(plansHTML.length > 1)
     {
         let discriminatingEl = plansHTML[0].querySelector("h3 > div > div");
-        discriminatingEl.querySelectorAll('*').forEach(n => n.remove());
-        let typeOfContent= discriminatingEl.textContent;
-        //Only one plan
-        if(typeOfContent.startsWith("Part"))
+        if(discriminatingEl !== null)
         {
-            plans = [plans.flat()];
+            discriminatingEl.querySelectorAll('*').forEach(n => n.remove());
+            let typeOfContent= discriminatingEl.textContent;
+            //Only one plan
+            if(typeOfContent.startsWith("Part"))
+            {
+                plans = [plans.flat()];
+            }
         }
     }
 

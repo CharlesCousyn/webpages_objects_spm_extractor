@@ -7,6 +7,9 @@ import Wordpos from "wordpos";
 import { Inflectors } from "en-inflectors";
 import GENERAL_CONFIG from "./../configFiles/generalConfig.json";
 
+//Init wordpos
+let wordpos = new Wordpos();
+
 (async () =>
 {
 	let testText = 'The angry bear chased the frightened little squirrel. The event is traumatic.';
