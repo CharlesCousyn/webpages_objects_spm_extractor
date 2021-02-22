@@ -34,6 +34,8 @@ function annotateActivityResults(realActivityResults)
                 //Progress variables
                 currentPatternsProcessed++;
                 TOOLS.showProgress(currentPatternsProcessed, totalNumberPatterns, initTime);
+
+                return patternInfo;
             }
         );
 
