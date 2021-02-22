@@ -5,6 +5,7 @@
   "main": "getSequentialPatterns.js",
   "scripts": {
     "getSequentialPatterns": "node -r esm getSequentialPatterns.js",
+    "patternAnnotation": "node -r esm patternAnnotation.js",
     "testPOSET": "node -r esm ./tests/testPOSET.js",
     "testFin": "node -r esm ./tests/testFin.js",
     "testSelector": "node -r esm ./tests/testSelector.js",
@@ -27,6 +28,7 @@
     "jsdom": "^16.4.0",
     "lexed": "^1.0.10",
     "rxjs": "^6.6.3",
+    "wait-console-input": "^0.1.7",
     "wordpos": "^2.1.0"
   }
 }

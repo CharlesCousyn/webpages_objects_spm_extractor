@@ -2,14 +2,28 @@ export default class ActivityResult
 {
 	constructor(activityName, pathToWebPages, frequentSequentialPatterns, numberOfPatterns, typeOfPattern, numberOfPlans, minSupport, minNumberPatterns)
 	{
-		this._activityName = activityName;
-		this._pathToWebPages = pathToWebPages;
-		this._frequentSequentialPatterns = frequentSequentialPatterns;
-		this._numberOfPatterns = numberOfPatterns;
-		this._typeOfPattern = typeOfPattern;
-		this._numberOfPlans = numberOfPlans;
-		this._minSupport = minSupport;
-		this._minNumberPatterns = minNumberPatterns;
+		if(typeof activityName === "object" && pathToWebPages === undefined)
+		{
+			this._activityName = activityName._activityName;
+			this._pathToWebPages = activityName._pathToWebPages;
+			this._frequentSequentialPatterns = activityName._frequentSequentialPatterns;
+			this._numberOfPatterns = activityName._numberOfPatterns;
+			this._typeOfPattern = activityName._typeOfPattern;
+			this._numberOfPlans = activityName._numberOfPlans;
+			this._minSupport = activityName._minSupport;
+			this._minNumberPatterns = activityName._minNumberPatterns;
+		}
+		else
+		{
+			this._activityName = activityName;
+			this._pathToWebPages = pathToWebPages;
+			this._frequentSequentialPatterns = frequentSequentialPatterns;
+			this._numberOfPatterns = numberOfPatterns;
+			this._typeOfPattern = typeOfPattern;
+			this._numberOfPlans = numberOfPlans;
+			this._minSupport = minSupport;
+			this._minNumberPatterns = minNumberPatterns;
+		}
 	}
 
 	prepareActivityResultToJSON()

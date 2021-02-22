@@ -1,5 +1,6 @@
 import filesSystem from "fs";
 
+//File processing
 export function writeJSONFile(data, path, isIndent)
 {
     let string = "";
@@ -24,6 +25,7 @@ export function readTextFile(path)
     return filesSystem.readFileSync(path, 'utf8');
 }
 
+//Progress functions
 export function timeConversion(ms)
 {
     let seconds = (ms / 1000).toFixed(1);
@@ -48,6 +50,7 @@ export function showProgress(currentNumberOfResults, totalNumberOfResults, begin
     console.log(`Progress ${currentNumberOfResults}/${totalNumberOfResults} (${100.0 * currentNumberOfResults/totalNumberOfResults} %) (${timeElapsed} elapsed)`);
 }
 
+//Stats
 export function mean(array)
 {
     return array.reduce((acc, curr) =>
@@ -93,6 +96,26 @@ export function arraysMatch (arr1, arr2)
     return true;
 }
 
+export function sampleCorrelationCoefficient(data1, data2)
+{
+    let meanData1 = mean(data1);
+    let meanData2 = mean(data2);
+    let sdData1 = standardDeviation(data1);
+    let sdData2 = standardDeviation(data2);
+    let dataMultiplied = data1.map((curr, index) => data1[index] * data2[index]);
+    let meanDataMultiplied = mean(dataMultiplied);
+
+
+    return ( meanDataMultiplied - meanData1 * meanData2) / (sdData1 * sdData2);
+}
+
+export function dataToRankData(array)
+{
+    let noDuplicatesSorted = [...new Set(array)].sort((a, b) => b - a);
+    return array.map((val) => noDuplicatesSorted.indexOf(val) + 1);
+}
+
+//Format conversion
 export function dbToSPMFFormat(db, path)
 {
     let dataString = db.map(sequence => sequence.join(" ")).join(". ");

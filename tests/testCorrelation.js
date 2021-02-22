@@ -50,25 +50,6 @@ let patterns = resWaterPlant.map(obj => obj.pattern);
 let data1 = resWaterPlant.map(obj => obj.pfIaf);
 let data2 = [4, 2, 4, 3, 4];
 
-function sampleCorrelationCoefficient(data1, data2)
-{
-    let meanData1 = TOOLS.mean(data1);
-    let meanData2 = TOOLS.mean(data2);
-    let sdData1 = TOOLS.standardDeviation(data1);
-    let sdData2 = TOOLS.standardDeviation(data2);
-    let dataMultiplied = data1.map((curr, index) => data1[index] * data2[index]);
-    let meanDataMultiplied = TOOLS.mean(dataMultiplied);
-
-
-    return ( meanDataMultiplied - meanData1 * meanData2) / (sdData1 * sdData2);
-}
-
-function dataToRankData(array)
-{
-    let noDuplicatesSorted = [...new Set(array)].sort((a, b) => b - a);
-    return array.map((val) => noDuplicatesSorted.indexOf(val) + 1);
-}
-
 function showPlot(arrayX, arrayY)
 {
     //View histogram 1
@@ -104,14 +85,14 @@ function showPlot(arrayX, arrayY)
 {
     console.log(data1);
     console.log(data2);
-    console.log(dataToRankData(data1));
-    console.log(dataToRankData(data2));
+    console.log(TOOLS.dataToRankData(data1));
+    console.log(TOOLS.dataToRankData(data2));
 
     showPlot(data1, data2);
 
-    let pearson = sampleCorrelationCoefficient(data1, data2);
+    let pearson = TOOLS.sampleCorrelationCoefficient(data1, data2);
     console.log("samplePearsonCorrelationCoefficient", pearson);
 
-    let spearman = sampleCorrelationCoefficient(dataToRankData(data1), dataToRankData(data2));
+    let spearman = TOOLS.sampleCorrelationCoefficient(TOOLS.dataToRankData(data1), TOOLS.dataToRankData(data2));
     console.log("sampleSpearmanCorrelationCoefficient", spearman);
 })();
