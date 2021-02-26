@@ -2,20 +2,10 @@ import * as TOOLS from "./tools";
 import ActivityResult from "./entities/ActivityResult";
 import GENERAL_CONFIG from "./configFiles/generalConfig.json";
 
-
-
-function getDistributionOfPerformanceMeasures()
-{
-
-}
-
 function getPerformancesFromCouples(couples, performanceMeasureFunctions)
 {
-	console.log(couples);
 	//Get scores
 	let [pfIafs, annotations] = couples;
-	console.log("pfIafs", pfIafs);
-	console.log("annotations", annotations);
 
 	//Compute all performances measures
 	let perfObj = {};
@@ -36,12 +26,16 @@ export function getPerformancesFromAnnotatedActivityResults(annotatedActivityRes
 		//Get annotations
 		let annotations = annotatedActivityResult.frequentSequentialPatterns.map(patInfos => patInfos.annotation);
 
-		return [pfIafs, annotations];
+		return [annotatedActivityResult.activityName, pfIafs, annotations];
 	});
-	let performancesPerActivity = couplesScoreAnnotationPerActivity.map(couples => getPerformancesFromCouples(couples, performanceMeasureFunctions));
+	let performancesPerActivity = couplesScoreAnnotationPerActivity.map(([activityName, pfIafs, annotations]) => (
+		{
+			activityName,
+			performance: getPerformancesFromCouples([pfIafs, annotations], performanceMeasureFunctions)
+		}));
 
 	//Performances for all activities
-	let couplesScoreAnnotationAllActivities = couplesScoreAnnotationPerActivity.flat();
+	let couplesScoreAnnotationAllActivities = couplesScoreAnnotationPerActivity.flatMap(([activityName, pfIafs, annotations])=> [pfIafs, annotations]);
 	let performancesAllActivities = getPerformancesFromCouples(couplesScoreAnnotationAllActivities, performanceMeasureFunctions);
 
 	return {performancesAllActivities, performancesPerActivity};

@@ -99,14 +99,14 @@ export function limitsOfAgreement(array1, array2)
     //Compute differences between each pair
     let differences = array1.map((dataPoint1, index) => dataPoint1 - array2[index]);
 
-    let hist1 = createHistFromData(differences, false, "none");
-    console.log(hist1);
+    let hist = createHistFromData(differences, false, "none");
+    console.log("hist", hist);
 
     //View histogram 1
     let plot1 = new Plot(
         {
-            x : [hist1.map(([x,])=> x)],
-            y : [hist1.map(([, value])=> value)],
+            x : [hist.map(([x,])=> x)],
+            y : [hist.map(([, value])=> value)],
             labels: ["DATA1 - DATA2"],
             xLabel: "Difference",
             yLabel: "Frequency",
@@ -188,6 +188,56 @@ export function kendallRankCorrelationCoefficient(data1, data2)
     }
 
     return (2 / n * (n - 1)) * sum;
+}
+
+//http://www.r-tutor.com/gpu-computing/correlation/kendall-tau-b
+export function kendallRankCorrelationCoefficient_B(data1, data2)
+{
+    let nc = 0;
+    let nd = 0;
+    let N1 = 0;
+    let N2 = 0;
+    //Getting nc, nd, N1 and N2
+    for(let i = 0; i < data1.length; i++)
+    {
+        for(let j = 0; j < data2.length; j++)
+        {
+            if(i < j)
+            {
+                let xi = data1[i];
+                let xj = data1[j];
+                let yi = data2[i];
+                let yj = data2[j];
+
+                let signMult = Math.sign(xi - xj) * Math.sign(yi - yj);
+                if(signMult === 1)
+                {
+                    nc++;
+                    N1++;
+                    N2++;
+                }
+                else if(signMult === 0)
+                {
+                    if(xi !== xj)
+                    {
+                        N1++;
+                    }
+                    if(yi === yj)
+                    {
+                        N2++;
+                    }
+                }
+                else
+                {
+                    nd++;
+                    N1++;
+                    N2++;
+                }
+            }
+        }
+    }
+
+    return (nc - nd) / Math.sqrt(N1 * N2);
 }
 
 export function dataToRankData(array)

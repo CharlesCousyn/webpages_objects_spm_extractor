@@ -7,7 +7,7 @@ const performanceMeasureFunctions =
 	[
 		TOOLS.samplePearsonCorrelationCoefficient,
 		TOOLS.spearmanRankCorrelationCoefficient,
-		TOOLS.kendallRankCorrelationCoefficient
+		TOOLS.kendallRankCorrelationCoefficient_B
 	];
 
 //Example for water plant activity
@@ -72,8 +72,30 @@ let annotatedActivityResults =
 
 (async() =>
 {
-	console.log(performanceMeasureFunctions);
 	//Convert into real activity results
 	annotatedActivityResults = annotatedActivityResults.map(a => new ActivityResult(a));
+
+	//Get performance measures
+	console.log("Performance measures");
 	console.log(PP.getPerformancesFromAnnotatedActivityResults(annotatedActivityResults, performanceMeasureFunctions));
+
+	//Get data1 and data2 from annotatedActivityResults
+	let [data1, data2] = annotatedActivityResults
+		.flat()
+		.flatMap(annotatedActivityResult=> annotatedActivityResult.frequentSequentialPatterns)
+		.reduce((acc, pattern) =>[[...acc[0], pattern.pfIaf], [...acc[1], pattern.annotation]], [[], []]);
+
+	console.log("data1", data1);
+	console.log("data2", data2);
+
+	//Normalize data
+	let normalizedData1 = TOOLS.minMaxNorm(data1, 0, 1);
+	let normalizedData2 = TOOLS.minMaxNorm(data2, 0, 1);
+
+	console.log("normalizedData1", normalizedData1);
+	console.log("normalizedData2", normalizedData2);
+
+	//Limits of agreement
+	console.log("Limits of agreement")
+	TOOLS.limitsOfAgreement(normalizedData1, normalizedData2);
 })();
