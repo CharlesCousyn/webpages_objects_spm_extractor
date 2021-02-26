@@ -1,4 +1,5 @@
 import filesSystem from "fs";
+import Plot from "@stdlib/plot/ctor";
 
 //File processing
 export function writeJSONFile(data, path, isIndent)
@@ -75,6 +76,58 @@ export function cov(array1, array2)
     return Math.sqrt(array.map(x => Math.pow(x - avg, 2)).reduce((a, b) => a + b) / n);
 }
 
+function getMax(arr)
+{
+    return arr.reduce((max, v) => max >= v ? max : v, -Infinity);
+}
+
+function getMin(arr)
+{
+    return arr.reduce((max, v) => max <= v ? max : v, +Infinity);
+}
+
+export function minMaxNorm(array, min, max)
+{
+    let minArray = getMin(array);
+    let maxArray = getMax(array);
+    return array.map(val => min +  (max - min) * (val - minArray) / (maxArray - minArray));
+}
+
+//Imply using array of same size on the same scale
+export function limitsOfAgreement(array1, array2)
+{
+    //Compute differences between each pair
+    let differences = array1.map((dataPoint1, index) => dataPoint1 - array2[index]);
+
+    let hist1 = createHistFromData(differences, false, "none");
+    console.log(hist1);
+
+    //View histogram 1
+    let plot1 = new Plot(
+        {
+            x : [hist1.map(([x,])=> x)],
+            y : [hist1.map(([, value])=> value)],
+            labels: ["DATA1 - DATA2"],
+            xLabel: "Difference",
+            yLabel: "Frequency",
+            lineStyle: ["none"],
+            colors: ["blue"],
+            description: "This histogram describes all the possible differences between DATA1 and DATA2",
+            title: "This histogram describes all the possible differences between between DATA1 and DATA2",
+            symbols: ["closed-circle"],
+            width: 1000,
+            height: 562,
+            xNumTicks: 10,
+            yNumTicks: 10,
+            renderFormat: "vdom",
+            viewer: "browser",
+            autoRender: false,
+            autoView: false
+        });
+    plot1.render();
+    plot1.view();
+}
+
 export function arraysMatch (arr1, arr2)
 {
     // Check if the arrays are the same length
@@ -96,7 +149,7 @@ export function arraysMatch (arr1, arr2)
     return true;
 }
 
-export function sampleCorrelationCoefficient(data1, data2)
+export function samplePearsonCorrelationCoefficient(data1, data2)
 {
     let meanData1 = mean(data1);
     let meanData2 = mean(data2);
@@ -105,14 +158,167 @@ export function sampleCorrelationCoefficient(data1, data2)
     let dataMultiplied = data1.map((curr, index) => data1[index] * data2[index]);
     let meanDataMultiplied = mean(dataMultiplied);
 
-
     return ( meanDataMultiplied - meanData1 * meanData2) / (sdData1 * sdData2);
+}
+
+export function spearmanRankCorrelationCoefficient(data1, data2)
+{
+    return samplePearsonCorrelationCoefficient(dataToRankData(data1), dataToRankData(data2));
+}
+
+export function kendallRankCorrelationCoefficient(data1, data2)
+{
+    let n = data1.length;
+
+    let sum = 0.0;
+    for(let i = 0; i < data1.length; i++)
+    {
+        for(let j = 0; j < data2.length; j++)
+        {
+            if(i < j)
+            {
+                let xi = data1[i];
+                let xj = data1[j];
+                let yi = data2[i];
+                let yj = data2[j];
+
+                sum += Math.sign(xi - xj) * Math.sign(yi - yj);
+            }
+        }
+    }
+
+    return (2 / n * (n - 1)) * sum;
 }
 
 export function dataToRankData(array)
 {
     let noDuplicatesSorted = [...new Set(array)].sort((a, b) => b - a);
     return array.map((val) => noDuplicatesSorted.indexOf(val) + 1);
+}
+
+//Bayes
+export function createHistFromData(data, cumulative, normalization)
+{
+    let xMax = getMax(data);
+    let xMin = getMin(data);
+    let numberOfPins = Math.ceil(Math.sqrt(data.length));
+    let width = (xMax - xMin) / numberOfPins;
+
+    //Generate an array of arrays
+    let hist = [...Array(numberOfPins).keys()]
+    .map(index =>
+    {
+        let value = data.filter(point =>
+        {
+            if(index === 0)
+            {
+                return xMin <= point && point < xMin + width ;
+            }
+            if(cumulative)
+            {
+                return point < xMin + width * (index + 1);
+            }
+            return (xMin + width * index <= point) && (point < xMin + width * (index + 1));
+        }).length ;
+
+        if(normalization === "density")
+        {
+            value = value / (data.length * width);
+        }
+        else if(normalization === "classic")
+        {
+            value = value / data.length;
+        }
+        return [xMin + width * ( 2 * index + 1) / 2, value];
+    });
+
+    return hist;
+}
+
+function findNearestValueIndex(value, values)
+{
+    return values
+    .reduce((acc, curr, currIndex, arr) =>
+    {
+        if(Math.abs(curr - value) < Math.abs(arr[acc] - value))
+        {
+            acc = currIndex;
+        }
+        return acc;
+    }, 0);
+}
+
+export function findEstimatedCredibleInterval(credibility, cdfHist, type, trialsIfHDI)
+{
+    let cdfHistXs = cdfHist.map(([x, ])=> x);
+    let cdfHistValues = cdfHist.map(([, value])=> value);
+
+    let inferiorCredibilityBound;
+    let superiorCredibilityBound;
+    let inferiorVariableBound;
+    let superiorVariableBound;
+    if(type === "equalTailed")
+    {
+        inferiorCredibilityBound = (1.0 - credibility) / 2;
+        superiorCredibilityBound = 1.0 - inferiorCredibilityBound;
+
+        //Find index of value which is closer to inferiorConfProbBound
+        let indexNearestToInferiorLimit = findNearestValueIndex(inferiorCredibilityBound, cdfHist.map(([, value])=> value));
+
+        //Find index of value which is closer to superiorConfProbBound
+        let indexNearestToSuperiorLimit = findNearestValueIndex(superiorCredibilityBound, cdfHist.map(([, value])=> value));
+
+        //Find the corresponding values of variable
+        inferiorVariableBound = cdfHist.map(([x, ])=> x)[indexNearestToInferiorLimit];
+        superiorVariableBound = cdfHist.map(([x, ])=> x)[indexNearestToSuperiorLimit];
+    }
+    else if(type === "HDI")
+    {
+        if(Number.isNaN(trialsIfHDI))
+        {
+            throw new Error("Bad value for parameter trialsIfHDI: must be a number !");
+        }
+        //Bound initialization
+        inferiorVariableBound = -Infinity;
+        superiorVariableBound = +Infinity;
+
+        let allInferiorBoundTested = generateArrayOfNumbers(0.0, 1.0 - credibility, trialsIfHDI);
+        for(let currInferiorBound of allInferiorBoundTested)
+        {
+            let currSuperiorBound = credibility + currInferiorBound;
+
+            //Find index of value which is closer to currInferiorBound
+            let currIndexNearestToInferiorLimit = findNearestValueIndex(currInferiorBound, cdfHistValues);
+
+            //Find index of value which is closer to currSuperiorBound
+            let currIndexNearestToSuperiorLimit = findNearestValueIndex(currSuperiorBound, cdfHistValues);
+
+            //Find the corresponding values of variable
+            let currInferiorVariableBound = cdfHistXs[currIndexNearestToInferiorLimit];
+            let currSuperiorVariableBound = cdfHistXs[currIndexNearestToSuperiorLimit];
+
+            if(Math.abs(currSuperiorVariableBound - currInferiorVariableBound) < Math.abs(superiorVariableBound - inferiorVariableBound))
+            {
+                inferiorCredibilityBound = currInferiorBound;
+                superiorCredibilityBound = currSuperiorBound;
+                inferiorVariableBound = currInferiorVariableBound;
+                superiorVariableBound = currSuperiorVariableBound;
+            }
+        }
+    }
+    else
+    {
+        throw new Error("Bad value for type parameter: only 'equalTailed' and 'HDI' are supported !");
+    }
+
+    return {
+        credibility: credibility,
+        type,
+        inferiorCredibilityBound,
+        superiorCredibilityBound,
+        inferiorVariableBound,
+        superiorVariableBound,
+    };
 }
 
 //Format conversion

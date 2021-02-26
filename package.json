@@ -10,7 +10,8 @@
     "testFin": "node -r esm ./tests/testFin.js",
     "testSelector": "node -r esm ./tests/testSelector.js",
     "testSPM": "node -r esm ./tests/testSPM.js",
-    "testCorrelation": "node -r esm ./tests/testCorrelation.js"
+    "testCorrelation": "node -r esm ./tests/testCorrelation.js",
+    "testPatternsPerformance": "node -r esm ./tests/testPatternsPerformance.js"
   },
   "keywords": [],
   "author": "Charles Cousyn",

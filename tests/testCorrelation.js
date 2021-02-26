@@ -88,11 +88,26 @@ function showPlot(arrayX, arrayY)
     console.log(TOOLS.dataToRankData(data1));
     console.log(TOOLS.dataToRankData(data2));
 
-    showPlot(data1, data2);
+    //showPlot(data1, data2);
 
-    let pearson = TOOLS.sampleCorrelationCoefficient(data1, data2);
+    let pearson = TOOLS.samplePearsonCorrelationCoefficient(data1, data2);
     console.log("samplePearsonCorrelationCoefficient", pearson);
 
-    let spearman = TOOLS.sampleCorrelationCoefficient(TOOLS.dataToRankData(data1), TOOLS.dataToRankData(data2));
-    console.log("sampleSpearmanCorrelationCoefficient", spearman);
+    let spearman = TOOLS.spearmanRankCorrelationCoefficient(data1, data2);
+    console.log("spearmanRankCorrelationCoefficient", spearman);
+
+    //Min max normalisation
+    data1 = TOOLS.minMaxNorm(data1, 0, 1);
+    data2 = TOOLS.minMaxNorm(data2, 0, 1);
+    console.log("data1", data1);
+    console.log("data2", data2);
+
+    TOOLS.limitsOfAgreement(data1, data2);
+
+    //Compute differences between each pair
+    let differences = data1.map((dataPoint1, index) => dataPoint1 - data2[index]);
+
+    let interval = TOOLS.findEstimatedCredibleInterval(0.95, TOOLS.createHistFromData(differences, true, "none"), "equalTailed", 100000);
+
+    console.log(interval);
 })();
