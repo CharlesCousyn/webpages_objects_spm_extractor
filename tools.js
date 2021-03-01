@@ -222,7 +222,7 @@ export function kendallRankCorrelationCoefficient_B(data1, data2)
                     {
                         N1++;
                     }
-                    if(yi === yj)
+                    if(yi !== yj)
                     {
                         N2++;
                     }
