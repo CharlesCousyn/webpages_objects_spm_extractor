@@ -19,11 +19,11 @@
   "minSupport": 0.15,
   "minNumberPatterns": 1,
   "stepSupport": 0.01,
-  "useVerb": true,
-  "pruningObjectsUsingWordnet": false,
-  "useDepTreeToFindAssociatedVerb":  true,
-  "useSpecificStruct": true,
+  "verbAssociatorUsed": true,
+  "hypernymMutation": false,
+  "verbAssociatorProximityBasedOrSyntacticBased":  false,
+  "genericOrSpecificParsing": false,
   "closedMention": true,
   "maximalMention": true,
-  "maximalNotClosed": false
+  "closedOrMaximalPattern": true
 }

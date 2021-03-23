@@ -2,6 +2,7 @@ import {replaceHTMLEntities} from "./libs/fin-html-entities";
 import {reverseSlang} from "./libs/fin-slang";
 import {normalizeCaps, replaceConfusables, resolveContractions} from "en-norm";
 import {JSDOM} from "jsdom";
+import htmlToText from "html-to-text";
 
 export async function extractPlans(path)
 {
@@ -46,13 +47,13 @@ export async function extractPlans(path)
     return plans;
 }
 
-export function htmlStringToCleanText(htmlString, config)
+export function htmlStringToCleanText(htmlString, generalConfig)
 {
-    let text = htmlToText.fromString(htmlString, config.configHTML2Text);
-    return stringToCleanText(text, config);
+    let text = htmlToText.fromString(htmlString, generalConfig.configHTML2Text);
+    return stringToCleanText(text, generalConfig);
 }
 
-export function stringToCleanText(text, config)
+export function stringToCleanText(text, generalConfig)
 {
     //Delete all non pure text things...
     //JSON strings
@@ -62,7 +63,7 @@ export function stringToCleanText(text, config)
     //HTML entities and slang
     processedText = replaceHTMLEntities(reverseSlang(resolveContractions(replaceConfusables(processedText))));
 
-    if(config.showCleanTextForDebug)
+    if(generalConfig.showCleanTextForDebug)
     {
         console.log("processedText", processedText);
     }

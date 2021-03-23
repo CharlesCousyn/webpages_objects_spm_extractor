@@ -1,0 +1,10 @@
+{
+  "criteria":
+  {
+    "genericOrSpecificParsing": [true, false],
+    "verbAssociatorUsed": [true, false],
+    "verbAssociatorProximityBasedOrSyntacticBased": [true, false],
+    "hypernymMutation": [true, false],
+    "closedOrMaximalPattern": [true, false]
+  }
+}

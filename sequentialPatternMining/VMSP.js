@@ -7,7 +7,7 @@ function temporalJoin([pat1, idList1, support1], [pat2, idList2, support2], full
     return [newPat, newIdList, (new Set(newIdList.map(([sid, eid])=> sid))).size / fullDBLength];
 }
 
-function addPatternWithStrategies([pattern, support], Z, maximalNotClosed)
+function addPatternWithStrategies([pattern, support], Z, closedOrMaximalPattern)
 {
     //Forward-Maximal Extension checking (FME)
     //Efficient Filtering of Non-maximal patterns (EFN)
@@ -16,7 +16,7 @@ function addPatternWithStrategies([pattern, support], Z, maximalNotClosed)
     let maximalUntilNow = true;
     for(let [patternZ, supportZ] of Z)
     {
-        if (patternZ.length > pattern.length && (maximalNotClosed ? support >= supportZ : support === supportZ) && COMMON.isSupported(pattern, patternZ))
+        if (patternZ.length > pattern.length && (!closedOrMaximalPattern ? support >= supportZ : support === supportZ) && COMMON.isSupported(pattern, patternZ))
         {
             maximalUntilNow = false;
             break;
@@ -32,7 +32,7 @@ function addPatternWithStrategies([pattern, support], Z, maximalNotClosed)
         let patternsToRemove = [];
         for(let [patternZ, supportZ] of Z)
         {
-            if(pattern.length > patternZ.length && (maximalNotClosed ? supportZ >= support : supportZ === support) && COMMON.isSupported(patternZ, pattern))
+            if(pattern.length > patternZ.length && (!closedOrMaximalPattern ? supportZ >= support : supportZ === support) && COMMON.isSupported(patternZ, pattern))
             {
                 patternsToRemove.push(patternZ);
             }
@@ -50,10 +50,10 @@ function addPatternWithStrategies([pattern, support], Z, maximalNotClosed)
     }
 }
 
-function search([pattern, idList, support], freqItems, minSupport, fullDBLength, Z, maximalNotClosed)
+function search([pattern, idList, support], freqItems, minSupport, fullDBLength, Z, closedOrMaximalPattern)
 {
     //Update Z
-    addPatternWithStrategies([pattern, support], Z, maximalNotClosed);
+    addPatternWithStrategies([pattern, support], Z, closedOrMaximalPattern);
 
     //Init STemp
     let STemp = [];
@@ -76,7 +76,7 @@ function search([pattern, idList, support], freqItems, minSupport, fullDBLength,
             minSupport,
             fullDBLength,
             Z,
-            maximalNotClosed);
+            closedOrMaximalPattern);
     }
 
 }
@@ -86,9 +86,9 @@ function search([pattern, idList, support], freqItems, minSupport, fullDBLength,
 //Without Forward-Maximal Extension checking (FME)
 //Without Candidate Pruning with Co-occurrence map (CPC)
 //Can find closedPattern instead of maximal patterns
-export function run(db, minSupport, maximalNotClosed)
+export function run(db, minSupport, closedOrMaximalPattern)
 {
-    console.log(`VMSP: Getting ${maximalNotClosed ? "maximal" : "closed"} sequential patterns with minSupport ${minSupport}...`);
+    console.log(`VMSP: Getting ${!closedOrMaximalPattern ? "maximal" : "closed"} sequential patterns with minSupport ${minSupport}...`);
     //Get length DB
     let fullDBLength = db.length;
     if(fullDBLength === 0)
@@ -114,9 +114,9 @@ export function run(db, minSupport, maximalNotClosed)
 
     for(let [pat, listId, support] of freqItems)
     {
-        search([pat, listId, support], freqItems, minSupport, fullDBLength, Z, maximalNotClosed);
+        search([pat, listId, support], freqItems, minSupport, fullDBLength, Z, closedOrMaximalPattern);
     }
 
-    console.log(`${Z.length} ${maximalNotClosed ? "maximal" : "closed"} patterns found!`);
+    console.log(`${Z.length} ${!closedOrMaximalPattern ? "maximal" : "closed"} patterns found!`);
     return new Map(Z);
 }

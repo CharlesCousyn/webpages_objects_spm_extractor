@@ -9,6 +9,7 @@ import {Tag} from 'en-pos';
 import parser from 'en-parse';
 import { Inflectors } from "en-inflectors";
 import {normalizeCaps} from "en-norm";
+import csvParse from "csv-parse/lib/sync";
 
 //Personal imports
 import predeterminedObjects from "./configFiles/predeterminedObjects.json";
@@ -19,6 +20,7 @@ import * as GSP from "./sequentialPatternMining/GSP";
 import * as PrefixSpan from "./sequentialPatternMining/PrefixSpan";
 import * as VMSP from "./sequentialPatternMining/VMSP";
 import {arraysMatch} from "./tools";
+import ActivityResult from "./entities/ActivityResult";
 
 //Keep JSDOM errors
 const originalConsoleError = console.error;
@@ -32,7 +34,7 @@ console.error = function(msg)
 //Init wordpos
 let wordpos = new Wordpos();
 
-async function keepTokensNounAndValidLexName(processedSentences, config)
+async function keepTokensNounAndValidLexName(processedSentences, generalConfig)
 {
     return await from(processedSentences)
         .pipe(mergeMap(processedSentence => from(processedSentence)))
@@ -40,7 +42,7 @@ async function keepTokensNounAndValidLexName(processedSentences, config)
         .pipe(concatMap(async tokInfo => ({...tokInfo, definitions: await wordpos.lookupNoun(tokInfo.pureForm)})))
         .pipe(map(tokInfo =>
         {
-            tokInfo.definitions = tokInfo.definitions.filter(def => config.allowedLexNames.includes(def.lexName));
+            tokInfo.definitions = tokInfo.definitions.filter(def => generalConfig.allowedLexNames.includes(def.lexName));
             return tokInfo;
         }))
         .pipe(filter(tokInfo => Array.isArray(tokInfo.definitions) && tokInfo.definitions.length))
@@ -48,14 +50,14 @@ async function keepTokensNounAndValidLexName(processedSentences, config)
         .toPromise();
 }
 
-async function getAssociatedVerbs(tokInfoObjects, processedSentences, config)
+async function getAssociatedVerbs(tokInfoObjects, processedSentences, generalConfig, configLaunch)
 {
     return await from(tokInfoObjects)
         .pipe(concatMap(async tokInfoObject =>
         {
             //Search the nearest verb in the dependency parse tree
             let nearestVerb = null;
-            if(config.useDepTreeToFindAssociatedVerb)
+            if(!configLaunch.verbAssociatorProximityBasedOrSyntacticBased)
             {
                 let sentence = processedSentences[tokInfoObject.indexSentence];
                 let rootNode = tokInfoObject.depParsed.parent === -1;
@@ -112,7 +114,7 @@ async function getAssociatedVerbs(tokInfoObjects, processedSentences, config)
         .toPromise();
 }
 
-async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneActivty, config)
+async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneActivty, generalConfig, configLaunch)
 {
     let tokenizedText = (new Lexed(cleanText)).lexer().tokens;
     let clonedTokenizedText = clone(tokenizedText);
@@ -142,7 +144,7 @@ async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneAc
                     depParsed: depParsed[indexOneSentence][indexTok]
                 }}));
 
-    let validTokensInfos = await keepTokensNounAndValidLexName(processedSentences, config);// add definitions
+    let validTokensInfos = await keepTokensNounAndValidLexName(processedSentences, generalConfig);// add definitions
 
     //Order them using indexes (to be sure it's ordered)
     validTokensInfos = validTokensInfos
@@ -162,7 +164,7 @@ async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneAc
             return 1;
         });
 
-    if(config.useOfPredeterminedObjects)
+    if(generalConfig.useOfPredeterminedObjects)
     {
         //Search definitions of each predetermined object
         let promiseAddDefs = predeterminedObjectsOneActivty.objects.map(async obj => ({name:obj, definitions: await wordpos.lookupNoun(obj) }));
@@ -173,11 +175,11 @@ async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneAc
         validTokensInfos = validTokensInfos.filter(tokInfo => predObjLemmas.includes(tokInfo.definitions[0].lemma));
     }
 
-    if(config.useVerb)
+    if(configLaunch.verbAssociatorUsed)
     {
         //Use sentences where valid tokens are to add to nearest verb
         //Return arrays of array of type [tokInfoVerb, tokInfoObject]
-        let tokInfosWithVerbs = await getAssociatedVerbs(validTokensInfos, processedSentences, config);
+        let tokInfosWithVerbs = await getAssociatedVerbs(validTokensInfos, processedSentences, generalConfig, configLaunch);
 
         //Only keep the pure form of the token to avoid synonyms abundance
         let validTokens = tokInfosWithVerbs.map(([nearestVerb, tokInfoObject]) =>
@@ -196,14 +198,14 @@ async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneAc
     }
 }
 
-async function getPlansFromHTML(pathWebPage, predeterminedObjectsOneActivty, config)
+async function getPlansFromHTML(pathWebPage, predeterminedObjectsOneActivty, generalConfig, configLaunch)
 {
     console.log("pathWebPage", pathWebPage);
 
     try
     {
         let cleanPlans = [];
-        if(config.useSpecificStruct)
+        if(!configLaunch.genericOrSpecificParsing)
         {
             let rawPlans = await htmlProcessing.extractPlans(pathWebPage);
 
@@ -212,7 +214,7 @@ async function getPlansFromHTML(pathWebPage, predeterminedObjectsOneActivty, con
                 let rawSteps = rawPlan.join(" ");
 
                 //Clean the text of each raw plan
-                cleanPlans.push(htmlProcessing.stringToCleanText(rawSteps, config));
+                cleanPlans.push(htmlProcessing.stringToCleanText(rawSteps, generalConfig));
 
                 //Write a new text file
                 //let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
@@ -224,7 +226,7 @@ async function getPlansFromHTML(pathWebPage, predeterminedObjectsOneActivty, con
             //Get the HTML string
             let htmlString = TOOLS.readTextFile(pathWebPage);
             //Clean the text
-            cleanPlans.push(htmlProcessing.htmlStringToCleanText(htmlString, config));
+            cleanPlans.push(htmlProcessing.htmlStringToCleanText(htmlString, generalConfig));
 
             //Write a new text file
             //let pathToTextFile = `./textWebPages/${pathWebPage.split("/").pop().split(".")[0]}.txt`;
@@ -232,7 +234,7 @@ async function getPlansFromHTML(pathWebPage, predeterminedObjectsOneActivty, con
         }
 
         //Extract object in order from text
-        return await Promise.all(cleanPlans.map(cleanPlan => getOrderedObjectsFromTextFin(cleanPlan, predeterminedObjectsOneActivty, config)));
+        return await Promise.all(cleanPlans.map(cleanPlan => getOrderedObjectsFromTextFin(cleanPlan, predeterminedObjectsOneActivty, generalConfig, configLaunch)));
     }
     catch(e)
     {
@@ -241,15 +243,15 @@ async function getPlansFromHTML(pathWebPage, predeterminedObjectsOneActivty, con
     }
 }
 
-async function addPlansToObj(resOneWebPage, predeterminedObjectsOneActivty, config)
+async function addPlansToObj(resOneWebPage, predeterminedObjectsOneActivty, generalConfig, configLaunch)
 {
     return {
         ...resOneWebPage,
-        plans: await getPlansFromHTML(resOneWebPage.path, predeterminedObjectsOneActivty, config)
+        plans: await getPlansFromHTML(resOneWebPage.path, predeterminedObjectsOneActivty, generalConfig, configLaunch)
     };
 }
 
-export async function processOneActivity(activityResult, dataset, config)
+async function processOneActivity(activityResult, dataset, generalConfig, configLaunch)
 {
     console.log(`\nProcessing activity ${activityResult.activityName}...`);
     //Get the array of corresponding predeterminedObjects
@@ -261,18 +263,18 @@ export async function processOneActivity(activityResult, dataset, config)
         //Stream of files in one activity folder
         .pipe(map(dirent => ({fileName: dirent.name, path: `${activityResult.pathToWebPages}/${dirent.name}`})))
         //Stream of {fileName, path} in one activity folder (Get the path for each webpage)
-        .pipe(take(config.limitNumberPagesByActivityForDebug))
+        .pipe(take(generalConfig.limitNumberPagesByActivityForDebug))
         //Stream of {fileName, path} in one activity folder (Get the path for each webpage)
-        .pipe(filter(resOneWebPage => !config.filterUsingDataset || dataset.find(data => data.fileName === resOneWebPage.fileName).class === "descriptive"))
+        .pipe(filter(resOneWebPage => !generalConfig.filterUsingDataset || dataset.find(data => data.fileName === resOneWebPage.fileName).class === "descriptive"))
         //Stream of {fileName, path} in one activity folder (Filter the web pages which are not "descriptive" using dataset)
-        .pipe(concatMap(resOneWebPage => from(addPlansToObj(resOneWebPage, predeterminedObjectsOneActivty, config))))
+        .pipe(concatMap(resOneWebPage => from(addPlansToObj(resOneWebPage, predeterminedObjectsOneActivty, generalConfig, configLaunch))))
         //Stream of {fileName, path, plans} in one activity folder (Extract ordered objects from html files)
         .pipe(toArray())
         .toPromise();
 
     let allOrderedLists = resAllPages.flatMap(res => res.plans);
 
-    if(config.pruningObjectsUsingWordnet)
+    if(configLaunch.hypernymMutation)
     {
         allOrderedLists = await pruningObjectsByDirectHypernym(allOrderedLists);
     }
@@ -283,20 +285,20 @@ export async function processOneActivity(activityResult, dataset, config)
     activityResult.numberOfPlans = allOrderedLists.length;
     console.log(`${activityResult.numberOfPlans} plans found!`);
     console.log(`${(new Set(allOrderedLists.flat()).size)} distinct objects or couples (verb, object) found!`);
-    activityResult.typeOfPattern = (config.maximalNotClosed ? "maximal" : "closed");
-    activityResult.minNumberPatterns = config.minNumberPatterns;
+    activityResult.typeOfPattern = (configLaunch.maximalNotClosed ? "maximal" : "closed");
+    activityResult.minNumberPatterns = generalConfig.minNumberPatterns;
 
     //Init minSupp
-    let currentMinSupp = config.minSupport;
+    let currentMinSupp = generalConfig.minSupport;
     do
     {
         activityResult.minSupport = currentMinSupp;
         //SPM!!
         //activityResult.frequentSequentialPatterns = GSP.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
         //activityResult.frequentSequentialPatterns = PrefixSpan.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
-        activityResult.frequentSequentialPatterns = VMSP.run(allOrderedLists, currentMinSupp, config.maximalNotClosed);
+        activityResult.frequentSequentialPatterns = VMSP.run(allOrderedLists, currentMinSupp, configLaunch.closedOrMaximalPattern);
 
-        currentMinSupp -= config.stepSupport;
+        currentMinSupp -= generalConfig.stepSupport;
     }while(activityResult.minNumberPatterns !== null && currentMinSupp > 0 && activityResult.frequentSequentialPatterns.size < activityResult.minNumberPatterns);
 
     activityResult.numberOfPatterns = activityResult.frequentSequentialPatterns.size;
@@ -304,7 +306,7 @@ export async function processOneActivity(activityResult, dataset, config)
     return activityResult;
 }
 
-export function applyTfIdf(activityResults)
+function applyTfIdf(activityResults)
 {
     let activitiesNumber = activityResults.length;
 
@@ -387,7 +389,48 @@ async function getDirectHypernyms(object)
         //Keeping the most common sense only
         .filter((pointers, index) => index === 0);
     //Getting the hypernyms pointers only
-    let relationsToUse = groupsOfPointers.flatMap(pointers => pointers.find(relation => relation.pointerSymbol === "@"));
+    let relationsToUse = groupsOfPointers.flatMap(pointers => pointers.find(relation => relation.pointerSymbol === "@")).filter(val => val !== undefined);
     //using hypernymPointers to get hypernyms
     return Promise.all(relationsToUse.map(async hypernymPointer => (await wordpos.seek(hypernymPointer.synsetOffset, hypernymPointer.pos)).lemma));
+}
+
+export async function run(configLaunch)
+{
+    //Get the folders names of all activities
+    let folderNames = filesSystem.readdirSync(GENERAL_CONFIG.pathToWebPagesFolder, { encoding: 'utf8', withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name);
+
+    //Read csv dataset
+    let text = filesSystem.readFileSync(GENERAL_CONFIG.pathToGenreDataset, { encoding: 'utf8'});
+    let dataset  = csvParse(text, {columns: true, skip_empty_lines: true});
+
+    //Progress variables
+    let initTime = new Date();
+    let currentActivityProcessed = 0;
+    TOOLS.showProgress(currentActivityProcessed, folderNames.length, initTime);
+
+    //Use the HTML files in folders to deduce RawNumPOSETs
+    let res = await from(folderNames)
+        //Stream of folders names
+        .pipe(map(activity => new ActivityResult(activity, `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, new Map(), 0, 0)))
+        //Stream of folders names
+        .pipe(take(GENERAL_CONFIG.limitNumberActivityForDebug))
+        //Stream of activity result
+        .pipe(concatMap(activityRes => processOneActivity(activityRes, dataset, GENERAL_CONFIG, configLaunch)))
+        //Stream of activity result
+        .pipe(tap(() =>
+        {
+            currentActivityProcessed++;
+            TOOLS.showProgress(currentActivityProcessed, folderNames.length, initTime);
+        }))
+        //Stream of activity result
+        .pipe(toArray())
+        //Stream of array activity result (only one)
+        .toPromise();
+
+    let preparedActivityResults = res.map(activityResult => activityResult.prepareActivityResultToJSON());
+
+    //Apply TFIDF
+    return applyTfIdf(preparedActivityResults);
 }
