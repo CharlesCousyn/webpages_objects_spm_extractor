@@ -4,7 +4,8 @@
   "description": "",
   "main": "getSequentialPatterns.js",
   "scripts": {
-    "getSequentialPatterns": "node -r esm getSequentialPatterns.js",
+    "main": "node -r esm main.js",
+    "experimentation": "node -r esm experimentation.js",
     "patternAnnotation": "node -r esm patternAnnotation.js",
     "testPOSET": "node -r esm ./tests/testPOSET.js",
     "testFin": "node -r esm ./tests/testFin.js",

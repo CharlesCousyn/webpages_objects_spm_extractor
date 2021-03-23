@@ -1,7 +1,5 @@
 //Libs
 import Wordpos from "wordpos";
-import htmlToText  from "html-to-text";
-import csvParse from "csv-parse/lib/sync";
 import { from, of, ReplaySubject, partition} from 'rxjs';
 import { filter, map, concatMap, tap, groupBy, reduce, mergeMap, mergeAll, toArray, takeLast, bufferCount, count, distinct, take, isEmpty} from 'rxjs/operators';
 import filesSystem from "fs";
@@ -10,12 +8,11 @@ import Lexed from 'lexed';
 import {Tag} from 'en-pos';
 import parser from 'en-parse';
 import { Inflectors } from "en-inflectors";
-import {normalizeCaps, replaceConfusables, resolveContractions} from "en-norm";
+import {normalizeCaps} from "en-norm";
 
 //Personal imports
 import predeterminedObjects from "./configFiles/predeterminedObjects.json";
 import GENERAL_CONFIG from "./configFiles/generalConfig.json";
-import ActivityResult from "./entities/ActivityResult";
 import * as htmlProcessing from "./htmlProcessing";
 import * as TOOLS from "./tools";
 import * as GSP from "./sequentialPatternMining/GSP";
@@ -252,7 +249,7 @@ async function addPlansToObj(resOneWebPage, predeterminedObjectsOneActivty, conf
     };
 }
 
-async function processOneActivity(activityResult, dataset, config)
+export async function processOneActivity(activityResult, dataset, config)
 {
     console.log(`\nProcessing activity ${activityResult.activityName}...`);
     //Get the array of corresponding predeterminedObjects
@@ -307,7 +304,7 @@ async function processOneActivity(activityResult, dataset, config)
     return activityResult;
 }
 
-function applyTfIdf(activityResults)
+export function applyTfIdf(activityResults)
 {
     let activitiesNumber = activityResults.length;
 
@@ -394,46 +391,3 @@ async function getDirectHypernyms(object)
     //using hypernymPointers to get hypernyms
     return Promise.all(relationsToUse.map(async hypernymPointer => (await wordpos.seek(hypernymPointer.synsetOffset, hypernymPointer.pos)).lemma));
 }
-
-(async ()=>
-{
-    //Get the folders names of all activities
-    let folderNames = filesSystem.readdirSync(GENERAL_CONFIG.pathToWebPagesFolder, { encoding: 'utf8', withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => dirent.name);
-
-    //Read csv dataset
-    let text = filesSystem.readFileSync(GENERAL_CONFIG.pathToGenreDataset, { encoding: 'utf8'});
-    let dataset  = csvParse(text, {columns: true, skip_empty_lines: true});
-
-    //Progress variables
-    let initTime = new Date();
-    let currentActivityProcessed = 0;
-    TOOLS.showProgress(currentActivityProcessed, folderNames.length, initTime);
-
-    //Use the HTML files in folders to deduce RawNumPOSETs
-    let res = await from(folderNames)
-        //Stream of folders names
-        .pipe(map(activity => new ActivityResult(activity, `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, new Map(), 0, 0)))
-        //Stream of folders names
-        .pipe(take(GENERAL_CONFIG.limitNumberActivityForDebug))
-        //Stream of activity result
-        .pipe(concatMap(activityRes => processOneActivity(activityRes, dataset, GENERAL_CONFIG)))
-        //Stream of activity result
-        .pipe(tap(() =>
-        {
-            currentActivityProcessed++;
-            TOOLS.showProgress(currentActivityProcessed, folderNames.length, initTime);
-        }))
-        //Stream of activity result
-        .pipe(toArray())
-        //Stream of array activity result (only one)
-        .toPromise();
-
-    let preparedActivityResults = res.map(activityResult => activityResult.prepareActivityResultToJSON());
-
-    //Apply TFIDF
-    preparedActivityResults = applyTfIdf(preparedActivityResults);
-
-    TOOLS.writeJSONFile(preparedActivityResults, "./output/rawActivityResults.json", GENERAL_CONFIG.indentRawFile);
-})();
