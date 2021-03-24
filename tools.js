@@ -1,5 +1,4 @@
 import filesSystem from "fs";
-import Plot from "@stdlib/plot/ctor";
 
 //File processing
 export function writeJSONFile(data, path, isIndent)
@@ -376,4 +375,29 @@ export function dbToSPMFFormat(db, path)
 {
     let dataString = db.map(sequence => sequence.join(" ")).join(". ");
     writeTextFile(dataString, path);
+}
+
+function shallowEqual(object1, object2) {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+
+    if (keys1.length !== keys2.length) {
+        return false;
+    }
+
+    for (let key of keys1) {
+        if (object1[key] !== object2[key]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+export function includeObjects(arrayOfObjects, object)
+{
+    return arrayOfObjects.reduce((acc, curr) =>
+    {
+        return shallowEqual(curr, object) || acc;
+    }, false);
 }
