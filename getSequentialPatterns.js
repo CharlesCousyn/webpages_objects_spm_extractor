@@ -289,14 +289,17 @@ async function processOneActivity(activityResult, dataset, generalConfig, config
     activityResult.minNumberPatterns = generalConfig.minNumberPatterns;
 
     //Init minSupp
-    let currentMinSupp = generalConfig.minSupport;
+    let currentMinSupp = configLaunch.minSupport;
     do
     {
         activityResult.minSupport = currentMinSupp;
+
+        activityResult.dateBegin = new Date();
         //SPM!!
         //activityResult.frequentSequentialPatterns = GSP.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
         //activityResult.frequentSequentialPatterns = PrefixSpan.run(allOrderedLists, config.minSupport, config.closedMention, config.maximalMention);
         activityResult.frequentSequentialPatterns = VMSP.run(allOrderedLists, currentMinSupp, configLaunch.closedOrMaximalPattern);
+        activityResult.dateEnd = new Date();
 
         currentMinSupp -= generalConfig.stepSupport;
     }while(activityResult.minNumberPatterns !== null && currentMinSupp > 0 && activityResult.frequentSequentialPatterns.size < activityResult.minNumberPatterns);

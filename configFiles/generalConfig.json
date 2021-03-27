@@ -17,7 +17,7 @@
   "indentProcessedFile": true,
   "normOrStandOrByPage": "byPage",
   "minSupport": 0.15,
-  "minNumberPatterns": 1,
+  "minNumberPatterns": null,
   "stepSupport": 0.01,
   "verbAssociatorUsed": true,
   "hypernymMutation": false,

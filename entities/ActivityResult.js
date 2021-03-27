@@ -1,6 +1,6 @@
 export default class ActivityResult
 {
-	constructor(activityName, pathToWebPages, frequentSequentialPatterns, numberOfPatterns, typeOfPattern, numberOfPlans, minSupport, minNumberPatterns)
+	constructor(activityName, pathToWebPages, frequentSequentialPatterns, numberOfPatterns, typeOfPattern, numberOfPlans, minSupport, minNumberPatterns, dateBegin, dateEnd)
 	{
 		if(typeof activityName === "object" && pathToWebPages === undefined)
 		{
@@ -12,6 +12,8 @@ export default class ActivityResult
 			this._numberOfPlans = activityName._numberOfPlans;
 			this._minSupport = activityName._minSupport;
 			this._minNumberPatterns = activityName._minNumberPatterns;
+			this._dateBegin = activityName._dateBegin;
+			this._dateEnd = activityName._dateEnd;
 		}
 		else
 		{
@@ -23,6 +25,8 @@ export default class ActivityResult
 			this._numberOfPlans = numberOfPlans;
 			this._minSupport = minSupport;
 			this._minNumberPatterns = minNumberPatterns;
+			this._dateBegin = dateBegin;
+			this._dateEnd = dateEnd;
 		}
 	}
 
@@ -30,6 +34,26 @@ export default class ActivityResult
 	{
 		this._frequentSequentialPatterns = [...this._frequentSequentialPatterns];
 		return this;
+	}
+
+	get dateBegin()
+	{
+		return this._dateBegin;
+	}
+
+	set dateBegin(value)
+	{
+		this._dateBegin = value;
+	}
+
+	get dateEnd()
+	{
+		return this._dateEnd;
+	}
+
+	set dateEnd(value)
+	{
+		this._dateEnd = value;
 	}
 
 	get activityName()

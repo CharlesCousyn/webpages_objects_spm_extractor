@@ -57,7 +57,7 @@ function filterUselessCombinations(configurations)
     const allConfigurationsComputed = filePaths.map(filePath =>
     {
         //Get resultFile
-        const expFile = JSON.parse(filesSystem.readFileSync(filePath));
+        const expFile = JSON.parse(filesSystem.readFileSync(filePath), TOOLS.reviverDate);
         let realExperimentationResult = expFile.map(confRes => new ExperimentationResult(confRes));
         return realExperimentationResult[0].configuration;
     });

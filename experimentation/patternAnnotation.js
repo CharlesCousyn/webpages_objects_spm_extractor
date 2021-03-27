@@ -71,7 +71,7 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples)
 
     const filePathsAnnotated = nameFiles.map(name => `${pathAnnotated}/${name}`);
 
-    let dataFilesAnnotated = filePathsAnnotated.map((filePath) => [filePath, new ExperimentationResult(JSON.parse(filesSystem.readFileSync(filePath))[0])]);
+    let dataFilesAnnotated = filePathsAnnotated.map((filePath) => [filePath, new ExperimentationResult(JSON.parse(filesSystem.readFileSync(filePath), TOOLS.reviverDate)[0])]);
 
     //Progress variables
     let initTime = new Date();
@@ -123,7 +123,7 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples)
     //Gel all patterns in all files
     const allNotAnnotatedCoupleActivityNamePatterns = filePaths.map(filePath =>
     {
-        return JSON.parse(filesSystem.readFileSync(filePath))
+        return JSON.parse(filesSystem.readFileSync(filePath), TOOLS.reviverDate)
             .map(e => new ExperimentationResult(e))
             .map(experimentalResult =>
                 experimentalResult.activityResults

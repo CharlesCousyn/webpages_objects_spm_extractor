@@ -4,16 +4,6 @@ import ExperimentationResult from "../entities/ExperimentationResult";
 import csvStringify from "csv-stringify/lib/sync";
 import ActivityResult from "../entities/ActivityResult";
 
-const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
-
-function reviverDate(key, value)
-{
-    if (typeof value === "string" && dateFormat.test(value)) {
-        return new Date(value);
-    }
-    return value;
-}
-
 (async () =>
 {
     //Read all files in experimentationResults folder
@@ -25,7 +15,7 @@ function reviverDate(key, value)
     let allConfAnnotatedExperimentalResults = filePaths.map(filePath =>
     {
         //Get resultFile
-        const expFile = JSON.parse(filesSystem.readFileSync(filePath), reviverDate);
+        const expFile = JSON.parse(filesSystem.readFileSync(filePath), TOOLS.reviverDate);
         let realExperimentationResult = expFile.map(a => new ExperimentationResult(a));
         return realExperimentationResult[0];
     });
