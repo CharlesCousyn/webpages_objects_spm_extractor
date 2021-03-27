@@ -8,31 +8,40 @@ import { v4 as uuidv4 } from 'uuid';
 
 function generateAllConfigurations(criteria)
 {
-    if (criteria.length === 1)
+    if(criteria.length === 1)
     {
-        return criteria[0];
+        return criteria[0];// [nameCriterion, values]
     }
     else
     {
-        let result = [];
-        let allCasesOfRest = generateAllConfigurations(criteria.slice(1));  // recur with the rest of array
-        let  [nameNext, valueNext] = criteria[0];
-        //For each value of criterion
-        for (let i = 0; i < allCasesOfRest.length; i++)
+        let res = [];
+        let otherCases = generateAllConfigurations(criteria.slice(1));
+        let [nameCurrent, valuesCurrent] = criteria[0];
+        //If otherCases of the form [nameCriterion, values]
+        if(otherCases.length !== 0 && typeof otherCases[0] === "string")
         {
-            for (let j = 0; j < valueNext.length; j++)
+            let [nameOther, valuesOther] = otherCases;
+            for(let i = 0; i < valuesOther.length; i++)
             {
-                if(Array.isArray(allCasesOfRest[i]) && Array.isArray(allCasesOfRest[0]))
+                for(let j =0; j < valuesCurrent.length; j++)
                 {
-                    result.push([[nameNext, valueNext[j]], ...allCasesOfRest[i]]);
-                }
-                else
-                {
-                    result.push([[nameNext, valueNext[j]], [allCasesOfRest[0], allCasesOfRest[1][i]]]);
+                    res.push([[nameCurrent, valuesCurrent[j]], [nameOther, valuesOther[i]]]);
                 }
             }
         }
-        return result;
+        //If otherCases of the form partial solution
+        else
+        {
+            for(let i = 0; i < otherCases.length; i++)
+            {
+                for(let j =0; j < valuesCurrent.length; j++)
+                {
+                    res.push([[nameCurrent, valuesCurrent[j]], ...otherCases[i]]);
+                }
+            }
+        }
+
+        return res;
     }
 }
 
