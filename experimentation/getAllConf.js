@@ -65,9 +65,14 @@ function filterUselessCombinations(configurations)
     configurationsToCompute = configurationsToCompute.filter(conf => !TOOLS.includeObjects(allConfigurationsComputed, conf));
 
     //For test
-    configurationsToCompute = configurationsToCompute.filter((val, index) => index >= 7 && index <= 7);
+    //configurationsToCompute = configurationsToCompute.filter((val, index) => index >= 7 && index <= 7);
 
     console.log(`Computing results for ${configurationsToCompute.length} configurations....`);
+
+    //Progress variables
+    let initTime = new Date();
+    let currentConfigProcessed = 0;
+    TOOLS.showProgress(currentConfigProcessed, configurationsToCompute.length, initTime);
 
     //Use every combination
     for(let i = 0; i < configurationsToCompute.length; i++)
@@ -91,5 +96,11 @@ function filterUselessCombinations(configurations)
         {
             TOOLS.writeJSONFile([experimentationResult], `./experimentationResults/allConfAnnotatedExperimentalResults/${nameFile}.json`, GENERAL_CONFIG.indentRawFile);
         }
+
+        console.log("////////////////////////////");
+        console.log("//Experimentation progress//");
+        console.log("////////////////////////////");
+        currentConfigProcessed++;
+        TOOLS.showProgress(currentConfigProcessed, configurationsToCompute.length, initTime);
     }
 })();
