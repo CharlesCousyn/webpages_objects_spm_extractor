@@ -1,6 +1,7 @@
 {
   "allowedLexNames": ["noun.artifact",  "noun.object", "noun.substance", "noun.plant", "noun.animal", "noun.food", "noun.body"],
-  "pathToWebPagesFolder": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/",
+  "pathToSpecificWebPagesFolder": "C:/Users/Charles/WebstormProjects/webpages_retrieval/outputData/",
+  "pathToGenericWebPagesFolder": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/",
   "pathToGenreDataset": "C:/Users/Charles/WebstormProjects/webpages_labeling/datasetGenreClass.csv",
   "filterUsingDataset": false,
   "useOfPredeterminedObjects": false,
@@ -17,7 +18,7 @@
   "indentProcessedFile": true,
   "normOrStandOrByPage": "byPage",
   "minSupport": 0.15,
-  "minNumberPatterns": null,
+  "minNumberPatterns": 1,
   "stepSupport": 0.01,
   "verbAssociatorUsed": true,
   "hypernymMutation": false,

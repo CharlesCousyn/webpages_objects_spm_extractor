@@ -6,6 +6,7 @@ import ExperimentationResult from "../entities/ExperimentationResult";
 import filesSystem from "fs";
 import { v4 as uuidv4 } from 'uuid';
 
+//Cartesian product of all possible value of all criteria
 function generateAllConfigurations(criteria)
 {
     if(criteria.length === 1)

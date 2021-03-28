@@ -399,8 +399,10 @@ async function getDirectHypernyms(object)
 
 export async function run(configLaunch)
 {
+    let pathToWebPagesFolder = (configLaunch.genericOrSpecificParsing ? GENERAL_CONFIG.pathToGenericWebPagesFolder : GENERAL_CONFIG.pathToSpecificWebPagesFolder);
+
     //Get the folders names of all activities
-    let folderNames = filesSystem.readdirSync(GENERAL_CONFIG.pathToWebPagesFolder, { encoding: 'utf8', withFileTypes: true })
+    let folderNames = filesSystem.readdirSync(pathToWebPagesFolder, { encoding: 'utf8', withFileTypes: true })
         .filter(dirent => dirent.isDirectory())
         .map(dirent => dirent.name);
 
@@ -413,10 +415,10 @@ export async function run(configLaunch)
     let currentActivityProcessed = 0;
     TOOLS.showProgress(currentActivityProcessed, folderNames.length, initTime);
 
-    //Use the HTML files in folders to deduce RawNumPOSETs
+    //Use the HTML files in folders to find patterns
     let res = await from(folderNames)
         //Stream of folders names
-        .pipe(map(activity => new ActivityResult(activity, `${GENERAL_CONFIG.pathToWebPagesFolder}${activity}`, new Map(), 0, 0)))
+        .pipe(map(activity => new ActivityResult(activity, `${pathToWebPagesFolder}${activity}`, new Map(), 0, 0)))
         //Stream of folders names
         .pipe(take(GENERAL_CONFIG.limitNumberActivityForDebug))
         //Stream of activity result
