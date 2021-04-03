@@ -27,39 +27,59 @@ class ArraySet extends Set
     }
 }
 
-function annotateActivityResults(realActivityResults)
+function questionsAboutPattern(pattern, numberOfActivity)
 {
-    //Get total number of patterns
-    let totalNumberPatterns = realActivityResults.reduce((acc, curr) =>
-    {
-        acc += curr.frequentSequentialPatterns.length;
-        return acc;
-    }, 0.0);
+    let isSimplePattern = !pattern[0].includes("||");
+    let annotationScore = 0.0;
+    let proportionNumberObjectsLikely = 0.0;
+    let proportionNumberVerbsAssociatedLikely = 0.0;
+    let orderPlausibility = 0.0;
+    let specificity = 0.0;
 
-    //Progress variables
-    let initTime = new Date();
-    let currentPatternsProcessed = 0;
-    TOOLS.showProgress(currentPatternsProcessed, totalNumberPatterns, initTime);
-
-    return realActivityResults.map(activityResult =>
+    //Objects plausibility
+    let numberObjectsLikely = inputReader.readInteger("How many objects contained in the pattern are plausible with the realization of the activity? (-1 to go back) ");
+    if(numberObjectsLikely === -1)
     {
-        activityResult.frequentSequentialPatterns = activityResult.frequentSequentialPatterns.map(
-            patternInfo =>
+        annotationScore = -1;
+    }
+    else
+    {
+        proportionNumberObjectsLikely = numberObjectsLikely / pattern.length;
+
+        let precision = 0.0001;
+        if(!isSimplePattern && Math.abs(proportionNumberObjectsLikely - 1.0) < precision)
+        {
+            //Verbs plausibility
+            let numberVerbsAssociatedLikely = inputReader.readInteger("How many associated verbs contained in the pattern are plausible with the object and the realization of the activity? ");
+            proportionNumberVerbsAssociatedLikely = numberVerbsAssociatedLikely / pattern.length;
+        }
+
+        if((!isSimplePattern && Math.abs(proportionNumberVerbsAssociatedLikely - 1.0) < precision) || (isSimplePattern && Math.abs(proportionNumberObjectsLikely - 1.0) < precision))
+        {
+            //Order plausibility
+            orderPlausibility = inputReader.readFloat("Between 0.0 and 1.0, how much the order of the pattern is plausible for this activity? ");
+
+            if(Math.abs(orderPlausibility - 1.0) < precision)
             {
-                //Annotation process
-                console.log("Activity name: ", activityResult.activityName);
-                console.log("Pattern: ", patternInfo.pattern);
-                patternInfo.annotation = inputReader.readInteger("From 1 to 4, how much the following pattern is relevant? ");
-
-                //Progress variables
-                currentPatternsProcessed++;
-                TOOLS.showProgress(currentPatternsProcessed, totalNumberPatterns, initTime);
-
-                return patternInfo;
+                //Specificity
+                let numberActivityWherePlausible = inputReader.readInteger("In how many activities other than the one considered, the pattern would be plausible? ");
+                specificity = 1.0 - numberActivityWherePlausible / (numberOfActivity - 1 );
             }
-        );
+        }
 
-    });
+
+        //Annotation score formula
+        if(isSimplePattern)
+        {
+            annotationScore = (proportionNumberObjectsLikely + orderPlausibility + specificity) / 3;
+        }
+        else
+        {
+            annotationScore = (proportionNumberObjectsLikely + proportionNumberVerbsAssociatedLikely + orderPlausibility + specificity) / 4;
+        }
+    }
+
+    return annotationScore;
 }
 
 function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples)
@@ -78,38 +98,61 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples)
     let currentPatternsProcessed = 0;
     TOOLS.showProgress(currentPatternsProcessed, notAnnotatedUniqueCouples.length, initTime);
 
-    notAnnotatedUniqueCouples.forEach(([activityName, pattern]) =>
+    let numberOfActivity = (new Set(notAnnotatedUniqueCouples.map(([activityName, pattern]) => activityName))).size;
+
+    for(let i = 0; i < notAnnotatedUniqueCouples.length; i++)
     {
+        let [activityName, pattern] = notAnnotatedUniqueCouples[i];
+
         //Annotation process
+        console.log("");
         console.log("Activity name: ", activityName);
         console.log("Pattern: ", pattern);
-        let annotation = inputReader.readInteger("From 1 to 4, how much the following pattern is relevant? ");
 
-        //Progress variables
-        currentPatternsProcessed++;
-        TOOLS.showProgress(currentPatternsProcessed, notAnnotatedUniqueCouples.length, initTime);
-
-        let triplet = [activityName, pattern, annotation];
-
-        //Save the annotation in dataFilesAnnotated and write file
-        dataFilesAnnotated.forEach(([pathToWrite, dataToUpdate])=>
+        let annotationScore = questionsAboutPattern(pattern, numberOfActivity);
+        if(annotationScore === -1)
         {
-            //If triplet is in dataToUpdate, update
-            for(let activityResult of dataToUpdate.activityResults.map(a => new ActivityResult(a)))
+            //If we are at the beginning
+            if(i < 1)
             {
-                let indexCorrespondingPat = activityResult.frequentSequentialPatterns.findIndex(patInfo => activityResult.activityName === triplet[0] && TOOLS.arraysMatch(patInfo.pattern, triplet[1]));
-                //If one correspondance
-                if(indexCorrespondingPat !== -1)
-                {
-                    //Update to add annotation
-                    activityResult.frequentSequentialPatterns[indexCorrespondingPat].annotation = triplet[2];
-                    //Save that annotation
-                    TOOLS.writeJSONFile([dataToUpdate], pathToWrite, true);
-                }
+                i--;
             }
+            else
+            {
+                i -= 2;
+            }
+            currentPatternsProcessed--;
+        }
+        else
+        {
+            console.log("Annotation Score: ", annotationScore);
 
-        });
-    });
+            //Progress variables
+            currentPatternsProcessed++;
+            TOOLS.showProgress(currentPatternsProcessed, notAnnotatedUniqueCouples.length, initTime);
+
+            let triplet = [activityName, pattern, annotationScore];
+
+            //Save the annotation in dataFilesAnnotated and write file
+            dataFilesAnnotated.forEach(([pathToWrite, dataToUpdate])=>
+            {
+                //If triplet is in dataToUpdate, update
+                for(let activityResult of dataToUpdate.activityResults.map(a => new ActivityResult(a)))
+                {
+                    let indexCorrespondingPat = activityResult.frequentSequentialPatterns.findIndex(patInfo => activityResult.activityName === triplet[0] && TOOLS.arraysMatch(patInfo.pattern, triplet[1]));
+                    //If one correspondance
+                    if(indexCorrespondingPat !== -1)
+                    {
+                        //Update to add annotation
+                        activityResult.frequentSequentialPatterns[indexCorrespondingPat].annotation = triplet[2];
+                        //Save that annotation
+                        TOOLS.writeJSONFile([dataToUpdate], pathToWrite, true);
+                    }
+                }
+
+            });
+        }
+    }
 }
 
 (async () =>
