@@ -117,6 +117,7 @@ async function getAssociatedVerbs(tokInfoObjects, processedSentences, generalCon
 async function getOrderedObjectsFromTextFin(cleanText, predeterminedObjectsOneActivty, generalConfig, configLaunch)
 {
     let tokenizedText = (new Lexed(cleanText)).lexer().tokens;
+    tokenizedText = tokenizedText.map(sentenceArr => sentenceArr.map(tok=> tok.substring(0, 40)));
     let clonedTokenizedText = clone(tokenizedText);
     let normalizedTokenizedText = clonedTokenizedText.map(sentenceArr => normalizeCaps(sentenceArr));
     let POSText = normalizedTokenizedText.map(sentenceArr => new Tag(sentenceArr).initial().smooth().tags);
@@ -276,7 +277,7 @@ async function processOneActivity(activityResult, dataset, generalConfig, config
 
     if(configLaunch.hypernymMutation)
     {
-        allOrderedLists = await pruningObjectsByDirectHypernym(allOrderedLists);
+        allOrderedLists = await pruningObjectsByDirectHypernym(allOrderedLists, configLaunch);
     }
 
     //Saving allOrderedLists (useful in case of recovering of all frequent patterns from maximal only)
@@ -342,13 +343,18 @@ function applyTfIdf(activityResults)
     return activityResults;
 }
 
-async function pruningObjectsByDirectHypernym(allOrderedLists)
+async function pruningObjectsByDirectHypernym(allOrderedLists, configLaunch)
 {
     console.log("Pruning objects by search of direct hypernym...");
 
-    //Get ordered objects and orderedVerbs
-    let allOrderedVerbs = allOrderedLists.map(orderedList => orderedList.map(string => string.split("||")[0]));
-    let allOrderedObjects = allOrderedLists.map(orderedList => orderedList.map(string => string.split("||")[1]));
+    let allOrderedVerbs = [];
+    let allOrderedObjects = allOrderedLists;
+    if(configLaunch.verbAssociatorUsed)
+    {
+        //Get ordered objects and orderedVerbs
+        allOrderedVerbs = allOrderedLists.map(orderedList => orderedList.map(string => string.split("||")[0]));
+        allOrderedObjects = allOrderedLists.map(orderedList => orderedList.map(string => string.split("||")[1]));
+    }
 
     //Extract all the unique objects
     let uniqueObjects = [...new Set(allOrderedObjects.flat())];
@@ -376,7 +382,14 @@ async function pruningObjectsByDirectHypernym(allOrderedLists)
         {
             let transformation = arrayOfObjectToTransform.filter(([hypo, hyper]) => hypo === objectString);
             let newObject = transformation.length === 1 ? transformation[0][1] : objectString;
-            return `${allOrderedVerbs[indexPlan][indexCouple]}||${newObject}`;
+            if(configLaunch.verbAssociatorUsed)
+            {
+                return `${allOrderedVerbs[indexPlan][indexCouple]}||${newObject}`;
+            }
+            else
+            {
+                return newObject;
+            }
         }));
 
     return allOrderedLists;

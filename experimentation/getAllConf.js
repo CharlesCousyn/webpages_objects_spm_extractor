@@ -60,7 +60,7 @@ function filterUselessCombinations(configurations)
     configurationsToCompute = filterUselessCombinations(configurationsToCompute);
 
     //Check configurations already computed
-    const path = `./experimentationResults`;
+    const path = `./experimentationResults/allConfExperimentalResults`;
     const filePaths = filesSystem.readdirSync( path, { encoding: 'utf8', withFileTypes: true })
         .filter(dirent => dirent.isFile())
         .map(dirent => `${path}/${dirent.name}`);
