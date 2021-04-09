@@ -82,7 +82,7 @@ function questionsAboutPattern(pattern, numberOfActivity)
     return annotationScore;
 }
 
-function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples)
+function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples, totalNbrPat, nbrPatAlreadyAnnotated)
 {
     const pathAnnotated = `./experimentationResults/allConfAnnotatedExperimentalResults`;
     const nameFiles = filesSystem.readdirSync( pathAnnotated, { encoding: 'utf8', withFileTypes: true })
@@ -95,8 +95,8 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples)
 
     //Progress variables
     let initTime = new Date();
-    let currentPatternsProcessed = 0;
-    TOOLS.showProgress(currentPatternsProcessed, notAnnotatedUniqueCouples.length, initTime);
+    let currentPatternsProcessed = nbrPatAlreadyAnnotated;
+    TOOLS.showProgress(currentPatternsProcessed, totalNbrPat, initTime);
 
     let numberOfActivity = (new Set(notAnnotatedUniqueCouples.map(([activityName, pattern]) => activityName))).size;
 
@@ -129,7 +129,7 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples)
 
             //Progress variables
             currentPatternsProcessed++;
-            TOOLS.showProgress(currentPatternsProcessed, notAnnotatedUniqueCouples.length, initTime);
+            TOOLS.showProgress(currentPatternsProcessed, totalNbrPat, initTime);
 
             let triplet = [activityName, pattern, annotationScore];
 
@@ -164,7 +164,7 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples)
         .map(dirent => `${path}/${dirent.name}`);
 
     //Gel all patterns in all files
-    const allNotAnnotatedCoupleActivityNamePatterns = filePaths.map(filePath =>
+    const allCoupleActivityNamePatterns = filePaths.map(filePath =>
     {
         return JSON.parse(filesSystem.readFileSync(filePath), TOOLS.reviverDate)
             .map(e => new ExperimentationResult(e))
@@ -173,18 +173,24 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples)
                     .map(a => new ActivityResult(a))
                     .map(actRes =>
                         actRes.frequentSequentialPatterns
-                            .map(patInfo => patInfo.annotation === undefined ? [actRes.activityName, patInfo.pattern] : undefined)
-                            .filter(couple => couple !== undefined)
+                            .map(patInfo => [actRes.activityName, patInfo.pattern, patInfo.annotation])
                     )
                 );
     }).flat(3);
-    console.log("allNotAnnotatedCoupleActivityNamePatterns.length", allNotAnnotatedCoupleActivityNamePatterns.length);
+
+    console.log("allCoupleActivityNamePatterns.length", allCoupleActivityNamePatterns.length);
 
     //Gel all unique couples (activityName, pattern) in all files
-    let allNotAnnotatedUniqueCoupleActivityNamePatterns = (new ArraySet(allNotAnnotatedCoupleActivityNamePatterns)).toArray();
+    let allUniqueCoupleActivityNamePatterns = (new ArraySet(allCoupleActivityNamePatterns)).toArray();
+    console.log("allUniqueCoupleActivityNamePatterns.length", allUniqueCoupleActivityNamePatterns.length);
+
+    let allAnnotatedUniqueCoupleActivityNamePatterns = allUniqueCoupleActivityNamePatterns.filter(([act, pat, anno]) => anno !== null);
+    console.log("allAnnotatedUniqueCoupleActivityNamePatterns.length", allAnnotatedUniqueCoupleActivityNamePatterns.length);
+
+    let allNotAnnotatedUniqueCoupleActivityNamePatterns = allUniqueCoupleActivityNamePatterns.filter(([act, pat, anno]) => anno === null);
     console.log("allNotAnnotatedUniqueCoupleActivityNamePatterns.length", allNotAnnotatedUniqueCoupleActivityNamePatterns.length);
 
     //Annotate method
-    annotateCouplesActivityNamePatterns(allNotAnnotatedUniqueCoupleActivityNamePatterns);
+    annotateCouplesActivityNamePatterns(allNotAnnotatedUniqueCoupleActivityNamePatterns,  allUniqueCoupleActivityNamePatterns.length, allAnnotatedUniqueCoupleActivityNamePatterns.length);
 
 })();
