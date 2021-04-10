@@ -1,5 +1,6 @@
 //Import libs
 import * as inputReader from "wait-console-input";
+import arrayShuffle from "array-shuffle";
 
 //Personal imports
 import ACTIVITY_RESULTS from "../output/rawActivityResults.json";
@@ -107,7 +108,7 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples, totalNbr
         //Annotation process
         console.log("");
         console.log("Activity name: ", activityName);
-        console.log("Pattern: ", pattern);
+        console.log("Pattern: ", pattern, pattern.length);
 
         let annotationScore = questionsAboutPattern(pattern, numberOfActivity);
         if(annotationScore === -1)
@@ -184,11 +185,25 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples, totalNbr
     let allUniqueCoupleActivityNamePatterns = (new ArraySet(allCoupleActivityNamePatterns)).toArray();
     console.log("allUniqueCoupleActivityNamePatterns.length", allUniqueCoupleActivityNamePatterns.length);
 
+    //Annotation verification
+    allUniqueCoupleActivityNamePatterns = allUniqueCoupleActivityNamePatterns.map(([act, pat, anno])=>
+    {
+        //If annotation incorrect, we delete it
+        if(anno < 0 || anno > 1)
+        {
+            return [act, pat, null];
+        }
+        return [act, pat, anno];
+    });
+
     let allAnnotatedUniqueCoupleActivityNamePatterns = allUniqueCoupleActivityNamePatterns.filter(([act, pat, anno]) => anno !== null);
     console.log("allAnnotatedUniqueCoupleActivityNamePatterns.length", allAnnotatedUniqueCoupleActivityNamePatterns.length);
 
     let allNotAnnotatedUniqueCoupleActivityNamePatterns = allUniqueCoupleActivityNamePatterns.filter(([act, pat, anno]) => anno === null);
     console.log("allNotAnnotatedUniqueCoupleActivityNamePatterns.length", allNotAnnotatedUniqueCoupleActivityNamePatterns.length);
+
+    //Shuffle allNotAnnotatedUniqueCoupleActivityNamePatterns
+    allNotAnnotatedUniqueCoupleActivityNamePatterns = arrayShuffle(allNotAnnotatedUniqueCoupleActivityNamePatterns);
 
     //Annotate method
     annotateCouplesActivityNamePatterns(allNotAnnotatedUniqueCoupleActivityNamePatterns,  allUniqueCoupleActivityNamePatterns.length, allAnnotatedUniqueCoupleActivityNamePatterns.length);
