@@ -83,7 +83,7 @@ function questionsAboutPattern(pattern, numberOfActivity)
     return annotationScore;
 }
 
-function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples, totalNbrPat, nbrPatAlreadyAnnotated)
+function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples, totalNbrPat, nbrPatAlreadyAnnotated, numberOfActivity)
 {
     const pathAnnotated = `./experimentationResults/allConfAnnotatedExperimentalResults`;
     const nameFiles = filesSystem.readdirSync( pathAnnotated, { encoding: 'utf8', withFileTypes: true })
@@ -98,8 +98,6 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples, totalNbr
     let initTime = new Date();
     let currentPatternsProcessed = nbrPatAlreadyAnnotated;
     TOOLS.showProgress(currentPatternsProcessed, totalNbrPat, initTime);
-
-    let numberOfActivity = (new Set(notAnnotatedUniqueCouples.map(([activityName, pattern]) => activityName))).size;
 
     for(let i = 0; i < notAnnotatedUniqueCouples.length; i++)
     {
@@ -196,6 +194,8 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples, totalNbr
         return [act, pat, anno];
     });
 
+    let numberOfActivity = (new Set(allUniqueCoupleActivityNamePatterns.map(([activityName, pattern, anno]) => activityName))).size;
+
     let allAnnotatedUniqueCoupleActivityNamePatterns = allUniqueCoupleActivityNamePatterns.filter(([act, pat, anno]) => anno !== null);
     console.log("allAnnotatedUniqueCoupleActivityNamePatterns.length", allAnnotatedUniqueCoupleActivityNamePatterns.length);
 
@@ -206,6 +206,6 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples, totalNbr
     allNotAnnotatedUniqueCoupleActivityNamePatterns = arrayShuffle(allNotAnnotatedUniqueCoupleActivityNamePatterns);
 
     //Annotate method
-    annotateCouplesActivityNamePatterns(allNotAnnotatedUniqueCoupleActivityNamePatterns,  allUniqueCoupleActivityNamePatterns.length, allAnnotatedUniqueCoupleActivityNamePatterns.length);
+    annotateCouplesActivityNamePatterns(allNotAnnotatedUniqueCoupleActivityNamePatterns,  allUniqueCoupleActivityNamePatterns.length, allAnnotatedUniqueCoupleActivityNamePatterns.length, numberOfActivity);
 
 })();
