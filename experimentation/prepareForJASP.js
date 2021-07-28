@@ -3,6 +3,7 @@ import filesSystem from "fs";
 import ExperimentationResult from "../entities/ExperimentationResult";
 import csvStringify from "csv-stringify/lib/sync";
 import ActivityResult from "../entities/ActivityResult";
+import summary from "summary";
 
 (async () =>
 {
@@ -64,4 +65,35 @@ import ActivityResult from "../entities/ActivityResult";
 
     TOOLS.writeTextFile(stringConfigData, "./experimentationResults/JASPFiles/configData.csv");
 
+    //Get the top of configurations
+    let topConfData = allConfAnnotatedExperimentalResults
+        .map(experimentalResult =>
+        {
+            let annotationByConf = experimentalResult.activityResults
+                .map(a => new ActivityResult(a))
+                .map(actRes => actRes.frequentSequentialPatterns.map(patInfo => patInfo.annotation))
+                .flat(1)
+
+            return [experimentalResult.configuration, annotationByConf];
+        })
+        .map(([configuration, annotationByConf]) =>
+        {
+            let data = summary(annotationByConf);
+            return [configuration, data.median(), data.quartile(0.75) - data.quartile(0.25)];
+        })
+        .map(([configuration, central, dispersion]) => [configuration, Math.round((central + Number.EPSILON) * 1000) / 1000, Math.round((dispersion + Number.EPSILON) * 1000) / 1000])
+        .sort((a, b) => b[1] - a[1])
+        .map(([configuration, central, dispersion]) => [...Object.values(configuration), central, dispersion]);
+
+    let stringTopConfData = csvStringify(topConfData,
+        {
+            header: true,
+            columns: [...columnsNamesCriteria, "median", "IQR"],
+            cast: {
+                boolean: bool => bool + ""
+            }
+        });
+
+
+    TOOLS.writeTextFile(stringTopConfData, "./experimentationResults/JASPFiles/topConfData.csv");
 })();

@@ -194,6 +194,30 @@ function annotateCouplesActivityNamePatterns(notAnnotatedUniqueCouples, totalNbr
         return [act, pat, anno];
     });
 
+    /* Annotation verification VERSION VERIFICATION
+    //Annotation verification
+    let  array17 = Array.from({length: 18}, (_, i) => i);
+    let possibleScoreSimple = array17.map(i => (2/3) +  (1 - i / 17)/3);
+    let possibleScoreCouple= array17.map(i => 0.75 +  (1 - i / 17)/4);
+    allUniqueCoupleActivityNamePatterns = allUniqueCoupleActivityNamePatterns.map(([act, pat, anno])=>
+    {
+        let isSimplePattern = !pat[0].includes("||");
+        //If annotation incorrect, we delete it
+        if(anno < 0 || anno > 1)
+        {
+            return [act, pat, null];
+        }
+        //Check if pattern incorrect because of bug on specificity score
+        if((isSimplePattern && anno > 2/3 && !possibleScoreSimple.some(possibleScore => Math.abs(possibleScore - anno) < 0.00001)) ||
+                (!isSimplePattern && anno > 0.75 && !possibleScoreCouple.some(possibleScore => Math.abs(possibleScore - anno) < 0.00001)))
+        {
+            console.log([act, pat, anno]);
+            return [act, pat, null];
+        }
+        return [act, pat, anno];
+    });
+    */
+
     let numberOfActivity = (new Set(allUniqueCoupleActivityNamePatterns.map(([activityName, pattern, anno]) => activityName))).size;
 
     let allAnnotatedUniqueCoupleActivityNamePatterns = allUniqueCoupleActivityNamePatterns.filter(([act, pat, anno]) => anno !== null);

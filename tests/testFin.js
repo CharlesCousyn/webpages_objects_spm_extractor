@@ -31,7 +31,7 @@ let wordpos = new Wordpos();
 
 	console.log(res12);
 
-	let cleanText = "You have to answer the phone."
+	let cleanText = "Add some salt to the recipe."
 	let tokenizedText = (new Lexed(cleanText)).lexer().tokens;
 	let clonedTokenizedText = clone(tokenizedText);
 	let normalizedTokenizedText = clonedTokenizedText.map(sentenceArr => normalizeCaps(sentenceArr));

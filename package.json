@@ -8,6 +8,7 @@
     "getAllConf": "node -r esm experimentation/getAllConf.js",
     "patternAnnotation": "node -r esm experimentation/patternAnnotation.js",
     "prepareForJASP": "node -r esm experimentation/prepareForJASP.js",
+    "patternSelection": "node -r esm patternSelection.js",
     "testPOSET": "node -r esm ./tests/testPOSET.js",
     "testFin": "node -r esm ./tests/testFin.js",
     "testSelector": "node -r esm ./tests/testSelector.js",
@@ -33,6 +34,7 @@
     "jsdom": "^16.4.0",
     "lexed": "^1.0.10",
     "rxjs": "^6.6.3",
+    "summary": "^2.1.0",
     "uuid": "^3.4.0",
     "wait-console-input": "^0.1.7",
     "wordpos": "^2.1.0"

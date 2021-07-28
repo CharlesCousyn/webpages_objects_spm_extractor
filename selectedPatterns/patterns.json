@@ -1,0 +1,476 @@
+[
+    {
+        "activityName": "answer_the_phone",
+        "activityPatterns": [
+            {
+                "pattern": [
+                    "hoop",
+                    "mouthpiece"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "telephone"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "telephone",
+                    "hoop"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "telephone",
+                    "person"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "telephone",
+                    "pen",
+                    "telephone",
+                    "person"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "pen",
+                    "telephone",
+                    "person"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "pen",
+                    "paper",
+                    "telephone",
+                    "person"
+                ],
+                "annotation": 1
+            }
+        ]
+    },
+    {
+        "activityName": "clean",
+        "activityPatterns": [
+            {
+                "pattern": [
+                    "water"
+                ],
+                "annotation": 0.9019607843137255
+            },
+            {
+                "pattern": [
+                    "water",
+                    "water"
+                ],
+                "annotation": 0.9019607843137255
+            },
+            {
+                "pattern": [
+                    "water",
+                    "fabric"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "solution"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "salt"
+                ],
+                "annotation": 0.8627450980392157
+            },
+            {
+                "pattern": [
+                    "fabric"
+                ],
+                "annotation": 0.9411764705882352
+            },
+            {
+                "pattern": [
+                    "dish"
+                ],
+                "annotation": 0.8431372549019608
+            }
+        ]
+    },
+    {
+        "activityName": "cook_pasta",
+        "activityPatterns": [
+            {
+                "pattern": [
+                    "water"
+                ],
+                "annotation": 0.8823529411764706
+            },
+            {
+                "pattern": [
+                    "water",
+                    "pasta"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "water",
+                    "pasta",
+                    "pasta"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "water",
+                    "sauce"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "pasta"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "pasta",
+                    "pasta"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "pasta",
+                    "pasta",
+                    "pasta"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "pasta",
+                    "sauce"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "sauce"
+                ],
+                "annotation": 0.9411764705882352
+            },
+            {
+                "pattern": [
+                    "sauce",
+                    "pasta"
+                ],
+                "annotation": 1
+            }
+        ]
+    },
+    {
+        "activityName": "make_coffee",
+        "activityPatterns": [
+            {
+                "pattern": [
+                    "water"
+                ],
+                "annotation": 0.8823529411764706
+            },
+            {
+                "pattern": [
+                    "water",
+                    "coffee"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "water",
+                    "coffee",
+                    "coffee"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "coffee"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "coffee",
+                    "water"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "coffee",
+                    "water",
+                    "coffee"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "coffee",
+                    "coffee"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "coffee",
+                    "coffee",
+                    "coffee"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "coffee",
+                    "coffee",
+                    "coffee",
+                    "coffee"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "milk"
+                ],
+                "annotation": 0.8627450980392157
+            }
+        ]
+    },
+    {
+        "activityName": "make_tea",
+        "activityPatterns": [
+            {
+                "pattern": [
+                    "water"
+                ],
+                "annotation": 0.823529411764706
+            },
+            {
+                "pattern": [
+                    "water",
+                    "water"
+                ],
+                "annotation": 0.9019607843137255
+            },
+            {
+                "pattern": [
+                    "water",
+                    "tea"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "water",
+                    "tea",
+                    "tea"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "tea"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "tea",
+                    "water"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "tea",
+                    "tea"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "tea",
+                    "tea",
+                    "tea"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "cup"
+                ],
+                "annotation": 0.8431372549019608
+            },
+            {
+                "pattern": [
+                    "cup",
+                    "water"
+                ],
+                "annotation": 0.9215686274509803
+            }
+        ]
+    },
+    {
+        "activityName": "vacuum",
+        "activityPatterns": [
+            {
+                "pattern": [
+                    "down",
+                    "rug",
+                    "vacuum",
+                    "down"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "rug",
+                    "vacuum"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "vacuum"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "vacuum",
+                    "vacuum"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "vacuum",
+                    "vacuum",
+                    "vacuum"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "vacuum",
+                    "vacuum",
+                    "floor"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "vacuum",
+                    "vacuum",
+                    "attachment",
+                    "vacuum"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "vacuum",
+                    "floor",
+                    "vacuum"
+                ],
+                "annotation": 0.9803921568627452
+            }
+        ]
+    },
+    {
+        "activityName": "watch_tv",
+        "activityPatterns": [
+            {
+                "pattern": [
+                    "device"
+                ],
+                "annotation": 0.9019607843137255
+            },
+            {
+                "pattern": [
+                    "television_receiver"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "television_receiver",
+                    "television_receiver"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "television_receiver",
+                    "television_receiver",
+                    "television_receiver"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "television_receiver",
+                    "video_recording"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "screen"
+                ],
+                "annotation": 0.9607843137254902
+            },
+            {
+                "pattern": [
+                    "cable"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "channel"
+                ],
+                "annotation": 1
+            },
+            {
+                "pattern": [
+                    "video_recording"
+                ],
+                "annotation": 0.9803921568627452
+            },
+            {
+                "pattern": [
+                    "picture"
+                ],
+                "annotation": 0.9411764705882352
+            },
+            {
+                "pattern": [
+                    "button"
+                ],
+                "annotation": 0.9411764705882352
+            }
+        ]
+    }
+]
