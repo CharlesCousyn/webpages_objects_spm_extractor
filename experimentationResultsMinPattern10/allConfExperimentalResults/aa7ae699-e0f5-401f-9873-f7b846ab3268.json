@@ -1,0 +1,2346 @@
+[
+    {
+        "_configuration": {
+            "genericOrSpecificParsing": true,
+            "verbAssociatorUsed": true,
+            "verbAssociatorProximityBasedOrSyntacticBased": false,
+            "hypernymMutation": false,
+            "closedOrMaximalPattern": true,
+            "minSupport": 1
+        },
+        "_activityResults": [
+            {
+                "_activityName": "answer_the_phone",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/answer_the_phone",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "answer||telephone"
+                        ],
+                        "patternFrequency": 0.5433526011560693,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6820555808075767
+                    },
+                    {
+                        "pattern": [
+                            "answer||telephone",
+                            "answer||telephone"
+                        ],
+                        "patternFrequency": 0.34104046242774566,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.42809871561326623
+                    },
+                    {
+                        "pattern": [
+                            "answer||telephone",
+                            "be||telephone"
+                        ],
+                        "patternFrequency": 0.2832369942196532,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3555396112720347
+                    },
+                    {
+                        "pattern": [
+                            "be||telephone"
+                        ],
+                        "patternFrequency": 0.5664739884393064,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7110792225440694
+                    },
+                    {
+                        "pattern": [
+                            "be||telephone",
+                            "answer||telephone"
+                        ],
+                        "patternFrequency": 0.2658959537572254,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3337718799696652
+                    },
+                    {
+                        "pattern": [
+                            "be||telephone",
+                            "be||telephone"
+                        ],
+                        "patternFrequency": 0.35260115606936415,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4426105364815125
+                    },
+                    {
+                        "pattern": [
+                            "name||telephone"
+                        ],
+                        "patternFrequency": 0.3699421965317919,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.46437826778388197
+                    },
+                    {
+                        "pattern": [
+                            "use||telephone"
+                        ],
+                        "patternFrequency": 0.3063583815028902,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3845632530085273
+                    },
+                    {
+                        "pattern": [
+                            "make||telephone"
+                        ],
+                        "patternFrequency": 0.3699421965317919,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.46437826778388197
+                    },
+                    {
+                        "pattern": [
+                            "have||telephone"
+                        ],
+                        "patternFrequency": 0.28901734104046245,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3627955217061578
+                    },
+                    {
+                        "pattern": [
+                            "reserve||right_field"
+                        ],
+                        "patternFrequency": 0.28901734104046245,
+                        "inverseActivityFrequency": 0.3521825181113625,
+                        "pfIaf": 0.1017868549454805
+                    }
+                ],
+                "_numberOfPatterns": 11,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 173,
+                "_minSupport": 0.24999999999999967,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:14:21.051Z",
+                "_dateEnd": "2021-03-29T21:14:23.014Z"
+            },
+            {
+                "_activityName": "bake_parmesan_turkey_meatballs",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/bake_parmesan_turkey_meatballs",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "make||turkey"
+                        ],
+                        "patternFrequency": 0.47115384615384615,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5914264687505961
+                    },
+                    {
+                        "pattern": [
+                            "make||meatball"
+                        ],
+                        "patternFrequency": 0.5384615384615384,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6759159642863956
+                    },
+                    {
+                        "pattern": [
+                            "be||turkey"
+                        ],
+                        "patternFrequency": 0.5192307692307693,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6517761084190243
+                    },
+                    {
+                        "pattern": [
+                            "be||meatball"
+                        ],
+                        "patternFrequency": 0.5192307692307693,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6517761084190243
+                    },
+                    {
+                        "pattern": [
+                            "mince||garlic"
+                        ],
+                        "patternFrequency": 0.3557692307692308,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4465873335463685
+                    },
+                    {
+                        "pattern": [
+                            "grate||cup"
+                        ],
+                        "patternFrequency": 0.3942307692307692,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.49486704528111103
+                    },
+                    {
+                        "pattern": [
+                            "grate||Parmesan"
+                        ],
+                        "patternFrequency": 0.375,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.47072718941373975
+                    },
+                    {
+                        "pattern": [
+                            "grate||cheese"
+                        ],
+                        "patternFrequency": 0.4423076923076923,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5552166849495391
+                    },
+                    {
+                        "pattern": [
+                            "serve||pasta"
+                        ],
+                        "patternFrequency": 0.375,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.47072718941373975
+                    },
+                    {
+                        "pattern": [
+                            "use||land"
+                        ],
+                        "patternFrequency": 0.36538461538461536,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4586572614800541
+                    },
+                    {
+                        "pattern": [
+                            "reserve||right_field"
+                        ],
+                        "patternFrequency": 0.41346153846153844,
+                        "inverseActivityFrequency": 0.3521825181113625,
+                        "pfIaf": 0.14561392575758256
+                    },
+                    {
+                        "pattern": [
+                            "be||plain"
+                        ],
+                        "patternFrequency": 0.3557692307692308,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4465873335463685
+                    }
+                ],
+                "_numberOfPatterns": 12,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 104,
+                "_minSupport": 0.34999999999999964,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:16:02.954Z",
+                "_dateEnd": "2021-03-29T21:16:04.904Z"
+            },
+            {
+                "_activityName": "choosing_outfit",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/choosing_outfit",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "wear||dress"
+                        ],
+                        "patternFrequency": 0.3381294964028777,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4244446599989596
+                    },
+                    {
+                        "pattern": [
+                            "wear||dress",
+                            "wear||dress"
+                        ],
+                        "patternFrequency": 0.2014388489208633,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2528606485100185
+                    },
+                    {
+                        "pattern": [
+                            "wear||outfit"
+                        ],
+                        "patternFrequency": 0.23741007194244604,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.29801433574395036
+                    },
+                    {
+                        "pattern": [
+                            "be||thing"
+                        ],
+                        "patternFrequency": 0.20863309352517986,
+                        "inverseActivityFrequency": 0.9542425094393249,
+                        "pfIaf": 0.199086566717557
+                    },
+                    {
+                        "pattern": [
+                            "make||outfit"
+                        ],
+                        "patternFrequency": 0.22302158273381295,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2799528608503776
+                    },
+                    {
+                        "pattern": [
+                            "be||outfit"
+                        ],
+                        "patternFrequency": 0.302158273381295,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3792909727650277
+                    },
+                    {
+                        "pattern": [
+                            "be||dress"
+                        ],
+                        "patternFrequency": 0.30935251798561153,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3883217102118141
+                    },
+                    {
+                        "pattern": [
+                            "be||coloring_material"
+                        ],
+                        "patternFrequency": 0.23741007194244604,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.29801433574395036
+                    },
+                    {
+                        "pattern": [
+                            "choose||outfit"
+                        ],
+                        "patternFrequency": 0.4460431654676259,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5599057217007553
+                    },
+                    {
+                        "pattern": [
+                            "choose||outfit",
+                            "be||outfit"
+                        ],
+                        "patternFrequency": 0.20863309352517986,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.26189138595680483
+                    },
+                    {
+                        "pattern": [
+                            "choose||outfit",
+                            "choose||outfit"
+                        ],
+                        "patternFrequency": 0.2517985611510791,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3160758106375231
+                    },
+                    {
+                        "pattern": [
+                            "choose||right_field"
+                        ],
+                        "patternFrequency": 0.2446043165467626,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3070450731907367
+                    },
+                    {
+                        "pattern": [
+                            "choose||style"
+                        ],
+                        "patternFrequency": 0.2014388489208633,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2528606485100185
+                    },
+                    {
+                        "pattern": [
+                            "wear||coloring_material"
+                        ],
+                        "patternFrequency": 0.2014388489208633,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2528606485100185
+                    },
+                    {
+                        "pattern": [
+                            "choose||coloring_material"
+                        ],
+                        "patternFrequency": 0.2302158273381295,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.28898359829716397
+                    },
+                    {
+                        "pattern": [
+                            "be||style"
+                        ],
+                        "patternFrequency": 0.2446043165467626,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3070450731907367
+                    },
+                    {
+                        "pattern": [
+                            "reserve||right_field"
+                        ],
+                        "patternFrequency": 0.2949640287769784,
+                        "inverseActivityFrequency": 0.3521825181113625,
+                        "pfIaf": 0.10388117440694865
+                    }
+                ],
+                "_numberOfPatterns": 17,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 139,
+                "_minSupport": 0.19999999999999968,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:18:19.802Z",
+                "_dateEnd": "2021-03-29T21:18:22.914Z"
+            },
+            {
+                "_activityName": "clean",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/clean",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "clean||dwelling"
+                        ],
+                        "patternFrequency": 0.3458646616541353,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.43415440026129376
+                    },
+                    {
+                        "pattern": [
+                            "clean||way"
+                        ],
+                        "patternFrequency": 0.41353383458646614,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5190976524863296
+                    },
+                    {
+                        "pattern": [
+                            "clean||way",
+                            "reserve||right_field"
+                        ],
+                        "patternFrequency": 0.24060150375939848,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.30202045235568264
+                    },
+                    {
+                        "pattern": [
+                            "wipe||fabric"
+                        ],
+                        "patternFrequency": 0.21052631578947367,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2642678958112223
+                    },
+                    {
+                        "pattern": [
+                            "clean||fabric"
+                        ],
+                        "patternFrequency": 0.2556390977443609,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3208967306279128
+                    },
+                    {
+                        "pattern": [
+                            "clean||floor"
+                        ],
+                        "patternFrequency": 0.21052631578947367,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2642678958112223
+                    },
+                    {
+                        "pattern": [
+                            "make||job"
+                        ],
+                        "patternFrequency": 0.21804511278195488,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.27370603494733736
+                    },
+                    {
+                        "pattern": [
+                            "clean||oven"
+                        ],
+                        "patternFrequency": 0.20300751879699247,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2548297566751072
+                    },
+                    {
+                        "pattern": [
+                            "be||part"
+                        ],
+                        "patternFrequency": 0.2857142857142857,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3586492871723731
+                    },
+                    {
+                        "pattern": [
+                            "reserve||right_field"
+                        ],
+                        "patternFrequency": 0.5037593984962406,
+                        "inverseActivityFrequency": 0.3521825181113625,
+                        "pfIaf": 0.17741525348467133
+                    },
+                    {
+                        "pattern": [
+                            "clean||kitchen"
+                        ],
+                        "patternFrequency": 0.2556390977443609,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3208967306279128
+                    },
+                    {
+                        "pattern": [
+                            "clean||water"
+                        ],
+                        "patternFrequency": 0.3007518796992481,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3775255654446033
+                    },
+                    {
+                        "pattern": [
+                            "use||water"
+                        ],
+                        "patternFrequency": 0.23308270676691728,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.29258231321956757
+                    },
+                    {
+                        "pattern": [
+                            "clean||appliance"
+                        ],
+                        "patternFrequency": 0.20300751879699247,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2548297566751072
+                    },
+                    {
+                        "pattern": [
+                            "clean||merchandise"
+                        ],
+                        "patternFrequency": 0.20300751879699247,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2548297566751072
+                    },
+                    {
+                        "pattern": [
+                            "be||dwelling"
+                        ],
+                        "patternFrequency": 0.20300751879699247,
+                        "inverseActivityFrequency": 0.9542425094393249,
+                        "pfIaf": 0.193718404171893
+                    }
+                ],
+                "_numberOfPatterns": 16,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 133,
+                "_minSupport": 0.19999999999999968,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:21:02.920Z",
+                "_dateEnd": "2021-03-29T21:21:07.058Z"
+            },
+            {
+                "_activityName": "cook_pasta",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/cook_pasta",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "cook||pasta"
+                        ],
+                        "patternFrequency": 0.6666666666666666,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8368483367355373
+                    },
+                    {
+                        "pattern": [
+                            "cook||pasta",
+                            "cook||pasta"
+                        ],
+                        "patternFrequency": 0.5151515151515151,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6466555329320061
+                    },
+                    {
+                        "pattern": [
+                            "be||pasta"
+                        ],
+                        "patternFrequency": 0.696969696969697,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8748868974962436
+                    },
+                    {
+                        "pattern": [
+                            "be||pasta",
+                            "cook||pasta"
+                        ],
+                        "patternFrequency": 0.5,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.627636252551653
+                    },
+                    {
+                        "pattern": [
+                            "be||pasta",
+                            "be||pasta"
+                        ],
+                        "patternFrequency": 0.5606060606060606,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7037133740730654
+                    },
+                    {
+                        "pattern": [
+                            "be||pasta",
+                            "make||pasta"
+                        ],
+                        "patternFrequency": 0.5833333333333334,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7322422946435952
+                    },
+                    {
+                        "pattern": [
+                            "make||pasta"
+                        ],
+                        "patternFrequency": 0.7348484848484849,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9224350984471265
+                    },
+                    {
+                        "pattern": [
+                            "make||pasta",
+                            "be||pasta"
+                        ],
+                        "patternFrequency": 0.5227272727272727,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6561651731221827
+                    },
+                    {
+                        "pattern": [
+                            "make||pasta",
+                            "make||pasta"
+                        ],
+                        "patternFrequency": 0.6060606060606061,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7607712152141248
+                    },
+                    {
+                        "pattern": [
+                            "make||pasta",
+                            "make||pasta",
+                            "make||pasta"
+                        ],
+                        "patternFrequency": 0.5151515151515151,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6466555329320061
+                    },
+                    {
+                        "pattern": [
+                            "add||pasta"
+                        ],
+                        "patternFrequency": 0.5303030303030303,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6656748133123592
+                    }
+                ],
+                "_numberOfPatterns": 11,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 132,
+                "_minSupport": 0.4999999999999996,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:23:07.765Z",
+                "_dateEnd": "2021-03-29T21:23:11.131Z"
+            },
+            {
+                "_activityName": "do_homework",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/do_homework",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "make||work"
+                        ],
+                        "patternFrequency": 0.43902439024390244,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5510952461429148
+                    },
+                    {
+                        "pattern": [
+                            "get||grade"
+                        ],
+                        "patternFrequency": 0.24390243902439024,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.30616402563495265
+                    },
+                    {
+                        "pattern": [
+                            "make||thing"
+                        ],
+                        "patternFrequency": 0.29878048780487804,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.37505093140281703
+                    },
+                    {
+                        "pattern": [
+                            "make||school"
+                        ],
+                        "patternFrequency": 0.35365853658536583,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.44393783717068136
+                    },
+                    {
+                        "pattern": [
+                            "get||way"
+                        ],
+                        "patternFrequency": 0.22560975609756098,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.28320172371233127
+                    },
+                    {
+                        "pattern": [
+                            "make||kid"
+                        ],
+                        "patternFrequency": 0.2804878048780488,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.35208862948019565
+                    },
+                    {
+                        "pattern": [
+                            "get||school"
+                        ],
+                        "patternFrequency": 0.21951219512195122,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2755476230714574
+                    },
+                    {
+                        "pattern": [
+                            "be||school"
+                        ],
+                        "patternFrequency": 0.38414634146341464,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4822083403750505
+                    },
+                    {
+                        "pattern": [
+                            "reserve||right_field"
+                        ],
+                        "patternFrequency": 0.34146341463414637,
+                        "inverseActivityFrequency": 0.3521825181113625,
+                        "pfIaf": 0.12025744520875793
+                    },
+                    {
+                        "pattern": [
+                            "be||thing"
+                        ],
+                        "patternFrequency": 0.23170731707317074,
+                        "inverseActivityFrequency": 0.9542425094393249,
+                        "pfIaf": 0.22110497169935578
+                    },
+                    {
+                        "pattern": [
+                            "make||dwelling"
+                        ],
+                        "patternFrequency": 0.25,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3138181262758265
+                    },
+                    {
+                        "pattern": [
+                            "be||kid"
+                        ],
+                        "patternFrequency": 0.24390243902439024,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.30616402563495265
+                    }
+                ],
+                "_numberOfPatterns": 12,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 164,
+                "_minSupport": 0.19999999999999968,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:24:59.702Z",
+                "_dateEnd": "2021-03-29T21:25:01.190Z"
+            },
+            {
+                "_activityName": "fill_medicine_cabinet",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/fill_medicine_cabinet",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "be||wall"
+                        ],
+                        "patternFrequency": 0.18867924528301888,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.23684386888741624
+                    },
+                    {
+                        "pattern": [
+                            "make||kitchen"
+                        ],
+                        "patternFrequency": 0.18867924528301888,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.23684386888741624
+                    },
+                    {
+                        "pattern": [
+                            "reserve||right_field"
+                        ],
+                        "patternFrequency": 0.2830188679245283,
+                        "inverseActivityFrequency": 0.3521825181113625,
+                        "pfIaf": 0.0996742975786875
+                    },
+                    {
+                        "pattern": [
+                            "use||cabinet"
+                        ],
+                        "patternFrequency": 0.18867924528301888,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.23684386888741624
+                    },
+                    {
+                        "pattern": [
+                            "be||cabinet"
+                        ],
+                        "patternFrequency": 0.36792452830188677,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4618455443304616
+                    },
+                    {
+                        "pattern": [
+                            "be||cabinet",
+                            "be||cabinet"
+                        ],
+                        "patternFrequency": 0.2169811320754717,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.27237044922052867
+                    },
+                    {
+                        "pattern": [
+                            "be||door"
+                        ],
+                        "patternFrequency": 0.1509433962264151,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.189475095109933
+                    },
+                    {
+                        "pattern": [
+                            "be||kitchen"
+                        ],
+                        "patternFrequency": 0.1792452830188679,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2250016754430454
+                    },
+                    {
+                        "pattern": [
+                            "make||cabinet"
+                        ],
+                        "patternFrequency": 0.27358490566037735,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.3434236098867535
+                    },
+                    {
+                        "pattern": [
+                            "keep||cabinet"
+                        ],
+                        "patternFrequency": 0.16037735849056603,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.20131728855430378
+                    },
+                    {
+                        "pattern": [
+                            "be||wood"
+                        ],
+                        "patternFrequency": 0.16981132075471697,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2131594819986746
+                    },
+                    {
+                        "pattern": [
+                            "have||cabinet"
+                        ],
+                        "patternFrequency": 0.22641509433962265,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.2842126426648995
+                    },
+                    {
+                        "pattern": [
+                            "be||dwelling"
+                        ],
+                        "patternFrequency": 0.25471698113207547,
+                        "inverseActivityFrequency": 0.9542425094393249,
+                        "pfIaf": 0.24306177127228087
+                    }
+                ],
+                "_numberOfPatterns": 13,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 106,
+                "_minSupport": 0.1499999999999997,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:27:16.675Z",
+                "_dateEnd": "2021-03-29T21:27:20.010Z"
+            },
+            {
+                "_activityName": "make_coffee",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/make_coffee",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "make||coffee"
+                        ],
+                        "patternFrequency": 0.9322033898305084,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.170169284418336
+                    },
+                    {
+                        "pattern": [
+                            "make||coffee",
+                            "make||coffee"
+                        ],
+                        "patternFrequency": 0.8813559322033898,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1063418689046087
+                    },
+                    {
+                        "pattern": [
+                            "make||coffee",
+                            "make||coffee",
+                            "make||coffee"
+                        ],
+                        "patternFrequency": 0.8305084745762712,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0425144533908812
+                    },
+                    {
+                        "pattern": [
+                            "make||coffee",
+                            "make||coffee",
+                            "make||coffee",
+                            "make||coffee"
+                        ],
+                        "patternFrequency": 0.7627118644067796,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9574112327059113
+                    },
+                    {
+                        "pattern": [
+                            "make||coffee",
+                            "make||coffee",
+                            "be||coffee"
+                        ],
+                        "patternFrequency": 0.7796610169491526,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9786870378771538
+                    },
+                    {
+                        "pattern": [
+                            "make||coffee",
+                            "be||coffee"
+                        ],
+                        "patternFrequency": 0.8559322033898306,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.074428161147745
+                    },
+                    {
+                        "pattern": [
+                            "make||coffee",
+                            "be||coffee",
+                            "make||coffee"
+                        ],
+                        "patternFrequency": 0.7796610169491526,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9786870378771538
+                    },
+                    {
+                        "pattern": [
+                            "be||coffee"
+                        ],
+                        "patternFrequency": 0.8983050847457628,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1276176740758512
+                    },
+                    {
+                        "pattern": [
+                            "be||coffee",
+                            "make||coffee"
+                        ],
+                        "patternFrequency": 0.8050847457627118,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0106007456340176
+                    },
+                    {
+                        "pattern": [
+                            "be||coffee",
+                            "be||coffee"
+                        ],
+                        "patternFrequency": 0.7711864406779662,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9680491352915327
+                    }
+                ],
+                "_numberOfPatterns": 10,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 118,
+                "_minSupport": 0.7499999999999998,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:29:15.283Z",
+                "_dateEnd": "2021-03-29T21:29:18.530Z"
+            },
+            {
+                "_activityName": "make_low_carb_pancakes",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/make_low_carb_pancakes",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "make||pancake"
+                        ],
+                        "patternFrequency": 0.9054054054054054,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1365305113773176
+                    },
+                    {
+                        "pattern": [
+                            "make||pancake",
+                            "make||pancake"
+                        ],
+                        "patternFrequency": 0.7972972972972973,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0008253756904737
+                    },
+                    {
+                        "pattern": [
+                            "make||pancake",
+                            "make||pancake",
+                            "make||pancake"
+                        ],
+                        "patternFrequency": 0.6486486486486487,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8142308141210634
+                    },
+                    {
+                        "pattern": [
+                            "make||pancake",
+                            "make||pancake",
+                            "be||pancake"
+                        ],
+                        "patternFrequency": 0.6081081081081081,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.763341388238497
+                    },
+                    {
+                        "pattern": [
+                            "make||pancake",
+                            "be||pancake"
+                        ],
+                        "patternFrequency": 0.7162162162162162,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8990465239253408
+                    },
+                    {
+                        "pattern": [
+                            "make||pancake",
+                            "be||pancake",
+                            "be||pancake"
+                        ],
+                        "patternFrequency": 0.6216216216216216,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7803045301993523
+                    },
+                    {
+                        "pattern": [
+                            "be||pancake"
+                        ],
+                        "patternFrequency": 0.8378378378378378,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0517148015730402
+                    },
+                    {
+                        "pattern": [
+                            "be||pancake",
+                            "make||pancake"
+                        ],
+                        "patternFrequency": 0.7432432432432432,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9329728078470517
+                    },
+                    {
+                        "pattern": [
+                            "be||pancake",
+                            "make||pancake",
+                            "make||pancake"
+                        ],
+                        "patternFrequency": 0.6554054054054054,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.822712385101491
+                    },
+                    {
+                        "pattern": [
+                            "be||pancake",
+                            "be||pancake"
+                        ],
+                        "patternFrequency": 0.6959459459459459,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8736018109840575
+                    },
+                    {
+                        "pattern": [
+                            "be||pancake",
+                            "be||pancake",
+                            "be||pancake"
+                        ],
+                        "patternFrequency": 0.6216216216216216,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7803045301993523
+                    }
+                ],
+                "_numberOfPatterns": 11,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 148,
+                "_minSupport": 0.5999999999999996,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:31:59.713Z",
+                "_dateEnd": "2021-03-29T21:32:04.833Z"
+            },
+            {
+                "_activityName": "make_mashed_potato_casserole",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/make_mashed_potato_casserole",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.9337748344370861,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1721418756262658
+                    },
+                    {
+                        "pattern": [
+                            "squash||potato",
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.9072847682119205,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1388896238354498
+                    },
+                    {
+                        "pattern": [
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.8145695364238411,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0225067425675938
+                    },
+                    {
+                        "pattern": [
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.7814569536423841,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9809414278290736
+                    },
+                    {
+                        "pattern": [
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.7152317880794702,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8978107983520335
+                    },
+                    {
+                        "pattern": [
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.6490066225165563,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8146801688749933
+                    },
+                    {
+                        "pattern": [
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato",
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.6158940397350994,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7731148541364733
+                    },
+                    {
+                        "pattern": [
+                            "squash||potato",
+                            "squash||casserole"
+                        ],
+                        "patternFrequency": 0.6225165562913907,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7814279170841772
+                    },
+                    {
+                        "pattern": [
+                            "squash||potato",
+                            "squash||casserole",
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.6026490066225165,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7564887282410652
+                    },
+                    {
+                        "pattern": [
+                            "squash||potato",
+                            "be||potato"
+                        ],
+                        "patternFrequency": 0.6622516556291391,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8313062947704014
+                    },
+                    {
+                        "pattern": [
+                            "squash||potato",
+                            "be||potato",
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.6026490066225165,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7564887282410652
+                    },
+                    {
+                        "pattern": [
+                            "be||potato"
+                        ],
+                        "patternFrequency": 0.695364238410596,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8728716095089214
+                    },
+                    {
+                        "pattern": [
+                            "be||potato",
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.6556291390728477,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8229932318226973
+                    },
+                    {
+                        "pattern": [
+                            "be||potato",
+                            "squash||potato",
+                            "squash||potato"
+                        ],
+                        "patternFrequency": 0.6158940397350994,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7731148541364733
+                    }
+                ],
+                "_numberOfPatterns": 14,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 151,
+                "_minSupport": 0.5999999999999996,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:33:53.965Z",
+                "_dateEnd": "2021-03-29T21:33:57.109Z"
+            },
+            {
+                "_activityName": "make_stuffed_crust_pizza",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/make_stuffed_crust_pizza",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "stuff||crust"
+                        ],
+                        "patternFrequency": 0.6558441558441559,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8232631364638566
+                    },
+                    {
+                        "pattern": [
+                            "stuff||crust",
+                            "stuff||crust"
+                        ],
+                        "patternFrequency": 0.5324675324675324,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6683918533666954
+                    },
+                    {
+                        "pattern": [
+                            "stuff||crust",
+                            "stuff||crust",
+                            "stuff||pizza"
+                        ],
+                        "patternFrequency": 0.45454545454545453,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5705784114105936
+                    },
+                    {
+                        "pattern": [
+                            "stuff||crust",
+                            "stuff||pizza"
+                        ],
+                        "patternFrequency": 0.5844155844155844,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7336008146707632
+                    },
+                    {
+                        "pattern": [
+                            "stuff||crust",
+                            "stuff||pizza",
+                            "stuff||crust"
+                        ],
+                        "patternFrequency": 0.45454545454545453,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5705784114105936
+                    },
+                    {
+                        "pattern": [
+                            "be||crust"
+                        ],
+                        "patternFrequency": 0.4935064935064935,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6194851323886446
+                    },
+                    {
+                        "pattern": [
+                            "be||pizza"
+                        ],
+                        "patternFrequency": 0.538961038961039,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6765429735297039
+                    },
+                    {
+                        "pattern": [
+                            "stuff||pizza"
+                        ],
+                        "patternFrequency": 0.7272727272727273,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9129254582569498
+                    },
+                    {
+                        "pattern": [
+                            "stuff||pizza",
+                            "stuff||crust"
+                        ],
+                        "patternFrequency": 0.512987012987013,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.64393849287767
+                    },
+                    {
+                        "pattern": [
+                            "stuff||pizza",
+                            "stuff||crust",
+                            "stuff||pizza"
+                        ],
+                        "patternFrequency": 0.4675324675324675,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5868806517366106
+                    },
+                    {
+                        "pattern": [
+                            "stuff||pizza",
+                            "stuff||pizza"
+                        ],
+                        "patternFrequency": 0.5844155844155844,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7336008146707632
+                    },
+                    {
+                        "pattern": [
+                            "stuff||pizza",
+                            "stuff||pizza",
+                            "stuff||pizza"
+                        ],
+                        "patternFrequency": 0.45454545454545453,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5705784114105936
+                    },
+                    {
+                        "pattern": [
+                            "make||pizza"
+                        ],
+                        "patternFrequency": 0.6558441558441559,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8232631364638566
+                    },
+                    {
+                        "pattern": [
+                            "make||pizza",
+                            "make||pizza"
+                        ],
+                        "patternFrequency": 0.5324675324675324,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6683918533666954
+                    }
+                ],
+                "_numberOfPatterns": 14,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 154,
+                "_minSupport": 0.4499999999999996,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:36:11.171Z",
+                "_dateEnd": "2021-03-29T21:36:14.768Z"
+            },
+            {
+                "_activityName": "make_tea",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/make_tea",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "make||tea"
+                        ],
+                        "patternFrequency": 0.9621212121212122,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2077243041524233
+                    },
+                    {
+                        "pattern": [
+                            "make||tea",
+                            "make||tea"
+                        ],
+                        "patternFrequency": 0.9090909090909091,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1411568228211872
+                    },
+                    {
+                        "pattern": [
+                            "make||tea",
+                            "make||tea",
+                            "make||tea"
+                        ],
+                        "patternFrequency": 0.8333333333333334,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0460604209194218
+                    },
+                    {
+                        "pattern": [
+                            "make||tea",
+                            "make||tea",
+                            "make||tea",
+                            "make||tea"
+                        ],
+                        "patternFrequency": 0.7803030303030303,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9794929395881857
+                    },
+                    {
+                        "pattern": [
+                            "make||tea",
+                            "make||tea",
+                            "be||tea"
+                        ],
+                        "patternFrequency": 0.7878787878787878,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9890025797783623
+                    },
+                    {
+                        "pattern": [
+                            "make||tea",
+                            "be||tea"
+                        ],
+                        "patternFrequency": 0.8560606060606061,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0745893414899514
+                    },
+                    {
+                        "pattern": [
+                            "make||tea",
+                            "be||tea",
+                            "make||tea"
+                        ],
+                        "patternFrequency": 0.7651515151515151,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9604736592078326
+                    },
+                    {
+                        "pattern": [
+                            "be||tea"
+                        ],
+                        "patternFrequency": 0.8787878787878788,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1031182620604811
+                    },
+                    {
+                        "pattern": [
+                            "be||tea",
+                            "make||tea"
+                        ],
+                        "patternFrequency": 0.8106060606060606,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0175315003488918
+                    },
+                    {
+                        "pattern": [
+                            "be||tea",
+                            "be||tea"
+                        ],
+                        "patternFrequency": 0.7803030303030303,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9794929395881857
+                    }
+                ],
+                "_numberOfPatterns": 10,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 132,
+                "_minSupport": 0.7499999999999998,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:38:09.006Z",
+                "_dateEnd": "2021-03-29T21:38:12.362Z"
+            },
+            {
+                "_activityName": "play_video_games",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/play_video_games",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "play||game"
+                        ],
+                        "patternFrequency": 0.8828125,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1081702584115123
+                    },
+                    {
+                        "pattern": [
+                            "play||game",
+                            "play||game"
+                        ],
+                        "patternFrequency": 0.7421875,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9316475623813599
+                    },
+                    {
+                        "pattern": [
+                            "play||game",
+                            "play||game",
+                            "play||game"
+                        ],
+                        "patternFrequency": 0.7109375,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8924202965968816
+                    },
+                    {
+                        "pattern": [
+                            "play||game",
+                            "play||game",
+                            "play||game",
+                            "play||game"
+                        ],
+                        "patternFrequency": 0.625,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7845453156895663
+                    },
+                    {
+                        "pattern": [
+                            "play||game",
+                            "play||game",
+                            "be||game"
+                        ],
+                        "patternFrequency": 0.6328125,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7943521321356858
+                    },
+                    {
+                        "pattern": [
+                            "play||game",
+                            "be||game"
+                        ],
+                        "patternFrequency": 0.6953125,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8728066637046424
+                    },
+                    {
+                        "pattern": [
+                            "play||game",
+                            "play||video_recording"
+                        ],
+                        "patternFrequency": 0.6015625,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7551248663512076
+                    },
+                    {
+                        "pattern": [
+                            "be||game"
+                        ],
+                        "patternFrequency": 0.8046875,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0101020939503165
+                    },
+                    {
+                        "pattern": [
+                            "be||game",
+                            "play||game"
+                        ],
+                        "patternFrequency": 0.703125,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.882613480150762
+                    },
+                    {
+                        "pattern": [
+                            "be||game",
+                            "be||game"
+                        ],
+                        "patternFrequency": 0.65625,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8237725814740445
+                    },
+                    {
+                        "pattern": [
+                            "play||video_recording",
+                            "play||game"
+                        ],
+                        "patternFrequency": 0.6953125,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8728066637046424
+                    },
+                    {
+                        "pattern": [
+                            "play||video_recording",
+                            "play||game",
+                            "play||game"
+                        ],
+                        "patternFrequency": 0.609375,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7649316827973272
+                    }
+                ],
+                "_numberOfPatterns": 12,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 128,
+                "_minSupport": 0.5999999999999996,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:40:08.182Z",
+                "_dateEnd": "2021-03-29T21:40:10.863Z"
+            },
+            {
+                "_activityName": "prepare_birthday_card",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/prepare_birthday_card",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "make||card"
+                        ],
+                        "patternFrequency": 0.7986111111111112,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.002474570047779
+                    },
+                    {
+                        "pattern": [
+                            "make||card",
+                            "make||card"
+                        ],
+                        "patternFrequency": 0.6875,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8629998472585229
+                    },
+                    {
+                        "pattern": [
+                            "make||card",
+                            "make||card",
+                            "make||card"
+                        ],
+                        "patternFrequency": 0.6111111111111112,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7671109753409093
+                    },
+                    {
+                        "pattern": [
+                            "make||card",
+                            "make||card",
+                            "make||card",
+                            "make||card"
+                        ],
+                        "patternFrequency": 0.5555555555555556,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6973736139462812
+                    },
+                    {
+                        "pattern": [
+                            "make||card",
+                            "make||card",
+                            "make||card",
+                            "make||card",
+                            "make||card"
+                        ],
+                        "patternFrequency": 0.4375,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5491817209826964
+                    },
+                    {
+                        "pattern": [
+                            "make||card",
+                            "make||card",
+                            "be||card"
+                        ],
+                        "patternFrequency": 0.4444444444444444,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5578988911570248
+                    },
+                    {
+                        "pattern": [
+                            "make||card",
+                            "be||card"
+                        ],
+                        "patternFrequency": 0.5347222222222222,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6712221034232956
+                    },
+                    {
+                        "pattern": [
+                            "make||card",
+                            "be||card",
+                            "make||card"
+                        ],
+                        "patternFrequency": 0.4097222222222222,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5143130402853823
+                    },
+                    {
+                        "pattern": [
+                            "be||card"
+                        ],
+                        "patternFrequency": 0.6458333333333334,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8106968262125519
+                    },
+                    {
+                        "pattern": [
+                            "be||card",
+                            "make||card"
+                        ],
+                        "patternFrequency": 0.4861111111111111,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.610201912202996
+                    },
+                    {
+                        "pattern": [
+                            "be||card",
+                            "make||card",
+                            "make||card"
+                        ],
+                        "patternFrequency": 0.4166666666666667,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5230302104597109
+                    },
+                    {
+                        "pattern": [
+                            "be||card",
+                            "be||card"
+                        ],
+                        "patternFrequency": 0.4375,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5491817209826964
+                    },
+                    {
+                        "pattern": [
+                            "greet||card"
+                        ],
+                        "patternFrequency": 0.4305555555555556,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5404645508083679
+                    }
+                ],
+                "_numberOfPatterns": 13,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 144,
+                "_minSupport": 0.39999999999999963,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:41:57.815Z",
+                "_dateEnd": "2021-03-29T21:41:59.756Z"
+            },
+            {
+                "_activityName": "prepare_soup",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/prepare_soup",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "make||soup"
+                        ],
+                        "patternFrequency": 0.8496732026143791,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0665714095649006
+                    },
+                    {
+                        "pattern": [
+                            "make||soup",
+                            "make||soup"
+                        ],
+                        "patternFrequency": 0.7189542483660131,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9024835004010697
+                    },
+                    {
+                        "pattern": [
+                            "make||soup",
+                            "make||soup",
+                            "make||soup"
+                        ],
+                        "patternFrequency": 0.6078431372549019,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7630087776118134
+                    },
+                    {
+                        "pattern": [
+                            "make||soup",
+                            "make||soup",
+                            "make||soup",
+                            "make||soup"
+                        ],
+                        "patternFrequency": 0.5228758169934641,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6563516366553235
+                    },
+                    {
+                        "pattern": [
+                            "make||soup",
+                            "make||soup",
+                            "be||soup"
+                        ],
+                        "patternFrequency": 0.45751633986928103,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.574307682073408
+                    },
+                    {
+                        "pattern": [
+                            "make||soup",
+                            "add||soup"
+                        ],
+                        "patternFrequency": 0.47058823529411764,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.590716472989791
+                    },
+                    {
+                        "pattern": [
+                            "make||soup",
+                            "be||soup"
+                        ],
+                        "patternFrequency": 0.5359477124183006,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6727604275717065
+                    },
+                    {
+                        "pattern": [
+                            "make||soup",
+                            "be||soup",
+                            "make||soup"
+                        ],
+                        "patternFrequency": 0.45751633986928103,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.574307682073408
+                    },
+                    {
+                        "pattern": [
+                            "add||soup"
+                        ],
+                        "patternFrequency": 0.5032679738562091,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6317384502807487
+                    },
+                    {
+                        "pattern": [
+                            "be||soup"
+                        ],
+                        "patternFrequency": 0.6928104575163399,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8696659185683034
+                    },
+                    {
+                        "pattern": [
+                            "be||soup",
+                            "make||soup"
+                        ],
+                        "patternFrequency": 0.5686274509803921,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7137824048626642
+                    },
+                    {
+                        "pattern": [
+                            "be||soup",
+                            "be||soup"
+                        ],
+                        "patternFrequency": 0.46405228758169936,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5825120775315995
+                    }
+                ],
+                "_numberOfPatterns": 12,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 153,
+                "_minSupport": 0.4499999999999996,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:44:40.881Z",
+                "_dateEnd": "2021-03-29T21:44:45.281Z"
+            },
+            {
+                "_activityName": "vacuum",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/vacuum",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "use||vacuum"
+                        ],
+                        "patternFrequency": 0.5753424657534246,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7222115782786144
+                    },
+                    {
+                        "pattern": [
+                            "use||vacuum",
+                            "use||vacuum"
+                        ],
+                        "patternFrequency": 0.3424657534246575,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.42988784421346093
+                    },
+                    {
+                        "pattern": [
+                            "use||vacuum",
+                            "be||vacuum"
+                        ],
+                        "patternFrequency": 0.3219178082191781,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4040945735606533
+                    },
+                    {
+                        "pattern": [
+                            "make||vacuum"
+                        ],
+                        "patternFrequency": 0.4520547945205479,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5674519543617684
+                    },
+                    {
+                        "pattern": [
+                            "reserve||right_field"
+                        ],
+                        "patternFrequency": 0.3356164383561644,
+                        "inverseActivityFrequency": 0.3521825181113625,
+                        "pfIaf": 0.11819824237984083
+                    },
+                    {
+                        "pattern": [
+                            "clean||vacuum"
+                        ],
+                        "patternFrequency": 0.3561643835616438,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4470833579819994
+                    },
+                    {
+                        "pattern": [
+                            "be||vacuum"
+                        ],
+                        "patternFrequency": 0.6164383561643836,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7737981195842297
+                    },
+                    {
+                        "pattern": [
+                            "be||vacuum",
+                            "use||vacuum"
+                        ],
+                        "patternFrequency": 0.3082191780821918,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.38689905979211486
+                    },
+                    {
+                        "pattern": [
+                            "be||vacuum",
+                            "be||vacuum"
+                        ],
+                        "patternFrequency": 0.4315068493150685,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5416586837089609
+                    },
+                    {
+                        "pattern": [
+                            "be||vacuum",
+                            "be||vacuum",
+                            "be||vacuum"
+                        ],
+                        "patternFrequency": 0.3219178082191781,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4040945735606533
+                    },
+                    {
+                        "pattern": [
+                            "have||vacuum"
+                        ],
+                        "patternFrequency": 0.3424657534246575,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.42988784421346093
+                    }
+                ],
+                "_numberOfPatterns": 11,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 146,
+                "_minSupport": 0.29999999999999966,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:47:55.535Z",
+                "_dateEnd": "2021-03-29T21:48:01.238Z"
+            },
+            {
+                "_activityName": "watch_tv",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/watch_tv",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "watch||television_receiver"
+                        ],
+                        "patternFrequency": 0.6575342465753424,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.825384660889845
+                    },
+                    {
+                        "pattern": [
+                            "watch||television_receiver",
+                            "watch||television_receiver"
+                        ],
+                        "patternFrequency": 0.5616438356164384,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.705016064510076
+                    },
+                    {
+                        "pattern": [
+                            "watch||television_receiver",
+                            "watch||television_receiver",
+                            "watch||television_receiver"
+                        ],
+                        "patternFrequency": 0.4657534246575342,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5846474681303069
+                    },
+                    {
+                        "pattern": [
+                            "watch||television_receiver",
+                            "watch||television_receiver",
+                            "watch||television_receiver",
+                            "watch||television_receiver"
+                        ],
+                        "patternFrequency": 0.3904109589041096,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4900721424033455
+                    },
+                    {
+                        "pattern": [
+                            "watch||television_receiver",
+                            "watch||television_receiver",
+                            "be||television_receiver"
+                        ],
+                        "patternFrequency": 0.3972602739726027,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4986698992876147
+                    },
+                    {
+                        "pattern": [
+                            "watch||television_receiver",
+                            "stream||television_receiver"
+                        ],
+                        "patternFrequency": 0.3767123287671233,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.47287662863480706
+                    },
+                    {
+                        "pattern": [
+                            "watch||television_receiver",
+                            "be||television_receiver"
+                        ],
+                        "patternFrequency": 0.4794520547945205,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6018429818988453
+                    },
+                    {
+                        "pattern": [
+                            "watch||television_receiver",
+                            "be||television_receiver",
+                            "watch||television_receiver"
+                        ],
+                        "patternFrequency": 0.3698630136986301,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.46427887175053784
+                    },
+                    {
+                        "pattern": [
+                            "stream||television_receiver"
+                        ],
+                        "patternFrequency": 0.5,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.627636252551653
+                    },
+                    {
+                        "pattern": [
+                            "stream||television_receiver",
+                            "stream||television_receiver"
+                        ],
+                        "patternFrequency": 0.3767123287671233,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.47287662863480706
+                    },
+                    {
+                        "pattern": [
+                            "stream||television_receiver",
+                            "be||television_receiver"
+                        ],
+                        "patternFrequency": 0.3561643835616438,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4470833579819994
+                    },
+                    {
+                        "pattern": [
+                            "use||television_receiver"
+                        ],
+                        "patternFrequency": 0.3561643835616438,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4470833579819994
+                    },
+                    {
+                        "pattern": [
+                            "be||television_receiver"
+                        ],
+                        "patternFrequency": 0.6095890410958904,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7652003626999605
+                    },
+                    {
+                        "pattern": [
+                            "be||television_receiver",
+                            "watch||television_receiver"
+                        ],
+                        "patternFrequency": 0.410958904109589,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5158654130561531
+                    },
+                    {
+                        "pattern": [
+                            "be||television_receiver",
+                            "stream||television_receiver"
+                        ],
+                        "patternFrequency": 0.3698630136986301,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.46427887175053784
+                    },
+                    {
+                        "pattern": [
+                            "be||television_receiver",
+                            "be||television_receiver"
+                        ],
+                        "patternFrequency": 0.4520547945205479,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5674519543617684
+                    },
+                    {
+                        "pattern": [
+                            "be||television_receiver",
+                            "be||television_receiver",
+                            "be||television_receiver"
+                        ],
+                        "patternFrequency": 0.3835616438356164,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.48147438551907623
+                    },
+                    {
+                        "pattern": [
+                            "show||television_receiver"
+                        ],
+                        "patternFrequency": 0.4726027397260274,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5932452250145761
+                    },
+                    {
+                        "pattern": [
+                            "populate||television_receiver"
+                        ],
+                        "patternFrequency": 0.3561643835616438,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4470833579819994
+                    },
+                    {
+                        "pattern": [
+                            "get||television_receiver"
+                        ],
+                        "patternFrequency": 0.3561643835616438,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.4470833579819994
+                    },
+                    {
+                        "pattern": [
+                            "reserve||right_field"
+                        ],
+                        "patternFrequency": 0.3561643835616438,
+                        "inverseActivityFrequency": 0.3521825181113625,
+                        "pfIaf": 0.12543486946432086
+                    }
+                ],
+                "_numberOfPatterns": 21,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 146,
+                "_minSupport": 0.34999999999999964,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:50:12.113Z",
+                "_dateEnd": "2021-03-29T21:50:15.928Z"
+            },
+            {
+                "_activityName": "water_plants",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/water_plants",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "turn||plant"
+                        ],
+                        "patternFrequency": 0.5921052631578947,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7432534569690628
+                    },
+                    {
+                        "pattern": [
+                            "make||plant"
+                        ],
+                        "patternFrequency": 0.5657894736842105,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7102199699926599
+                    },
+                    {
+                        "pattern": [
+                            "be||plant"
+                        ],
+                        "patternFrequency": 0.7960526315789473,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9992629810361844
+                    },
+                    {
+                        "pattern": [
+                            "be||plant",
+                            "be||plant"
+                        ],
+                        "patternFrequency": 0.6118421052631579,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7680285722013648
+                    },
+                    {
+                        "pattern": [
+                            "be||plant",
+                            "be||plant",
+                            "be||plant"
+                        ],
+                        "patternFrequency": 0.4605263157894737,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5780860220870488
+                    },
+                    {
+                        "pattern": [
+                            "be||plant",
+                            "necessitate||plant"
+                        ],
+                        "patternFrequency": 0.46710526315789475,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5863443938311496
+                    },
+                    {
+                        "pattern": [
+                            "be||plant",
+                            "necessitate||water"
+                        ],
+                        "patternFrequency": 0.4868421052631579,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6111195090634516
+                    },
+                    {
+                        "pattern": [
+                            "be||plant",
+                            "be||water"
+                        ],
+                        "patternFrequency": 0.4868421052631579,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6111195090634516
+                    },
+                    {
+                        "pattern": [
+                            "necessitate||plant"
+                        ],
+                        "patternFrequency": 0.5986842105263158,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7515118287131635
+                    },
+                    {
+                        "pattern": [
+                            "necessitate||plant",
+                            "be||plant"
+                        ],
+                        "patternFrequency": 0.48026315789473684,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6028611373193509
+                    },
+                    {
+                        "pattern": [
+                            "be||soil"
+                        ],
+                        "patternFrequency": 0.47368421052631576,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5946027655752502
+                    },
+                    {
+                        "pattern": [
+                            "water||plant"
+                        ],
+                        "patternFrequency": 0.6052631578947368,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.7597702004572642
+                    },
+                    {
+                        "pattern": [
+                            "water||plant",
+                            "be||plant"
+                        ],
+                        "patternFrequency": 0.4605263157894737,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5780860220870488
+                    },
+                    {
+                        "pattern": [
+                            "water||plant",
+                            "water||plant"
+                        ],
+                        "patternFrequency": 0.47368421052631576,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5946027655752502
+                    },
+                    {
+                        "pattern": [
+                            "necessitate||water"
+                        ],
+                        "patternFrequency": 0.6513157894736842,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.817578802665969
+                    },
+                    {
+                        "pattern": [
+                            "necessitate||water",
+                            "be||plant"
+                        ],
+                        "patternFrequency": 0.46710526315789475,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5863443938311496
+                    },
+                    {
+                        "pattern": [
+                            "have||plant"
+                        ],
+                        "patternFrequency": 0.4605263157894737,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.5780860220870488
+                    },
+                    {
+                        "pattern": [
+                            "be||water"
+                        ],
+                        "patternFrequency": 0.6447368421052632,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.8093204309218683
+                    },
+                    {
+                        "pattern": [
+                            "be||water",
+                            "be||plant"
+                        ],
+                        "patternFrequency": 0.4934210526315789,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.6193778808075523
+                    }
+                ],
+                "_numberOfPatterns": 19,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 152,
+                "_minSupport": 0.4499999999999996,
+                "_minNumberPatterns": 10,
+                "_dateBegin": "2021-03-29T21:53:12.496Z",
+                "_dateEnd": "2021-03-29T21:53:17.927Z"
+            }
+        ],
+        "_dateBegin": "2021-03-29T21:12:25.886Z",
+        "_dateEnd": "2021-03-29T21:53:17.931Z"
+    }
+]

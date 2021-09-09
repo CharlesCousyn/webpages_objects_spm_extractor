@@ -1,39 +1,8 @@
 import * as GSP from "./GSP";
 
-export function isSupported(orderedElements, sequence)
+export function isSupported(sub, master)
 {
-    let minIndex = -1;
-    for(let el of orderedElements)
-    {
-        //Find all indexes of one element
-        let indexesEl = sequence.reduce((a, e, i) => {
-            if (e === el)
-            {
-                a.push(i);
-            }
-            return a;
-        }, []);
-
-        //If el does not exist or if the el is not after minIndex
-        if(indexesEl.length === 0 || !indexesEl.some(index => index > minIndex))
-        {
-            return false;
-        }
-        else
-        {
-            let newMinIndex = indexesEl.filter(index => index > minIndex)[0];
-            //Update minIndex with at least 1
-            if(minIndex === newMinIndex)
-            {
-                minIndex++;
-            }
-            else
-            {
-                minIndex = newMinIndex;
-            }
-        }
-    }
-    return true;
+    return sub.every((i => v => i = master.indexOf(v, i) + 1)(0));
 }
 
 function isClosed(pat1, freq1, mapOfSeqPatterns)

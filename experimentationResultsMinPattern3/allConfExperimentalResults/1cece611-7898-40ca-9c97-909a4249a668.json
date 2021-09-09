@@ -1,0 +1,765 @@
+[
+    {
+        "_configuration": {
+            "genericOrSpecificParsing": true,
+            "verbAssociatorUsed": false,
+            "verbAssociatorProximityBasedOrSyntacticBased": true,
+            "hypernymMutation": false,
+            "closedOrMaximalPattern": true,
+            "minSupport": 1
+        },
+        "_activityResults": [
+            {
+                "_activityName": "answer_the_phone",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/answer_the_phone",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "telephone"
+                        ],
+                        "patternFrequency": 0.953757225433526,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1972252216303207
+                    },
+                    {
+                        "pattern": [
+                            "telephone",
+                            "telephone"
+                        ],
+                        "patternFrequency": 0.9075144508670521,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1391779381573355
+                    },
+                    {
+                        "pattern": [
+                            "telephone",
+                            "telephone",
+                            "telephone"
+                        ],
+                        "patternFrequency": 0.9017341040462428,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1319220277232123
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 173,
+                "_minSupport": 0.8999999999999999,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:29:47.462Z",
+                "_dateEnd": "2021-03-29T02:29:47.993Z"
+            },
+            {
+                "_activityName": "bake_parmesan_turkey_meatballs",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/bake_parmesan_turkey_meatballs",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "meatball"
+                        ],
+                        "patternFrequency": 0.9807692307692307,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2311326492359347
+                    },
+                    {
+                        "pattern": [
+                            "meatball",
+                            "meatball"
+                        ],
+                        "patternFrequency": 0.9326923076923077,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1707830095675067
+                    },
+                    {
+                        "pattern": [
+                            "land"
+                        ],
+                        "patternFrequency": 0.9326923076923077,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1707830095675067
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 104,
+                "_minSupport": 0.9299999999999999,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:30:25.929Z",
+                "_dateEnd": "2021-03-29T02:30:26.362Z"
+            },
+            {
+                "_activityName": "choosing_outfit",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/choosing_outfit",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "style"
+                        ],
+                        "patternFrequency": 0.7482014388489209,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9391966944657829
+                    },
+                    {
+                        "pattern": [
+                            "outfit"
+                        ],
+                        "patternFrequency": 0.762589928057554,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9572581693593557
+                    },
+                    {
+                        "pattern": [
+                            "right_field"
+                        ],
+                        "patternFrequency": 0.7266187050359713,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9121044821254238
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 139,
+                "_minSupport": 0.7199999999999998,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:31:31.677Z",
+                "_dateEnd": "2021-03-29T02:31:32.352Z"
+            },
+            {
+                "_activityName": "clean",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/clean",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "dwelling"
+                        ],
+                        "patternFrequency": 0.8345864661654135,
+                        "inverseActivityFrequency": 0.9542425094393249,
+                        "pfIaf": 0.7963978838177824
+                    },
+                    {
+                        "pattern": [
+                            "way"
+                        ],
+                        "patternFrequency": 0.7819548872180451,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9815664701559685
+                    },
+                    {
+                        "pattern": [
+                            "water"
+                        ],
+                        "patternFrequency": 0.7894736842105263,
+                        "inverseActivityFrequency": 0.9542425094393249,
+                        "pfIaf": 0.7533493495573618
+                    },
+                    {
+                        "pattern": [
+                            "contact"
+                        ],
+                        "patternFrequency": 0.7894736842105263,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9910046092920837
+                    }
+                ],
+                "_numberOfPatterns": 4,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 133,
+                "_minSupport": 0.7799999999999998,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:32:40.203Z",
+                "_dateEnd": "2021-03-29T02:32:41.056Z"
+            },
+            {
+                "_activityName": "cook_pasta",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/cook_pasta",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "pasta"
+                        ],
+                        "patternFrequency": 0.9621212121212122,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2077243041524233
+                    },
+                    {
+                        "pattern": [
+                            "pasta",
+                            "pasta"
+                        ],
+                        "patternFrequency": 0.9393939393939394,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1791953835818936
+                    },
+                    {
+                        "pattern": [
+                            "pasta",
+                            "pasta",
+                            "pasta",
+                            "pasta",
+                            "pasta"
+                        ],
+                        "patternFrequency": 0.9318181818181818,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.169685743391717
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 132,
+                "_minSupport": 0.9299999999999999,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:33:28.875Z",
+                "_dateEnd": "2021-03-29T02:33:29.829Z"
+            },
+            {
+                "_activityName": "do_homework",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/do_homework",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "terminus"
+                        ],
+                        "patternFrequency": 0.7865853658536586,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.9873789826727225
+                    },
+                    {
+                        "pattern": [
+                            "school"
+                        ],
+                        "patternFrequency": 0.8719512195121951,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0945363916449558
+                    },
+                    {
+                        "pattern": [
+                            "work"
+                        ],
+                        "patternFrequency": 0.8475609756097561,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0639199890814606
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 164,
+                "_minSupport": 0.7799999999999998,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:34:34.193Z",
+                "_dateEnd": "2021-03-29T02:34:34.558Z"
+            },
+            {
+                "_activityName": "fill_medicine_cabinet",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/fill_medicine_cabinet",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "dwelling"
+                        ],
+                        "patternFrequency": 0.8584905660377359,
+                        "inverseActivityFrequency": 0.9542425094393249,
+                        "pfIaf": 0.8192081920658355
+                    },
+                    {
+                        "pattern": [
+                            "dwelling",
+                            "dwelling"
+                        ],
+                        "patternFrequency": 0.7547169811320755,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 0.947375475549665
+                    },
+                    {
+                        "pattern": [
+                            "cabinet"
+                        ],
+                        "patternFrequency": 0.8490566037735849,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0657974099933731
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 106,
+                "_minSupport": 0.7499999999999998,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:35:35.587Z",
+                "_dateEnd": "2021-03-29T02:35:36.338Z"
+            },
+            {
+                "_activityName": "make_coffee",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/make_coffee",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "coffee"
+                        ],
+                        "patternFrequency": 0.9915254237288136,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2446346025176849
+                    },
+                    {
+                        "pattern": [
+                            "coffee",
+                            "coffee"
+                        ],
+                        "patternFrequency": 0.9830508474576272,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2339966999320635
+                    },
+                    {
+                        "pattern": [
+                            "coffee",
+                            "coffee",
+                            "coffee"
+                        ],
+                        "patternFrequency": 0.9745762711864406,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2233587973464422
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 118,
+                "_minSupport": 0.97,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:36:24.905Z",
+                "_dateEnd": "2021-03-29T02:36:26.005Z"
+            },
+            {
+                "_activityName": "make_low_carb_pancakes",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/make_low_carb_pancakes",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "pancake"
+                        ],
+                        "patternFrequency": 0.9797297297297297,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2298277921620229
+                    },
+                    {
+                        "pattern": [
+                            "pancake",
+                            "pancake"
+                        ],
+                        "patternFrequency": 0.9594594594594594,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2043830792207395
+                    },
+                    {
+                        "pattern": [
+                            "pancake",
+                            "pancake",
+                            "pancake",
+                            "pancake",
+                            "pancake"
+                        ],
+                        "patternFrequency": 0.9527027027027027,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.195901508240312
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 148,
+                "_minSupport": 0.95,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:37:25.967Z",
+                "_dateEnd": "2021-03-29T02:37:27.086Z"
+            },
+            {
+                "_activityName": "make_mashed_potato_casserole",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/make_mashed_potato_casserole",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "potato"
+                        ],
+                        "patternFrequency": 0.9668874172185431,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.213707190364786
+                    },
+                    {
+                        "pattern": [
+                            "potato",
+                            "potato",
+                            "potato"
+                        ],
+                        "patternFrequency": 0.9602649006622517,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2053941274170819
+                    },
+                    {
+                        "pattern": [
+                            "potato",
+                            "potato",
+                            "potato",
+                            "potato"
+                        ],
+                        "patternFrequency": 0.9403973509933775,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.18045493857397
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 151,
+                "_minSupport": 0.94,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:38:13.926Z",
+                "_dateEnd": "2021-03-29T02:38:14.716Z"
+            },
+            {
+                "_activityName": "make_stuffed_crust_pizza",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/make_stuffed_crust_pizza",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "crust"
+                        ],
+                        "patternFrequency": 0.9285714285714286,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1656101833102128
+                    },
+                    {
+                        "pattern": [
+                            "crust",
+                            "pizza"
+                        ],
+                        "patternFrequency": 0.922077922077922,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1574590631472041
+                    },
+                    {
+                        "pattern": [
+                            "pizza"
+                        ],
+                        "patternFrequency": 0.9415584415584416,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1819124236362297
+                    },
+                    {
+                        "pattern": [
+                            "pizza",
+                            "crust"
+                        ],
+                        "patternFrequency": 0.922077922077922,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1574590631472041
+                    },
+                    {
+                        "pattern": [
+                            "pizza",
+                            "pizza"
+                        ],
+                        "patternFrequency": 0.935064935064935,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1737613034732213
+                    }
+                ],
+                "_numberOfPatterns": 5,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 154,
+                "_minSupport": 0.9199999999999999,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:39:04.169Z",
+                "_dateEnd": "2021-03-29T02:39:05.128Z"
+            },
+            {
+                "_activityName": "make_tea",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/make_tea",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "tea"
+                        ],
+                        "patternFrequency": 0.9696969696969697,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2172339443426
+                    },
+                    {
+                        "pattern": [
+                            "tea",
+                            "tea",
+                            "tea",
+                            "tea",
+                            "tea"
+                        ],
+                        "patternFrequency": 0.9545454545454546,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1982146639622466
+                    },
+                    {
+                        "pattern": [
+                            "tea",
+                            "tea",
+                            "tea",
+                            "tea",
+                            "tea",
+                            "tea",
+                            "tea",
+                            "tea"
+                        ],
+                        "patternFrequency": 0.946969696969697,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1887050237720702
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 132,
+                "_minSupport": 0.94,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:39:57.936Z",
+                "_dateEnd": "2021-03-29T02:39:59.476Z"
+            },
+            {
+                "_activityName": "play_video_games",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/play_video_games",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "game"
+                        ],
+                        "patternFrequency": 0.953125,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1964316064265885
+                    },
+                    {
+                        "pattern": [
+                            "game",
+                            "game",
+                            "game",
+                            "game"
+                        ],
+                        "patternFrequency": 0.9140625,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1473975241959906
+                    },
+                    {
+                        "pattern": [
+                            "game",
+                            "game",
+                            "game",
+                            "game",
+                            "game"
+                        ],
+                        "patternFrequency": 0.90625,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.137590707749871
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 128,
+                "_minSupport": 0.8999999999999999,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:41:03.686Z",
+                "_dateEnd": "2021-03-29T02:41:04.635Z"
+            },
+            {
+                "_activityName": "prepare_birthday_card",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/prepare_birthday_card",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "card"
+                        ],
+                        "patternFrequency": 0.9375,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1768179735343494
+                    },
+                    {
+                        "pattern": [
+                            "card",
+                            "card"
+                        ],
+                        "patternFrequency": 0.9236111111111112,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1593836331856924
+                    },
+                    {
+                        "pattern": [
+                            "card",
+                            "card",
+                            "card"
+                        ],
+                        "patternFrequency": 0.9027777777777778,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.133232122662707
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 144,
+                "_minSupport": 0.8999999999999999,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:41:58.317Z",
+                "_dateEnd": "2021-03-29T02:41:59.006Z"
+            },
+            {
+                "_activityName": "prepare_soup",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/prepare_soup",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "soup"
+                        ],
+                        "patternFrequency": 0.9673202614379085,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2142505278123483
+                    },
+                    {
+                        "pattern": [
+                            "soup",
+                            "soup"
+                        ],
+                        "patternFrequency": 0.9411764705882353,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.181432945979582
+                    },
+                    {
+                        "pattern": [
+                            "soup",
+                            "soup",
+                            "soup"
+                        ],
+                        "patternFrequency": 0.9215686274509803,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1568197596050074
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 153,
+                "_minSupport": 0.9199999999999999,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:42:59.909Z",
+                "_dateEnd": "2021-03-29T02:43:00.961Z"
+            },
+            {
+                "_activityName": "vacuum",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/vacuum",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "vacuum"
+                        ],
+                        "patternFrequency": 0.9383561643835616,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.177892693144883
+                    },
+                    {
+                        "pattern": [
+                            "vacuum",
+                            "vacuum"
+                        ],
+                        "patternFrequency": 0.9315068493150684,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1692949362606138
+                    },
+                    {
+                        "pattern": [
+                            "vacuum",
+                            "vacuum",
+                            "vacuum",
+                            "vacuum"
+                        ],
+                        "patternFrequency": 0.9178082191780822,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.1520994224920753
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 146,
+                "_minSupport": 0.9099999999999999,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:44:07.227Z",
+                "_dateEnd": "2021-03-29T02:44:08.431Z"
+            },
+            {
+                "_activityName": "watch_tv",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/watch_tv",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "television_receiver"
+                        ],
+                        "patternFrequency": 0.910958904109589,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.143501665607806
+                    },
+                    {
+                        "pattern": [
+                            "television_receiver",
+                            "television_receiver"
+                        ],
+                        "patternFrequency": 0.863013698630137,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0833173674179217
+                    },
+                    {
+                        "pattern": [
+                            "television_receiver",
+                            "television_receiver",
+                            "television_receiver"
+                        ],
+                        "patternFrequency": 0.8287671232876712,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.0403285829965756
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 146,
+                "_minSupport": 0.8199999999999998,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:45:11.138Z",
+                "_dateEnd": "2021-03-29T02:45:11.847Z"
+            },
+            {
+                "_activityName": "water_plants",
+                "_pathToWebPages": "C:/Users/Charles/WebstormProjects/webpages_retrieval/oldOutputDataComplete/water_plants",
+                "_frequentSequentialPatterns": [
+                    {
+                        "pattern": [
+                            "plant"
+                        ],
+                        "patternFrequency": 0.9671052631578947,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2139806463828025
+                    },
+                    {
+                        "pattern": [
+                            "plant",
+                            "water",
+                            "plant"
+                        ],
+                        "patternFrequency": 0.9605263157894737,
+                        "inverseActivityFrequency": 1.255272505103306,
+                        "pfIaf": 1.2057222746387017
+                    },
+                    {
+                        "pattern": [
+                            "water"
+                        ],
+                        "patternFrequency": 0.9671052631578947,
+                        "inverseActivityFrequency": 0.9542425094393249,
+                        "pfIaf": 0.9228529532077681
+                    }
+                ],
+                "_numberOfPatterns": 3,
+                "_typeOfPattern": "closed",
+                "_numberOfPlans": 152,
+                "_minSupport": 0.96,
+                "_minNumberPatterns": 3,
+                "_dateBegin": "2021-03-29T02:46:18.550Z",
+                "_dateEnd": "2021-03-29T02:46:20.247Z"
+            }
+        ],
+        "_dateBegin": "2021-03-29T02:28:48.759Z",
+        "_dateEnd": "2021-03-29T02:46:20.248Z"
+    }
+]

@@ -9,6 +9,7 @@
     "patternAnnotation": "node -r esm experimentation/patternAnnotation.js",
     "prepareForJASP": "node -r esm experimentation/prepareForJASP.js",
     "patternSelection": "node -r esm patternSelection.js",
+    "patternUse": "node -r esm patternUse.js",
     "testPOSET": "node -r esm ./tests/testPOSET.js",
     "testFin": "node -r esm ./tests/testFin.js",
     "testSelector": "node -r esm ./tests/testSelector.js",
