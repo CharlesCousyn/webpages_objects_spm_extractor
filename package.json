@@ -21,7 +21,7 @@
   "author": "Charles Cousyn",
   "license": "MIT",
   "dependencies": {
-    "@stdlib/stdlib": "^0.0.93",
+    "@stdlib/stdlib": "^0.0.96",
     "array-shuffle": "^2.0.0",
     "clone": "^2.1.2",
     "csv-parse": "^4.14.1",
