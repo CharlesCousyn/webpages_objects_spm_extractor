@@ -15,6 +15,12 @@ export function writeJSONFile(data, path, isIndent)
     filesSystem.writeFileSync(path, string, "utf8");
 }
 
+//https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
+export function cartesian(...a)
+{
+    return a.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())));
+}
+
 export function writeTextFile(data, path)
 {
     filesSystem.writeFileSync(path, data, {encoding:"utf8"});
