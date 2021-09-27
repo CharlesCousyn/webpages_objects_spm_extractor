@@ -21,6 +21,25 @@ export function cartesian(...a)
     return a.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())));
 }
 
+//https://www.datascienceblog.net/post/machine-learning/performance-measures-multi-class-problems/
+export function microAverageFScore(confusionMatrix)
+{
+    let sumTP = confusionMatrix.labels.reduce( (acc, lab) => acc + confusionMatrix.getTruePositiveCount(lab), 0.0);
+    let sumTPFP=  sumTP + confusionMatrix.labels.reduce( (acc, lab) => acc + confusionMatrix.getFalsePositiveCount(lab), 0.0);
+    let sumTPFN= sumTP + confusionMatrix.labels.reduce( (acc, lab) => acc + confusionMatrix.getFalseNegativeCount(lab), 0.0);
+    let microAveragePrecision = sumTP / sumTPFP;
+    let microAverageRecall = sumTP / sumTPFN;
+    return 2 * microAveragePrecision * microAverageRecall / (microAveragePrecision + microAverageRecall);
+}
+
+//https://www.datascienceblog.net/post/machine-learning/performance-measures-multi-class-problems/
+export function macroAverageFScore(confusionMatrix)
+{
+    let macroAveragePrecision = confusionMatrix.labels.reduce( (acc, lab) => acc + confusionMatrix.getPositivePredictiveValue(lab), 0.0) / confusionMatrix.labels.length;
+    let macroAverageRecall = confusionMatrix.labels.reduce( (acc, lab) => acc + confusionMatrix.getTruePositiveRate(lab), 0.0) / confusionMatrix.labels.length;
+    return 2 * macroAveragePrecision * macroAverageRecall / (macroAveragePrecision + macroAverageRecall);
+}
+
 export function writeTextFile(data, path)
 {
     filesSystem.writeFileSync(path, data, {encoding:"utf8"});

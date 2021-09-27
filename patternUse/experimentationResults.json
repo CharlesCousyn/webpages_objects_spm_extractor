@@ -1,0 +1,15 @@
+[
+    {
+        "parameters": [
+            "windowSize",
+            "overlap",
+            "thresholdDistanceRFID"
+        ],
+        "configuration": [
+            3,
+            0.05,
+            120
+        ],
+        "microAverageFScore": 0.8888888888888888
+    }
+]

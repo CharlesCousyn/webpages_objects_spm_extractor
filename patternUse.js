@@ -73,8 +73,40 @@ function addLabelToTrace(trace, indexEvent, label)
     return trace;
 }
 
+//Inspired by riboni et al.
+export function HARUsingObjectsOnly(events, objectsByActivity, numberEvents)
+{
+    let labelledTrace = events.map(event => [event, "null"]);
+
+    let activities = objectsByActivity.activities;
+    //P(A|O)
+    let probAWithO = [];
+    //DEBUG
+    activities = ["make_tea", "cook"];
+    //DEBUG
+
+    events.forEach((e, indexEvent) =>
+    {
+        let [maxActivity, maxWeight] = activities
+        .map(a =>
+        {
+            //Compute w(a, tj)
+            let weight = 0.0;
+
+            return [a, weight];
+
+        })
+        //Find activity with max score
+        .reduce(([oldA, oldWeight], [a, weight]) => weight >= oldWeight ? [a, weight] : [oldA, oldWeight], ["null", -1]);
+
+        addLabelToTrace(labelledTrace, indexEvent, maxActivity);
+    });
+
+    return labelledTrace;
+}
+
 //For each element in trace, produce a label for the activity being
-export function HARFromTrace(events, patternsPerActivity, windowSize, overlap)
+export function HARUsingSlidingWindowAndPatterns(events, patternsPerActivity, windowSize, overlap)
 {
     events = events.sort((e1, e2) => e1.timestamp - e2.timestamp);
     //Default labelling
@@ -93,7 +125,7 @@ export function HARFromTrace(events, patternsPerActivity, windowSize, overlap)
 {
     let events = simulatedTrace;
     preprocessTrace(events);
-    let res = HARFromTrace(events, patternPerActivity, 4, 0.5);
+    let res = HARUsingSlidingWindowAndPatterns(events, patternPerActivity, 4, 0.5);
 
     console.log(res);
 })();

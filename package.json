@@ -36,6 +36,7 @@
     "html-to-text": "^5.1.1",
     "jsdom": "^16.4.0",
     "lexed": "^1.0.10",
+    "ml-confusion-matrix": "^0.4.0",
     "nodeplotlib": "^0.7.5",
     "rxjs": "^6.6.3",
     "summary": "^2.1.0",
