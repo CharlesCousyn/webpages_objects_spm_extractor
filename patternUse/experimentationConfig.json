@@ -33,7 +33,8 @@
         ["Pasta", "pasta"],
         ["Plate", "plate"],
         ["Pan", "pan"],
-        ["Butter", "butter"]
+        ["Butter", "butter"],
+        ["Boiler", "water"]
       ]
     }
 }
