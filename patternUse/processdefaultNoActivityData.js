@@ -3,11 +3,12 @@ import * as TOOLS from "../tools";
 import csvStringify from "csv-stringify/lib/sync";
 import { plot } from 'nodeplotlib';
 
-let defaultNoActivityData = JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/defaultData/rfid.json"), TOOLS.reviverDate);
+//let defaultNoActivityData = JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/defaultData/rfid.json"), TOOLS.reviverDate);
+let defaultNoActivityData = JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/20210927154950/rfid.json"), TOOLS.reviverDate);
 
-(async () =>
+function parseDataSetFromRFIDPositionDanyBouchard(defaultNoActivityData)
 {
-    let dataset = [...defaultNoActivityData
+    return [...defaultNoActivityData
         .flatMap(event => event.lst_RFIDPosition)
         .reduce((acc, o) =>
         {
@@ -48,6 +49,57 @@ let defaultNoActivityData = JSON.parse(filesSystem.readFileSync("C:/Users/Charle
             val.distancesDataset = val.distances.map(distance =>  ({distance}));
             return [ID, val];
         });
+}
+
+function parseDataSetFromRFIDPosition(defaultNoActivityData)
+{
+    return [...defaultNoActivityData
+        .flatMap(event => Object.entries(event.obj))
+        .reduce((acc, [key, [X, Y, Z]]) =>
+        {
+            let val = acc.get(key);
+            if(val)
+            {
+                acc.set(key, {Coords: [...val.Coords, {X, Y: Z}]});
+            }
+            else
+            {
+                acc.set(key, {Coords: [{X, Y: Z}]});
+            }
+            return acc;
+        }, new Map())]
+        .map(([ID, val])=>
+        {
+            val.OMs = [];
+            if(val.Coords.length >= 2)
+            {
+                for(let i = 0; i < val.Coords.length - 1; i++)
+                {
+                    val.OMs.push({dX: val.Coords[i + 1].X - val.Coords[i].X, dY: val.Coords[i + 1].Y - val.Coords[i].Y});
+                }
+            }
+            else
+            {
+                val.OMs.push({dX: 0.0, dY: 0.0});
+            }
+            return [ID, val];
+        })
+        .map(([ID, val]) =>
+        {
+            val.distances = val.OMs.map(OM => Math.sqrt(Math.pow(OM.dX, 2) + Math.pow(OM.dY, 2)));
+            return [ID, val];
+        })
+        .map(([ID, val]) =>
+        {
+            val.distancesDataset = val.distances.map(distance =>  ({distance}));
+            return [ID, val];
+        });
+}
+
+(async () =>
+{
+    //let dataset = parseDataSetFromRFIDPositionDanyBouchard(defaultNoActivityData);
+    let dataset = parseDataSetFromRFIDPosition(defaultNoActivityData);
 
     console.log(dataset);
 
@@ -80,6 +132,9 @@ let defaultNoActivityData = JSON.parse(filesSystem.readFileSync("C:/Users/Charle
                 );
         }
     );
+
+    ///1, 2, 3 pourrait être suffisant!! voir proche de 10!!
+    //Max 200??
 
 
 })();
