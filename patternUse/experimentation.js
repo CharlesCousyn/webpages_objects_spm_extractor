@@ -6,30 +6,51 @@ import Event from "./Event.js";
 
 let EXPERIMENTATION_CONFIG = JSON.parse(filesSystem.readFileSync("./patternUse/experimentationConfig.json"), TOOLS.reviverDate);
 
-function preprocessEnergeticJulien(energetic)
+function preprocessEnergeticJulien(energetic, dictionary)
 {
+    //Gather uses object only and mutate object names
     return energetic.flatMap(rd =>
         Object.entries(rd["Appliance states"])
             .map(([key, nameState])=> nameState.split("-").map(e => e.trim()))
             .filter(([name, stateString])=> stateString === "ON")
-            .map(([name, stateString]) => new Event((new Date(rd.Timestamp)).getTime(), name, rd.label))
+            .map(([name, stateString]) => new Event((new Date(rd.Timestamp)).getTime(), (dictionary.has(name) ? dictionary.get(name) : name), rd.label))
     );
 }
 
-function preprocessRFID(rfid)
+function preprocessRFID(rfid, dictionary)
 {
+    //Mutate object names
+    let allUniqueKeys= [...new Set(rfid.reduce((acc, curr)=> [...Object.keys(curr.obj), ...acc], []))];
+    let objectsToChange = allUniqueKeys.filter(e => dictionary.has(e));
+
+    rfid = rfid.map(rd =>
+    {
+        let o = rd.obj;
+        objectsToChange.forEach(oldObj =>
+        {
+            let newObj = dictionary.get(oldObj);
+            if (oldObj !== newObj)
+            {
+                Object.defineProperty(o, newObj, Object.getOwnPropertyDescriptor(o, oldObj));
+                delete o[oldObj];
+            }
+        });
+        return rd;
+    })
     return rfid;
 }
 //Return in format [rfid, preprocessedEnergetic]
-function preprocessGroundTruthData(data)
+function preprocessGroundTruthData(data, activityName, EXPERIMENTATION_CONFIG)
 {
+    //Get corresponding dictionary
+    let dictionary = new Map(EXPERIMENTATION_CONFIG.objectDictionaries[activityName]);
     if(data.length === 0)
     {
         return [[], []];
     }
     let [rfid, energetic] = data;
-    let newEnergeticData = preprocessEnergeticJulien(energetic);
-    let newRfidData =  preprocessRFID(rfid);
+    let newEnergeticData = preprocessEnergeticJulien(energetic, dictionary);
+    let newRfidData =  preprocessRFID(rfid, dictionary);
     return [newRfidData, newEnergeticData];
 }
 
@@ -47,7 +68,7 @@ function preprocessGroundTruthData(data)
     groundTruthData.push(["vacuum", []]);
 
     //Transform ground truth data in one big array of Events
-    let preprocessedData = groundTruthData.map(([activityName, data]) => [activityName, preprocessGroundTruthData(data)]);
+    let preprocessedData = groundTruthData.map(([activityName, data]) => [activityName, preprocessGroundTruthData(data, activityName, EXPERIMENTATION_CONFIG)]);
 
     preprocessedData = preprocessedData.reduce(([accRfidData, accEnergeticData], [activityName, [newRfidData, newEnergeticData]]) =>
         [[...accRfidData, ...newRfidData], [...accEnergeticData, ...newEnergeticData]], [[], []]);

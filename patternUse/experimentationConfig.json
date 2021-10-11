@@ -27,13 +27,13 @@
     }
   },
   "performanceMetric": "cohenKappa",
-  "objectDictionaries": [
-    {
-      "activityName": "make_pasta",
-      "dictionary": [
-        ["pasta", "pasta"],
-        ["milk", "water"]
+  "objectDictionaries": {
+      "cook_pasta": [
+        ["Mustard", "sauce"],
+        ["Pasta", "pasta"],
+        ["Plate", "plate"],
+        ["Pan", "pan"],
+        ["Butter", "butter"]
       ]
     }
-  ]
 }
