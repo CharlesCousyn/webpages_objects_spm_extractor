@@ -1,79 +1,58 @@
 import filesSystem from "fs";
-import ConfusionMatrix from 'ml-confusion-matrix';
 import * as TOOLS from "../tools";
+import * as EXPERIMENTATION_UTILS from "./experimentationUtils.js";
+import * as HAR from "../HAR.js";
+import Event from "./Event.js";
+
 let EXPERIMENTATION_CONFIG = JSON.parse(filesSystem.readFileSync("./patternUse/experimentationConfig.json"), TOOLS.reviverDate);
 
-function addValues(EXPERIMENTATION_CONFIG)
+function preprocessEnergeticJulien(energetic)
 {
-    let keys = EXPERIMENTATION_CONFIG.parameters;
-    keys.forEach((key) =>
+    return energetic.flatMap(rd =>
+        Object.entries(rd["Appliance states"])
+            .map(([key, nameState])=> nameState.split("-").map(e => e.trim()))
+            .filter(([name, stateString])=> stateString === "ON")
+            .map(([name, stateString]) => new Event((new Date(rd.Timestamp)).getTime(), name, rd.label))
+    );
+}
+
+function preprocessRFID(rfid)
+{
+    return rfid;
+}
+//Return in format [rfid, preprocessedEnergetic]
+function preprocessGroundTruthData(data)
+{
+    if(data.length === 0)
     {
-        let range = EXPERIMENTATION_CONFIG.testedValues[key];
-        let arr = [];
-        for(let i = range.min; i <= range.max; i+= range.step)
-        {
-            arr.push(i);
-        }
-        EXPERIMENTATION_CONFIG.testedValues[key] = arr;
-    });
-    return EXPERIMENTATION_CONFIG;
+        return [[], []];
+    }
+    let [rfid, energetic] = data;
+    let newEnergeticData = preprocessEnergeticJulien(energetic);
+    let newRfidData =  preprocessRFID(rfid);
+    return [newRfidData, newEnergeticData];
 }
 
-function addConfigurations(EXPERIMENTATION_CONFIG)
-{
-    //Getting all arrays of values
-    let arraysOfValues = [];
-    let keys = EXPERIMENTATION_CONFIG.parameters;
-    keys.forEach((key) =>
-    {
-        arraysOfValues.push(EXPERIMENTATION_CONFIG.testedValues[key]);
-    });
-    EXPERIMENTATION_CONFIG.configurations = TOOLS.cartesian(...arraysOfValues);
-    return EXPERIMENTATION_CONFIG;
-}
 
-function executeConfiguration(metricToUse, windowSize, overlap, thresholdDistanceRFID )
-{
-    //Take the labelled traces
-
-    //Do HAR using conf to produce label for each event
-
-    //Compute confusion matrix to get an idea of performance
-    //DEBUG
-    let trueLabels = ["make_tea", "make_tea", "make_tea", "make_tea", "make_tea", "make_tea", "vacuum", "make_tea", "make_tea"];
-    let predictedLabels = ["vacuum", "make_tea", "make_tea", "make_tea", "make_tea", "make_tea", "vacuum", "make_tea", "make_tea"];
-    let confusionMatrix = ConfusionMatrix.fromLabels(trueLabels, predictedLabels);
-    console.log(confusionMatrix.labels);
-    console.log(confusionMatrix.getMatrix());
-    //DEBUG
-
-    return TOOLS[metricToUse](confusionMatrix);
-}
 
 (async () =>
 {
-    EXPERIMENTATION_CONFIG = addValues(EXPERIMENTATION_CONFIG);
-    EXPERIMENTATION_CONFIG = addConfigurations(EXPERIMENTATION_CONFIG);
+    //Gather ground truth data for all activities
+    let groundTruthData = [];
+    //Each ground truth is [RFID, Energetic Julien]
+    groundTruthData.push(["cook_pasta", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/groundTruthDataExample/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/groundTruthDataExample/energetic_julien.json"), TOOLS.reviverDate)]]);
+    groundTruthData.push(["make_coffee", []]);
+    groundTruthData.push(["make_tea", []]);
+    groundTruthData.push(["clean", []]);
+    groundTruthData.push(["vacuum", []]);
 
-    //DEBUG
-    EXPERIMENTATION_CONFIG.configurations = [EXPERIMENTATION_CONFIG.configurations[12]];
-    //DEBUG
+    //Transform ground truth data in one big array of Events
+    let preprocessedData = groundTruthData.map(([activityName, data]) => [activityName, preprocessGroundTruthData(data)]);
 
-    let performancesByConfiguration =
-        EXPERIMENTATION_CONFIG.configurations
-        .map(conf =>
-            {
-                console.log("Computing HAR performance for configuration:");
-                console.log(EXPERIMENTATION_CONFIG.parameters);
-                console.log(conf);
-                let performance = executeConfiguration(EXPERIMENTATION_CONFIG.performanceMetric, ...conf);
-                let res = ({parameters: EXPERIMENTATION_CONFIG.parameters, configuration: conf});
-                res[EXPERIMENTATION_CONFIG.performanceMetric] = performance;
-                return res;
-            })
-        .sort((a, b) => b[EXPERIMENTATION_CONFIG.performanceMetric] - a[EXPERIMENTATION_CONFIG.performanceMetric]);
+    preprocessedData = preprocessedData.reduce(([accRfidData, accEnergeticData], [activityName, [newRfidData, newEnergeticData]]) =>
+        [[...accRfidData, ...newRfidData], [...accEnergeticData, ...newEnergeticData]], [[], []]);
 
-    //Order configurations by performances
-    TOOLS.writeJSONFile(performancesByConfiguration, "./patternUse/experimentationResults.json", true);
+    //Launch experimentations
+    EXPERIMENTATION_UTILS.testAllCombinations(preprocessedData, HAR.HARUsingSlidingWindowAndPatterns, EXPERIMENTATION_CONFIG);
 
 })();

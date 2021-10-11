@@ -1,4 +1,5 @@
 import filesSystem from "fs";
+import ConfusionMatrix from 'ml-confusion-matrix';
 
 //File processing
 export function writeJSONFile(data, path, isIndent)
@@ -30,6 +31,20 @@ export function microAverageFScore(confusionMatrix)
     let microAveragePrecision = sumTP / sumTPFP;
     let microAverageRecall = sumTP / sumTPFN;
     return 2 * microAveragePrecision * microAverageRecall / (microAveragePrecision + microAverageRecall);
+}
+
+export function cohenKappa(confusionMatrix)
+{
+    //confusionMatrix = new ConfusionMatrix([[88, 10, 2], [14, 40, 6], [18, 10, 12]], ["a", "b", "c"])
+    let sumLine = confusionMatrix.labels.map( lab => confusionMatrix.getTruePositiveCount(lab) + confusionMatrix.getFalsePositiveCount(lab), 0.0);
+    let sumColumn = confusionMatrix.labels.map( lab => confusionMatrix.getTruePositiveCount(lab) + confusionMatrix.getFalseNegativeCount(lab), 0.0);
+    let totalPred = confusionMatrix.getTotalCount();
+    let probByClass = confusionMatrix.labels.map((lab, index) => sumLine[index]/totalPred);
+
+    let confusionMatRand = sumColumn.map(sum => probByClass.map(prob => prob * sum));
+    let confusionMatrixRandom = new ConfusionMatrix(confusionMatRand, confusionMatrix.labels);
+
+    return (confusionMatrix.getAccuracy() - confusionMatrixRandom.getAccuracy())  / (1 - confusionMatrixRandom.getAccuracy());
 }
 
 //https://www.datascienceblog.net/post/machine-learning/performance-measures-multi-class-problems/

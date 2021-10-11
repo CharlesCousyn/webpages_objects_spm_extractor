@@ -1,23 +1,39 @@
 {
-  "parameters": ["windowSize", "overlap", "thresholdDistanceRFID"],
+  "parameters": ["windowSizeObjectUse", "thresholdMinDistanceRFID", "thresholdMaxDistanceRFID", "windowSizeHAR"],
   "testedValues": {
-    "windowSize":
+    "windowSizeObjectUse":
     {
-      "min": 3,
+      "min": 8000,
+      "max": 9000,
+      "step": 500
+    },
+    "thresholdMinDistanceRFID":
+    {
+      "min": 20,
       "max": 50,
-      "step": 1
+      "step": 25
     },
-    "overlap":  {
-      "min": 0.0,
-      "max": 0.75,
-      "step": 0.05
-    },
-    "thresholdDistanceRFID":
+    "thresholdMaxDistanceRFID":
     {
-      "min": 80,
-      "max": 150,
-      "step": 10
+      "min": 150,
+      "max": 250,
+      "step": 150
+    },
+    "windowSizeHAR":
+    {
+      "min": 8000,
+      "max": 8000,
+      "step": 500
     }
   },
-  "performanceMetric": "microAverageFScore"
+  "performanceMetric": "cohenKappa",
+  "objectDictionaries": [
+    {
+      "activityName": "make_pasta",
+      "dictionary": [
+        ["pasta", "pasta"],
+        ["milk", "water"]
+      ]
+    }
+  ]
 }

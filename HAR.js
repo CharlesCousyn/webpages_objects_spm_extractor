@@ -1,6 +1,7 @@
 import filesSystem from "fs";
 import * as TOOLS from "./tools";
 import * as COMMON from "./sequentialPatternMining/common";
+import Event from "./patternUse/Event";
 
 let simulatedTrace = ["water", "cup", "tea", "water", "cup", "tea", "vacuum", "cup", "tea"];
 let patternPerActivity = JSON.parse(filesSystem.readFileSync("./selectedPatterns/patterns.json"), TOOLS.reviverDate);
@@ -24,6 +25,32 @@ function cutUsingSlidingWindowTechnique(trace, windowSize, overlap)
         index += Math.round(windowSize * (1 - overlap));
     }
     return cutTrace;
+}
+
+function cutUsingSlidingWindowTechniqueTime(trace, windowSizeHAR)
+{
+    if(trace.length !== 0)
+    {
+        let cutTrace = [];
+        let firstData = trace[0];
+        let lastData = trace[trace.length - 1];
+        let indexBegin = trace.findIndex(d => d.date > firstData.date + windowSizeHAR/2);
+        let indexEnd = trace.findIndex(d => d.date < lastData.date - windowSizeHAR/2);
+
+        for(let index = indexBegin; index < indexEnd; index++)
+        {
+            let beginWindow =  trace[index].date - windowSizeHAR/2;
+            let endWindow =  trace[index].date + windowSizeHAR/2;
+            let usedData = trace.filter(d => d.date > beginWindow && d.date <= endWindow);
+            cutTrace.push([usedData, index]);
+        }
+
+        return cutTrace;
+    }
+    else
+    {
+        return [];
+    }
 }
 
 function computeRelevanceScoresAndSortBy(part, indexEvent, patternsPerActivity)
@@ -59,7 +86,7 @@ function computeRelevanceScoresAndSortBy(part, indexEvent, patternsPerActivity)
 
 function chooseLabelFromRelevanceScore(part, indexEvent, normalizedActivitiesWithRelevanceScore)
 {
-    let label = "null";
+    let label = "noActivity";
     if(normalizedActivitiesWithRelevanceScore.length > 0)
     {
         label = normalizedActivitiesWithRelevanceScore[0].activityName;
@@ -69,7 +96,7 @@ function chooseLabelFromRelevanceScore(part, indexEvent, normalizedActivitiesWit
 
 function addLabelToTrace(trace, indexEvent, label)
 {
-    trace[indexEvent][1] = label;
+    trace[indexEvent] = label;
     return trace;
 }
 
@@ -106,14 +133,13 @@ export function HARUsingObjectsOnly(events, objectsByActivity, numberEvents)
 }
 
 //For each element in trace, produce a label for the activity being
-export function HARUsingSlidingWindowAndPatterns(events, patternsPerActivity, windowSize, overlap)
+export function HARUsingSlidingWindowAndPatterns(events, patternsPerActivity, windowSizeHAR)
 {
-    events = events.sort((e1, e2) => e1.timestamp - e2.timestamp);
     //Default labelling
-    let labelledTrace = events.map(event => [event, "null"]);
+    let labelledTrace = events.map(event => "noActivity");
 
     //For each part of cutTrace, infer an activity relevance score
-    cutUsingSlidingWindowTechnique(events, windowSize, overlap)
+    cutUsingSlidingWindowTechniqueTime(events, windowSizeHAR)
         .map(([part, indexEvent]) => computeRelevanceScoresAndSortBy(part, indexEvent, patternsPerActivity))
         .map(([part, indexEvent, normalizedActivitiesWithRelevanceScore]) => chooseLabelFromRelevanceScore(part, indexEvent, normalizedActivitiesWithRelevanceScore))
         .forEach(([, indexEvent, , label]) => addLabelToTrace(labelledTrace, indexEvent, label));
@@ -123,9 +149,10 @@ export function HARUsingSlidingWindowAndPatterns(events, patternsPerActivity, wi
 
 (async () =>
 {
+    /*
     let events = simulatedTrace;
     preprocessTrace(events);
     let res = HARUsingSlidingWindowAndPatterns(events, patternPerActivity, 4, 0.5);
 
-    console.log(res);
+    console.log(res);*/
 })();
