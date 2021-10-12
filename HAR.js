@@ -34,18 +34,18 @@ function cutUsingSlidingWindowTechniqueTime(trace, windowSizeHAR)
         let cutTrace = [];
         let firstData = trace[0];
         let lastData = trace[trace.length - 1];
-        let indexBegin = trace.findIndex(d => d.date > firstData.date + windowSizeHAR/2);
-        let indexEnd = trace.findIndex(d => d.date < lastData.date - windowSizeHAR/2);
+        let indexBegin = trace.findIndex(d => d.timestamp > firstData.timestamp + windowSizeHAR/2);
+        let indexEnd = TOOLS.findLastIndex(trace, d => d.timestamp < lastData.timestamp - windowSizeHAR/2);
 
         for(let index = indexBegin; index < indexEnd; index++)
         {
-            let beginWindow =  trace[index].date - windowSizeHAR/2;
-            let endWindow =  trace[index].date + windowSizeHAR/2;
-            let usedData = trace.filter(d => d.date > beginWindow && d.date <= endWindow);
+            let beginWindow =  trace[index].timestamp - windowSizeHAR/2;
+            let endWindow =  trace[index].timestamp + windowSizeHAR/2;
+            let usedData = trace.filter(d => d.timestamp > beginWindow && d.timestamp <= endWindow);
             cutTrace.push([usedData, index]);
         }
 
-        return cutTrace;
+        return cutTrace.map(([usedData, index]) => [usedData.map(d => d.data), index]);
     }
     else
     {
@@ -87,7 +87,7 @@ function computeRelevanceScoresAndSortBy(part, indexEvent, patternsPerActivity)
 function chooseLabelFromRelevanceScore(part, indexEvent, normalizedActivitiesWithRelevanceScore)
 {
     let label = "noActivity";
-    if(normalizedActivitiesWithRelevanceScore.length > 0)
+    if(normalizedActivitiesWithRelevanceScore.length > 0 && normalizedActivitiesWithRelevanceScore[0].relevanceScore !== 0)
     {
         label = normalizedActivitiesWithRelevanceScore[0].activityName;
     }

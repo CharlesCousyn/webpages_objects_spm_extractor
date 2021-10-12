@@ -167,6 +167,16 @@ export function limitsOfAgreement(array1, array2)
     plot1.view();
 }
 
+export function findLastIndex(array, predicate) {
+    let l = array.length;
+    while (l--)
+    {
+        if (predicate(array[l], l, array))
+            return l;
+    }
+    return -1;
+}
+
 export function arraysMatch (arr1, arr2)
 {
     // Check if the arrays are the same length
