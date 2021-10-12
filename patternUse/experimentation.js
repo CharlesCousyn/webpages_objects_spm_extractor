@@ -28,11 +28,14 @@ function preprocessRFID(rfid, dictionary)
         let o = rd.obj;
         objectsToChange.forEach(oldObj =>
         {
-            let newObj = dictionary.get(oldObj);
-            if (oldObj !== newObj)
+            if(o.hasOwnProperty(oldObj))
             {
-                Object.defineProperty(o, newObj, Object.getOwnPropertyDescriptor(o, oldObj));
-                delete o[oldObj];
+                let newObj = dictionary.get(oldObj);
+                if (oldObj !== newObj)
+                {
+                    Object.defineProperty(o, newObj, Object.getOwnPropertyDescriptor(o, oldObj));
+                    delete o[oldObj];
+                }
             }
         });
         return rd;
@@ -61,7 +64,7 @@ function preprocessGroundTruthData(data, activityName, EXPERIMENTATION_CONFIG)
     //Gather ground truth data for all activities
     let groundTruthData = [];
     //Each ground truth is [RFID, Energetic Julien]
-    groundTruthData.push(["cook_pasta", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/groundTruthDataExample/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/groundTruthDataExample/energetic_julien.json"), TOOLS.reviverDate)]]);
+    groundTruthData.push(["cook_pasta", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/cook_pasta/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/cook_pasta/energetic_julien.json"), TOOLS.reviverDate)]]);
     groundTruthData.push(["make_coffee", []]);
     groundTruthData.push(["make_tea", []]);
     groundTruthData.push(["clean", []]);
