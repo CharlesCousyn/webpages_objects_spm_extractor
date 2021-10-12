@@ -52,7 +52,7 @@ function executeCombination(preprocessedGroundTruthDataOneActivity, predictionFu
     let predictedLabels = predictionFunction(mergedData, patternPerActivity, windowSizeHAR);
 
     //Compute confusion matrix to get an idea of performance
-    let performanceData = {trueLabels, predictedLabels, confusionMatrix:{}, metrics: {}};
+    let performanceData = {/*trueLabels, predictedLabels,*/ confusionMatrix:{}, metrics: {}};
     if(trueLabels.length === predictedLabels.length && trueLabels.length !== 0)
     {
         let confusionMatrix = ConfusionMatrix.fromLabels(trueLabels, predictedLabels);
