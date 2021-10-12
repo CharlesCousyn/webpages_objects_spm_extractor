@@ -3,7 +3,7 @@
   "testedValues": {
     "windowSizeObjectUse":
     {
-      "min": 8000,
+      "min": 5000,
       "max": 9000,
       "step": 500
     },
@@ -11,18 +11,18 @@
     {
       "min": 20,
       "max": 50,
-      "step": 25
+      "step": 5
     },
     "thresholdMaxDistanceRFID":
     {
       "min": 150,
       "max": 250,
-      "step": 150
+      "step": 25
     },
     "windowSizeHAR":
     {
-      "min": 8000,
-      "max": 8000,
+      "min": 6000,
+      "max": 9000,
       "step": 500
     }
   },
@@ -34,7 +34,20 @@
         ["Plate", "plate"],
         ["Pan", "pan"],
         ["Butter", "butter"],
-        ["Boiler", "water"]
-      ]
+        ["Boiler", "water"],
+        ["Sieve", "sieve"]
+      ],
+    "make_coffee": [
+      ["Coffee", "coffee"],
+      ["Milk", "milk"],
+      ["Cafetiere", "coffee"],
+      ["Boiler", "water"],
+      ["Cup", "cup"],
+      ["Sugar", "sugar"]
+    ],
+    "clean": [
+      ["Boiler", "water"],
+      ["Cup", "fabric"]
+    ]
     }
 }

@@ -59,7 +59,22 @@ function computeRelevanceScoresAndSortBy(part, indexEvent, patternsPerActivity)
     let activitiesWithRelevanceScore =
         patternsPerActivity
             //Find existing patterns
-            .map(o => ({activityName: o.activityName, activityPatterns: o.activityPatterns.filter(activityPat => COMMON.isSupported(activityPat.pattern, part))}))
+            .map(o => ({activityName: o.activityName, activityPatterns: o.activityPatterns.filter(activityPat =>
+                {
+                    let res = COMMON.isSupported(activityPat.pattern, part);
+                    if(res && o.activityName === "clean")
+                    {
+                        return true;
+                    }
+                    else if(res)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                })}))
             //Accumulate score
             .map(o =>
             {

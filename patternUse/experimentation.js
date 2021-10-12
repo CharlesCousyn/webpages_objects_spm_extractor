@@ -65,7 +65,7 @@ function preprocessGroundTruthData(data, activityName, EXPERIMENTATION_CONFIG)
     let groundTruthData = [];
     //Each ground truth is [RFID, Energetic Julien]
     groundTruthData.push(["cook_pasta", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/cook_pasta/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/cook_pasta/energetic_julien.json"), TOOLS.reviverDate)]]);
-    groundTruthData.push(["make_coffee", []]);
+    groundTruthData.push(["make_coffee", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/make_coffee/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/make_coffee/energetic_julien.json"), TOOLS.reviverDate)]]);
     groundTruthData.push(["make_tea", []]);
     groundTruthData.push(["clean", []]);
     groundTruthData.push(["vacuum", []]);

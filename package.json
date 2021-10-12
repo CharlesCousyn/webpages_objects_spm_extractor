@@ -20,7 +20,8 @@
     "testKmeans": "node -r esm ./tests/testKmeans.js",
     "testSPM": "node -r esm ./tests/testSPM.js",
     "testCorrelation": "node -r esm ./tests/testCorrelation.js",
-    "testPatternsPerformance": "node -r esm ./tests/testPatternsPerformance.js"
+    "testPatternsPerformance": "node -r esm ./tests/testPatternsPerformance.js",
+    "testPatternUseExperimentationAnalysis": "node -r esm ./tests/testPatternUseExperimentationAnalysis.js"
   },
   "keywords": [],
   "author": "Charles Cousyn",
