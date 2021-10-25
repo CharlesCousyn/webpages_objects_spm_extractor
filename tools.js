@@ -47,6 +47,31 @@ export function cohenKappa(confusionMatrix)
     return (confusionMatrix.getAccuracy() - confusionMatrixRandom.getAccuracy())  / (1 - confusionMatrixRandom.getAccuracy());
 }
 
+//Matthews correlation coefficient (MCC)
+//https://en.wikipedia.org/wiki/Matthews_correlation_coefficient
+//One of the best: https://arxiv.org/abs/2010.16061
+export function MCC(confusionMatrix)
+{
+    let numberSample = confusionMatrix.getTotalCount();
+    let numberSamplePredictedCorrectly = confusionMatrix.getTrueCount();
+    let sumLine = confusionMatrix.labels.map( lab => confusionMatrix.getTruePositiveCount(lab) + confusionMatrix.getFalsePositiveCount(lab), 0.0);
+    let sumColumn = confusionMatrix.labels.map( lab => confusionMatrix.getTruePositiveCount(lab) + confusionMatrix.getFalseNegativeCount(lab), 0.0);
+
+    let num = numberSample * numberSamplePredictedCorrectly - vectorProd(sumLine, sumColumn);
+    let den = Math.sqrt(numberSample * numberSample - vectorProd(sumLine, sumLine)) * Math.sqrt(numberSample*numberSample - vectorProd(sumColumn, sumColumn));
+
+    return num / den;
+}
+
+function vectorProd(v1, v2)
+{
+    if(v1.length !== v2.length)
+    {
+        throw new Error("The vectors don't have the same size!")
+    }
+    return v1.reduce((acc, curr, index) => acc + curr * v2[index], 0.0);
+}
+
 //https://www.datascienceblog.net/post/machine-learning/performance-measures-multi-class-problems/
 export function macroAverageFScore(confusionMatrix)
 {
