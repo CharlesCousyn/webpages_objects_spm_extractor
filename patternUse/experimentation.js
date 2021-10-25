@@ -64,11 +64,12 @@ function preprocessGroundTruthData(data, activityName, EXPERIMENTATION_CONFIG)
     //Gather ground truth data for all activities
     let groundTruthData = [];
     //Each ground truth is [RFID, Energetic Julien]
-    groundTruthData.push(["cook_pasta", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/cook_pasta/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/cook_pasta/energetic_julien.json"), TOOLS.reviverDate)]]);
-    groundTruthData.push(["make_coffee", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/make_coffee/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/make_coffee/energetic_julien.json"), TOOLS.reviverDate)]]);
-    groundTruthData.push(["make_tea", []]);
-    groundTruthData.push(["clean", []]);
-    groundTruthData.push(["vacuum", []]);
+    groundTruthData.push(["cook_pasta", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/cook_pasta_2/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/cook_pasta_2/energetic_julien.json"), TOOLS.reviverDate)]]);
+    groundTruthData.push(["make_coffee", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/make_coffee_2/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/make_coffee_2/energetic_julien.json"), TOOLS.reviverDate)]]);
+    groundTruthData.push(["make_tea", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/make_tea/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/make_tea/energetic_julien.json"), TOOLS.reviverDate)]]);
+    groundTruthData.push(["clean", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/clean/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/clean/energetic_julien.json"), TOOLS.reviverDate)]]);
+    groundTruthData.push(["vacuum", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/vacuum/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/vacuum/energetic_julien.json"), TOOLS.reviverDate)]]);
+    groundTruthData.push(["noActivity", [JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/noActivity/rfid.json"), TOOLS.reviverDate), JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/noActivity/energetic_julien.json"), TOOLS.reviverDate)]]);
 
     //Transform ground truth data in one big array of Events
     let preprocessedData = groundTruthData.map(([activityName, data]) => [activityName, preprocessGroundTruthData(data, activityName, EXPERIMENTATION_CONFIG)]);

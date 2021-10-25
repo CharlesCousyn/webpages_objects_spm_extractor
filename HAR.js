@@ -4,7 +4,8 @@ import * as COMMON from "./sequentialPatternMining/common";
 import Event from "./patternUse/Event";
 
 let simulatedTrace = ["water", "cup", "tea", "water", "cup", "tea", "vacuum", "cup", "tea"];
-let patternPerActivity = JSON.parse(filesSystem.readFileSync("./selectedPatterns/patterns.json"), TOOLS.reviverDate);
+let patternPerActivityOriginal = JSON.parse(filesSystem.readFileSync("./selectedPatterns/patterns.json"), TOOLS.reviverDate);
+let patternPerActivityImageExtractor = JSON.parse(filesSystem.readFileSync("./selectedPatterns/patternsImageExtractor.json"), TOOLS.reviverDate);
 
 function preprocessTrace(events)
 {
@@ -62,7 +63,7 @@ function computeRelevanceScoresAndSortBy(part, indexEvent, patternsPerActivity)
             .map(o => ({activityName: o.activityName, activityPatterns: o.activityPatterns.filter(activityPat =>
                 {
                     let res = COMMON.isSupported(activityPat.pattern, part);
-                    if(res && o.activityName === "clean")
+                    if(res && o.activityName === "make_tea")
                     {
                         return true;
                     }
@@ -78,13 +79,13 @@ function computeRelevanceScoresAndSortBy(part, indexEvent, patternsPerActivity)
             //Accumulate score
             .map(o =>
             {
-                o.relevanceScore = o.activityPatterns.reduce((count, curr) => {count += curr.annotation;return count;}, 0.0);
+                o.relevanceScore = o.activityPatterns.reduce((count, curr) => count + curr.annotation, 0.0);
                 return o;
             })
             //Decreasing order
             .sort((o1, o2) => o2.relevanceScore - o1.relevanceScore);
 
-    let sumScore = activitiesWithRelevanceScore.reduce((sum, curr) => {sum += curr.relevanceScore;return sum}, 0.0);
+    let sumScore = activitiesWithRelevanceScore.reduce((sum, curr) => sum + curr.relevanceScore, 0.0);
 
     let normalizedActivitiesWithRelevanceScore = [];
     if(sumScore === 0)
@@ -148,14 +149,15 @@ export function HARUsingObjectsOnly(events, objectsByActivity, numberEvents)
 }
 
 //For each element in trace, produce a label for the activity being
-export function HARUsingSlidingWindowAndPatterns(events, patternsPerActivity, windowSizeHAR)
+export function HARUsingSlidingWindowAndPatterns(events, useImageExtractorPatterns, windowSizeHAR)
 {
+    let patternsToUse = useImageExtractorPatterns ? patternPerActivityImageExtractor : patternPerActivityOriginal;
     //Default labelling
     let labelledTrace = events.map(event => "noActivity");
 
     //For each part of cutTrace, infer an activity relevance score
     cutUsingSlidingWindowTechniqueTime(events, windowSizeHAR)
-        .map(([part, indexEvent]) => computeRelevanceScoresAndSortBy(part, indexEvent, patternsPerActivity))
+        .map(([part, indexEvent]) => computeRelevanceScoresAndSortBy(part, indexEvent, patternsToUse))
         .map(([part, indexEvent, normalizedActivitiesWithRelevanceScore]) => chooseLabelFromRelevanceScore(part, indexEvent, normalizedActivitiesWithRelevanceScore))
         .forEach(([, indexEvent, , label]) => addLabelToTrace(labelledTrace, indexEvent, label));
 

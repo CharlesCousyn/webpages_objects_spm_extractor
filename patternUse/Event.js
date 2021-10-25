@@ -2,14 +2,18 @@ export default class Event
 {
     constructor(timestamp, data, label)
     {
-        if (typeof timestamp === "object" && data === undefined) {
+        if (typeof timestamp === "object" && data === undefined)
+        {
             this._timestamp = timestamp.timestamp;
-        } else {
-            this._timestamp = timestamp;
+            this._data = timestamp.data;
+            this._label = timestamp.label;
         }
-        this._timestamp = timestamp;
-        this._data = data;
-        this._label = label;
+        else
+        {
+            this._timestamp = timestamp;
+            this._data = data;
+            this._label = label;
+        }
     }
 
     get label() {

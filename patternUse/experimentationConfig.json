@@ -1,32 +1,40 @@
 {
-  "parameters": ["windowSizeObjectUse", "thresholdMinDistanceRFID", "thresholdMaxDistanceRFID", "windowSizeHAR"],
+  "parameters": ["useImageExtractorPatterns", "windowSizeObjectUse", "thresholdMinDistanceRFID", "thresholdMaxDistanceRFID", "windowSizeHAR"],
   "testedValues": {
+    "useImageExtractorPatterns":
+    {
+      "type": "boolean"
+    },
     "windowSizeObjectUse":
     {
-      "min": 5000,
-      "max": 9000,
+      "type": "number",
+      "min": 10000,
+      "max": 10000,
       "step": 500
     },
     "thresholdMinDistanceRFID":
     {
+      "type": "number",
       "min": 20,
-      "max": 50,
+      "max": 46,
       "step": 5
     },
     "thresholdMaxDistanceRFID":
     {
+      "type": "number",
       "min": 150,
       "max": 250,
       "step": 25
     },
     "windowSizeHAR":
     {
-      "min": 6000,
-      "max": 9000,
-      "step": 500
+      "type": "number",
+      "min": 12000,
+      "max": 12000,
+      "step": 100
     }
   },
-  "performanceMetric": "cohenKappa",
+  "performanceMetric": "MCC",
   "objectDictionaries": {
       "cook_pasta": [
         ["Mustard", "sauce"],
@@ -47,7 +55,18 @@
     ],
     "clean": [
       ["Boiler", "water"],
-      ["Cup", "fabric"]
+      ["Cup", "fabric"],
+      ["Mustard", "solution"]
+    ],
+    "vacuum": [
+      ["Aspirateur", "vacuum"]
+    ],
+    "make_tea": [
+      ["Coffee", "water"],
+      ["Milk", "milk"],
+      ["Boiler", "tea"],
+      ["Cup", "cup"],
+      ["Sugar", "sugar"]
     ]
     }
 }

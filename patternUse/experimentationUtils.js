@@ -3,7 +3,6 @@ import * as TOOLS from "../tools";
 import * as CALIBRATION from "./calibrationRFIDPosition.js";
 import filesSystem from "fs";
 
-let patternPerActivity = JSON.parse(filesSystem.readFileSync("./selectedPatterns/patterns.json"), TOOLS.reviverDate);
 
 function addValues(EXPERIMENTATION_CONFIG)
 {
@@ -11,12 +10,21 @@ function addValues(EXPERIMENTATION_CONFIG)
     keys.forEach((key) =>
     {
         let range = EXPERIMENTATION_CONFIG.testedValues[key];
-        let arr = [];
-        for(let i = range.min; i <= range.max; i+= range.step)
+        if(range.type === "number")
         {
-            arr.push(i);
+            let arr = [];
+            for(let i = range.min; i <= range.max; i+= range.step)
+            {
+                arr.push(i);
+            }
+            EXPERIMENTATION_CONFIG.testedValues[key] = arr;
         }
-        EXPERIMENTATION_CONFIG.testedValues[key] = arr;
+        else if(range.type === "boolean")
+        {
+            //EXPERIMENTATION_CONFIG.testedValues[key] = [false, true];
+            EXPERIMENTATION_CONFIG.testedValues[key] = [true, false];
+        }
+
     });
     return EXPERIMENTATION_CONFIG;
 }
@@ -38,7 +46,7 @@ function addCombinations(EXPERIMENTATION_CONFIG)
 function executeCombination(preprocessedGroundTruthDataOneActivity, predictionFunction, metricToUse, combination)
 {
     let [RFIDData, preprocessedEnergetic] = preprocessedGroundTruthDataOneActivity;
-    let [windowSizeObjectUse, thresholdMinDistanceRFID, thresholdMaxDistanceRFID, windowSizeHAR] = combination;
+    let [useImageExtractorPatterns, windowSizeObjectUse, thresholdMinDistanceRFID, thresholdMaxDistanceRFID, windowSizeHAR] = combination;
     //Process RFID
     RFIDData = CALIBRATION.significantMovement(RFIDData, windowSizeObjectUse, thresholdMinDistanceRFID, thresholdMaxDistanceRFID)
 
@@ -49,7 +57,7 @@ function executeCombination(preprocessedGroundTruthDataOneActivity, predictionFu
     let trueLabels = mergedData.map(d => d.label);
 
     //Do HAR using conf to produce label for each event
-    let predictedLabels = predictionFunction(mergedData, patternPerActivity, windowSizeHAR);
+    let predictedLabels = predictionFunction(mergedData, useImageExtractorPatterns, windowSizeHAR);
 
     //Compute confusion matrix to get an idea of performance
     let performanceData = {/*trueLabels, predictedLabels,*/ confusionMatrix:{}, metrics: {}};
@@ -63,7 +71,7 @@ function executeCombination(preprocessedGroundTruthDataOneActivity, predictionFu
 
         //Logs
         console.log(confusionMatrix.labels);
-        console.log(confusionMatrix.getMatrix());
+        console.table(confusionMatrix.getMatrix());
         console.log("Accuracy:", performanceData.metrics.accuracy);
         console.log(`${metricToUse}:`, performanceData.metrics[metricToUse]);
     }

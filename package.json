@@ -13,6 +13,7 @@
     "experimentationPatternUse": "node -r esm ./patternUse/experimentation.js",
     "processDefaultNoActivityData": "node -r esm ./patternUse/processdefaultNoActivityData.js",
     "calibrationRFIDPosition": "node -r esm ./patternUse/calibrationRFIDPosition.js",
+    "convertImExToSPMEx": "node -r esm ./convertImExToSPMEx.js",
     "testPOSET": "node -r esm ./tests/testPOSET.js",
     "testFin": "node -r esm ./tests/testFin.js",
     "testSelector": "node -r esm ./tests/testSelector.js",
