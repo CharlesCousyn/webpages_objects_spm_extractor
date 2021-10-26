@@ -1,7 +1,7 @@
 import filesSystem from "fs";
 import * as TOOLS from "../tools";
 import csvStringify from "csv-stringify/lib/sync";
-import { plot } from 'nodeplotlib';
+import { plot, stack, clear } from 'nodeplotlib';
 
 //let defaultNoActivityData = JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/defaultData/rfid.json"), TOOLS.reviverDate);
 let defaultNoActivityData = JSON.parse(filesSystem.readFileSync("C:/Users/Charles/ws-cli_output/20210927154950/rfid.json"), TOOLS.reviverDate);
@@ -116,9 +116,9 @@ function parseDataSetFromRFIDPosition(defaultNoActivityData)
                     }
                 });
 
-            TOOLS.writeTextFile(stringPatternData, `./patternUse/processedDefaultNoActivityData/${TagName}.csv`);
+            //TOOLS.writeTextFile(stringPatternData, `./patternUse/processedDefaultNoActivityData/${TagName}.csv`);
 
-            plot([
+            stack([
                 {
                     x: val.distances,
                     name: TagName,
@@ -132,6 +132,9 @@ function parseDataSetFromRFIDPosition(defaultNoActivityData)
                 );
         }
     );
+
+    plot();
+    clear();
 
     ///1, 2, 3 pourrait être suffisant!! voir proche de 10!!
     //Max 200??

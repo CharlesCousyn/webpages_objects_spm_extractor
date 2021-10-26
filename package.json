@@ -44,7 +44,7 @@
     "lexed": "^1.0.10",
     "ml-confusion-matrix": "^0.4.0",
     "node-kmeans": "^1.1.9",
-    "nodeplotlib": "^0.7.5",
+    "nodeplotlib": "^0.7.6",
     "rxjs": "^6.6.3",
     "summary": "^2.1.0",
     "uuid": "^3.4.0",
