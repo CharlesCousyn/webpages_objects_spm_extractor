@@ -117,30 +117,40 @@ function addLabelToTrace(trace, indexEvent, label)
 }
 
 //Inspired by riboni et al.
-export function HARUsingObjectsOnly(events, objectsByActivity, numberEvents)
+//10.1109/WETICE.2017.38
+export function HARUsingObjectsOnly(events, patternsImageExtractor, slidingWindowNumberEvents, smoothingFactor)
 {
-    let labelledTrace = events.map(event => [event, "null"]);
-
-    let activities = objectsByActivity.activities;
-    //P(A|O)
-    let probAWithO = [];
-    //DEBUG
-    activities = ["make_tea", "cook"];
-    //DEBUG
+    let labelledTrace = events.map(event => "noActivity");
+    let activities = patternsImageExtractor.map(p => p.activityName);
 
     events.forEach((e, indexEvent) =>
     {
-        let [maxActivity, maxWeight] = activities
-        .map(a =>
+        let [maxActivity, maxWeight] = ["noActivity", -1];
+        if(indexEvent > slidingWindowNumberEvents)
         {
-            //Compute w(a, tj)
-            let weight = 0.0;
-
-            return [a, weight];
-
-        })
-        //Find activity with max score
-        .reduce(([oldA, oldWeight], [a, weight]) => weight >= oldWeight ? [a, weight] : [oldA, oldWeight], ["null", -1]);
+            [maxActivity, maxWeight] = activities
+                .map(a =>
+                {
+                    //Get correct patterns from activity
+                    let activityPatterns = patternsImageExtractor.find(o => o.activityName === a).activityPatterns;
+                    //Compute w(a, tj)
+                    let weight = 1.0;
+                    for(let indexE = indexEvent; indexE > indexEvent - slidingWindowNumberEvents; indexE--)
+                    {
+                        let object = events[indexE].data;
+                        let myPattern = activityPatterns.find(ap => ap.pattern[0] === object);
+                        if(myPattern !== undefined)
+                        {
+                            let probObjectConditionalA = myPattern.annotation;
+                            let exponent = indexEvent - indexE;
+                            weight *= probObjectConditionalA * Math.pow(smoothingFactor, exponent);
+                        }
+                    }
+                    return [a, weight];
+                })
+                //Find activity with max score
+                .reduce(([oldA, oldWeight], [a, weight]) => weight >= oldWeight ? [a, weight] : [oldA, oldWeight], ["noActivity", -1]);
+        }
 
         addLabelToTrace(labelledTrace, indexEvent, maxActivity);
     });

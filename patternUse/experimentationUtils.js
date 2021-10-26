@@ -3,6 +3,8 @@ import * as TOOLS from "../tools";
 import * as CALIBRATION from "./calibrationRFIDPosition.js";
 import filesSystem from "fs";
 
+let patternPerActivityImageExtractor = JSON.parse(filesSystem.readFileSync("./selectedPatterns/patternsImageExtractor.json"), TOOLS.reviverDate);
+
 
 function addValues(EXPERIMENTATION_CONFIG)
 {
@@ -21,8 +23,8 @@ function addValues(EXPERIMENTATION_CONFIG)
         }
         else if(range.type === "boolean")
         {
-            //EXPERIMENTATION_CONFIG.testedValues[key] = [false, true];
-            EXPERIMENTATION_CONFIG.testedValues[key] = [true, false];
+             EXPERIMENTATION_CONFIG.testedValues[key] = [false, true];
+            //EXPERIMENTATION_CONFIG.testedValues[key] = [true, false];
         }
 
     });
@@ -58,6 +60,7 @@ function executeCombination(preprocessedGroundTruthDataOneActivity, predictionFu
 
     //Do HAR using conf to produce label for each event
     let predictedLabels = predictionFunction(mergedData, useImageExtractorPatterns, windowSizeHAR);
+    //let predictedLabels = predictionFunction(mergedData, patternPerActivityImageExtractor, 500, 0.5);
 
     //Compute confusion matrix to get an idea of performance
     let performanceData = {/*trueLabels, predictedLabels,*/ confusionMatrix:{}, metrics: {}};

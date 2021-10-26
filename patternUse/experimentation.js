@@ -79,5 +79,6 @@ function preprocessGroundTruthData(data, activityName, EXPERIMENTATION_CONFIG)
 
     //Launch experimentations
     EXPERIMENTATION_UTILS.testAllCombinations(preprocessedData, HAR.HARUsingSlidingWindowAndPatterns, EXPERIMENTATION_CONFIG);
+    //EXPERIMENTATION_UTILS.testAllCombinations(preprocessedData, HAR.HARUsingObjectsOnly, EXPERIMENTATION_CONFIG);
 
 })();
