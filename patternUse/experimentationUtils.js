@@ -26,6 +26,10 @@ function addValues(EXPERIMENTATION_CONFIG)
              EXPERIMENTATION_CONFIG.testedValues[key] = [false, true];
             //EXPERIMENTATION_CONFIG.testedValues[key] = [true, false];
         }
+        else if(range.type === "enum")
+        {
+            EXPERIMENTATION_CONFIG.testedValues[key] = range.values;
+        }
 
     });
     return EXPERIMENTATION_CONFIG;
@@ -45,12 +49,11 @@ function addCombinations(EXPERIMENTATION_CONFIG)
 }
 
 
-function executeCombination(preprocessedGroundTruthDataOneActivity, predictionFunction, metricToUse, combination)
+function executeCombination(preprocessedGroundTruthDataOneActivity, predictionFunction, metricToUse, mapParamValue)
 {
     let [RFIDData, preprocessedEnergetic] = preprocessedGroundTruthDataOneActivity;
-    let [useImageExtractorPatterns, windowSizeObjectUse, thresholdMinDistanceRFID, thresholdMaxDistanceRFID, windowSizeHAR] = combination;
     //Process RFID
-    RFIDData = CALIBRATION.significantMovement(RFIDData, windowSizeObjectUse, thresholdMinDistanceRFID, thresholdMaxDistanceRFID)
+    RFIDData = CALIBRATION.significantMovement(RFIDData, mapParamValue);
 
     //Merge energetic and processedRFIDData
     let mergedData = [...RFIDData, ...preprocessedEnergetic].sort((a, b) => a.timestamp - b.timestamp);
@@ -59,7 +62,7 @@ function executeCombination(preprocessedGroundTruthDataOneActivity, predictionFu
     let trueLabels = mergedData.map(d => d.label);
 
     //Do HAR using conf to produce label for each event
-    let predictedLabels = predictionFunction(mergedData, useImageExtractorPatterns, windowSizeHAR);
+    let predictedLabels = predictionFunction(mergedData, mapParamValue);
     //let predictedLabels = predictionFunction(mergedData, patternPerActivityImageExtractor, 500, 0.5);
 
     //Compute confusion matrix to get an idea of performance
@@ -96,9 +99,9 @@ export function testAllCombinations(preprocessedGroundTruthData, predictionFunct
             .map(combination =>
             {
                 console.log("Computing HAR performance for combination of parameters:");
-                console.log(config.parameters);
-                console.log(combination);
-                let performanceData = executeCombination(preprocessedGroundTruthData, predictionFunction, config.performanceMetric, combination);
+                let mapParamValue = new Map(config.parameters.map((param, index) => [param, combination[index]]));
+                console.log(mapParamValue);
+                let performanceData = executeCombination(preprocessedGroundTruthData, predictionFunction, config.performanceMetric, mapParamValue);
                 return ({parameters: config.parameters, combination: combination, performanceData});
             })
             .sort((a, b) => b.performanceData.metrics[config.performanceMetric] - a.performanceData.metrics[config.performanceMetric]);

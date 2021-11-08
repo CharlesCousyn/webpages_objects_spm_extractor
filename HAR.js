@@ -158,10 +158,52 @@ export function HARUsingObjectsOnly(events, patternsImageExtractor, slidingWindo
     return labelledTrace;
 }
 
-//For each element in trace, produce a label for the activity being
-export function HARUsingSlidingWindowAndPatterns(events, useImageExtractorPatterns, windowSizeHAR)
+function choosePatternsToUse(useImageExtractorPatternsOrSPMPatterns)
 {
-    let patternsToUse = useImageExtractorPatterns ? patternPerActivityImageExtractor : patternPerActivityOriginal;
+    let patternsToUse = [];
+    switch(useImageExtractorPatternsOrSPMPatterns)
+    {
+        case "BOTH":
+            //Get all activities
+            let allActivities = [...new Set(patternPerActivityImageExtractor.map(a => a.activityName))];
+            //Merge activity patterns
+            patternsToUse = allActivities.map((a, index) =>
+            {
+                let patternIm = patternPerActivityImageExtractor.find(obj => obj.activityName === a);
+                let patternSPM = patternPerActivityOriginal.find(obj => obj.activityName === a);
+                let activityPatterns = [];
+                if(patternIm !== undefined)
+                {
+                    activityPatterns = [...activityPatterns, ...patternIm.activityPatterns];
+                }
+                if(patternSPM !== undefined)
+                {
+                    activityPatterns = [...activityPatterns, ...patternSPM.activityPatterns];
+                }
+                return ({activityName:a, activityPatterns});
+            });
+            break;
+        case "IMAGE_EXTRACTOR":
+            patternsToUse = patternPerActivityImageExtractor;
+            break;
+        case "SPM":
+            patternsToUse = patternPerActivityOriginal;
+            break;
+        default:
+            throw new Error("Invalid value for useImageExtractorPatternsOrSPMPatterns parameter")
+    }
+
+    return patternsToUse;
+}
+
+//For each element in trace, produce a label for the activity being
+export function HARUsingSlidingWindowAndPatterns(events, mapParamValue)
+{
+    let useImageExtractorPatternsOrSPMPatterns = mapParamValue.get("useImageExtractorPatternsOrSPMPatterns");
+    let windowSizeHAR = mapParamValue.get("windowSizeHAR");
+
+    let patternsToUse = choosePatternsToUse(useImageExtractorPatternsOrSPMPatterns);
+
     //Default labelling
     let labelledTrace = events.map(event => "noActivity");
 

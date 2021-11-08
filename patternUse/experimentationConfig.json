@@ -1,9 +1,10 @@
 {
-  "parameters": ["useImageExtractorPatterns", "windowSizeObjectUse", "thresholdMinDistanceRFID", "thresholdMaxDistanceRFID", "windowSizeHAR"],
+  "parameters": ["useImageExtractorPatternsOrSPMPatterns", "windowSizeObjectUse", "thresholdMinDistanceRFID", "thresholdMaxDistanceRFID", "windowSizeHAR"],
   "testedValues": {
-    "useImageExtractorPatterns":
+    "useImageExtractorPatternsOrSPMPatterns":
     {
-      "type": "boolean"
+      "type": "enum",
+      "values": ["BOTH", "IMAGE_EXTRACTOR", "SPM"]
     },
     "windowSizeObjectUse":
     {

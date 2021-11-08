@@ -72,8 +72,11 @@ function calibration(calibrationData)
 
 }
 
-export function significantMovement(dataRFID, windowSizeInMillisecond, thresholdMin, thresholdMax)
+export function significantMovement(dataRFID, mapParamValue)
 {
+    let windowSizeInMillisecond = mapParamValue.get("windowSizeObjectUse");
+    let thresholdMin = mapParamValue.get("thresholdMinDistanceRFID");
+    let thresholdMax = mapParamValue.get("thresholdMaxDistanceRFID");
     if(dataRFID.length !== 0)
     {
         let allUniqueKeys= [...new Set(dataRFID.reduce((acc, curr)=> [...Object.keys(curr.obj), ...acc], []))];
