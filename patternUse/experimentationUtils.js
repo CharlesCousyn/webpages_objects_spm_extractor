@@ -2,6 +2,7 @@ import ConfusionMatrix from 'ml-confusion-matrix';
 import * as TOOLS from "../tools";
 import * as CALIBRATION from "./calibrationRFIDPosition.js";
 import filesSystem from "fs";
+import {cohenKappa} from "../tools";
 
 let patternPerActivityImageExtractor = JSON.parse(filesSystem.readFileSync("./selectedPatterns/patternsImageExtractor.json"), TOOLS.reviverDate);
 
@@ -74,12 +75,16 @@ function executeCombination(preprocessedGroundTruthDataOneActivity, predictionFu
         performanceData.confusionMatrix.matrix = confusionMatrix.getMatrix();
         performanceData.metrics.accuracy = confusionMatrix.getAccuracy();
         performanceData.metrics[metricToUse] = TOOLS[metricToUse](confusionMatrix);
+        performanceData.metrics["cohenKappa"] = TOOLS["cohenKappa"](confusionMatrix);
+        performanceData.metrics["macroAverageFScore"] = TOOLS["macroAverageFScore"](confusionMatrix);
 
         //Logs
         console.log(confusionMatrix.labels);
         console.table(confusionMatrix.getMatrix());
         console.log("Accuracy:", performanceData.metrics.accuracy);
         console.log(`${metricToUse}:`, performanceData.metrics[metricToUse]);
+        console.log(`cohenKappa:`, performanceData.metrics["cohenKappa"]);
+        console.log(`macroAverageFScore:`, performanceData.metrics["macroAverageFScore"]);
     }
 
     return performanceData;
@@ -94,14 +99,17 @@ export function testAllCombinations(preprocessedGroundTruthData, predictionFunct
     //config.configurations = config.configurations.filter((el, index) => index === 42 || index === 86000);
     //DEBUG
 
+    console.log(`Computing HAR performance for ${config.combinations.length} combinations of parameters`);
+    let beginTime = new Date();
     let performancesByCombination =
         config.combinations
-            .map(combination =>
+            .map((combination, indexComb) =>
             {
-                console.log("Computing HAR performance for combination of parameters:");
+                console.log(`Computing HAR performance for combination of parameters: (${indexComb+1}/${config.combinations.length})`);
                 let mapParamValue = new Map(config.parameters.map((param, index) => [param, combination[index]]));
                 console.log(mapParamValue);
                 let performanceData = executeCombination(preprocessedGroundTruthData, predictionFunction, config.performanceMetric, mapParamValue);
+                TOOLS.showProgress(indexComb+1, config.combinations.length, beginTime);
                 return ({parameters: config.parameters, combination: combination, performanceData});
             })
             .sort((a, b) => b.performanceData.metrics[config.performanceMetric] - a.performanceData.metrics[config.performanceMetric]);
